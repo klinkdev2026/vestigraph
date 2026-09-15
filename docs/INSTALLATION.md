@@ -6,7 +6,7 @@
 
 ## Requirements
 
-Vestigraph requires Python 3.10 or newer, KLayout desktop 0.30.x, and `klayout-klink>=0.6.0,<0.7`. The normal `vestigraph` package installs the compatible Klink dependency. The Python `klayout` package is used for offline preview; it does not install the KLayout desktop application.
+Vestigraph requires Python 3.10 or newer, KLayout desktop 0.30.x, `klayout-klink>=0.6.0,<0.7`, and `vestigraph-scan-core`. The normal `vestigraph` package installs the compatible Klink and scanner dependencies. The Python `klayout` package is used for offline preview; it does not install the KLayout desktop application.
 
 Klink owns the KLayout plugin installation. Use `klink plugin install` for first install and upgrades.
 
@@ -19,7 +19,7 @@ python -m pip install vestigraph
 klink plugin install
 ```
 
-Restart the MCP client that runs `klink-mcp`. The Klink extension registry discovers Vestigraph in that Python environment and registers the local companion. No separate Vestigraph MCP server is needed.
+Restart the MCP client that runs `klink-mcp`. The Klink extension registry discovers Vestigraph in that Python environment and registers the local companion. No separate Vestigraph MCP server is needed. The scanner prefers the Rust `vestigraph-scan-core` backend and falls back to Python with a diagnostic reason if a native wheel is unavailable; users on supported wheel platforms do not need a local Rust toolchain.
 
 Restart KLayout, open a saved GDS/OASIS layout, and click **HIST**. The panel opens the local history UI and shows live recording status. Run the integration doctor when you need an installation check:
 
@@ -36,14 +36,14 @@ For unreleased versions, use the wheel and sdist artifacts created by the [GitHu
 Vestigraph artifact install:
 
 ```console
-python -m pip install ./wheels/vestigraph-0.2.0-py3-none-any.whl
+python -m pip install --find-links ./wheels "vestigraph-scan-core" ./wheels/vestigraph-0.2.0-py3-none-any.whl
 klink plugin install
 ```
 
-Before both projects are on PyPI, download artifacts built from matching reviewed Klink and Vestigraph revisions. Put the two Klink Rust wheels, the `klayout_klink` core wheel, and the Vestigraph wheel in one local directory, then run:
+Before both projects are on PyPI, download artifacts built from matching reviewed Klink and Vestigraph revisions. Put the two Klink Rust wheels, the `klayout_klink` core wheel, the `vestigraph_scan_core` wheel, and the Vestigraph wheel in one local directory, then run:
 
 ```console
-python -m pip install --find-links ./wheels "klayout-klink>=0.6.0,<0.7" "vestigraph>=0.2,<0.3"
+python -m pip install --find-links ./wheels "klayout-klink>=0.6.0,<0.7" "vestigraph-scan-core" "vestigraph>=0.2,<0.3"
 klink plugin install
 ```
 

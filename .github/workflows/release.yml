@@ -6,10 +6,12 @@ name: Release
 # PyPI Trusted Publishing setup:
 #   owner/repo: klinkdev2026/vestigraph
 #   workflow: release.yml
-#   project: vestigraph
+#   projects:
+#     vestigraph
+#     vestigraph-scan-core
 #   environments:
-#     TestPyPI -> testpypi-vestigraph
-#     PyPI     -> pypi-vestigraph
+#     TestPyPI -> testpypi-vestigraph, testpypi-vestigraph-scan-core
+#     PyPI     -> pypi-vestigraph, pypi-vestigraph-scan-core
 
 on:
   push:
@@ -52,7 +54,7 @@ jobs:
         shell: bash
         run: |
           python - <<'PY'
-          import os, runpy, sys, tomllib
+          import os, runpy, tomllib
           from pathlib import Path
 
           pyproject = tomllib.loads(Path('pyproject.toml').read_text(encoding='utf-8'))
@@ -63,6 +65,11 @@ jobs:
           init_version = runpy.run_path('vestigraph/__init__.py').get('__version__')
           if init_version != version:
               raise SystemExit(f"vestigraph.__version__ {init_version!r} != pyproject {version!r}")
+          native_project = tomllib.loads(Path('native/scan_core/pyproject.toml').read_text(encoding='utf-8'))['project']
+          if native_project['name'] != 'vestigraph-scan-core':
+              raise SystemExit(f"unexpected native project name: {native_project['name']}")
+          if native_project['version'] != version:
+              raise SystemExit(f"native version {native_project['version']!r} != vestigraph {version!r}")
           ref = os.environ.get('GITHUB_REF', '')
           event = os.environ.get('GITHUB_EVENT_NAME', '')
           if event == 'push' and ref.startswith('refs/tags/'):
@@ -72,8 +79,28 @@ jobs:
           print(f"vestigraph {version}")
           PY
 
+  native-sdist:
+    name: native source distribution
+    needs: [public-ci, version-check]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Build native sdist
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install 'maturin>=1.14,<2'
+          maturin sdist --manifest-path native/scan_core/Cargo.toml --out native-dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-native-sdist
+          path: native-dist/*
+
   build-dist:
-    name: build wheel and sdist
+    name: build Vestigraph wheel and sdist
     needs: [public-ci, version-check]
     runs-on: ubuntu-latest
     steps:
@@ -95,9 +122,45 @@ jobs:
           name: dist-vestigraph
           path: dist/*
 
+  audit-dist:
+    name: audit combined distributions
+    needs: [build-dist, native-sdist]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-vestigraph
+          path: dist
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: native-wheels-*
+          path: dist
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-native-sdist
+          path: dist
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Audit source tree and all distributions
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install twine
+          python -m twine check dist/*
+          python -B tools/stage_public.py --check . --dist-dir dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-native
+          path: |
+            dist/vestigraph_scan_core-*
+            dist/vestigraph-scan-core-*
+
   install-smoke:
     name: install smoke ${{ matrix.os }} py${{ matrix.python }}
-    needs: [build-dist]
+    needs: [build-dist, audit-dist]
     strategy:
       fail-fast: false
       matrix:
@@ -113,25 +176,54 @@ jobs:
         with:
           name: dist-vestigraph
           path: dist
-      - name: Install built Vestigraph with required KLink and run import smoke
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-native
+          path: dist
+      - name: Install built Vestigraph with required native scan core and run smoke checks
         shell: bash
         run: |
           python -m pip install --upgrade pip
-          python -m pip install dist/vestigraph-*.whl
+          python -m pip install --find-links dist dist/vestigraph-*.whl
           python -m pip check
           python - <<'PY'
           import importlib.resources as resources
           import vestigraph
           import vestigraph.web.app
+          import vestigraph_scan_core
           import klink
+          from vestigraph.vesti_formats.vesti_format_gds import native as scan_backend
           assert resources.files('vestigraph.web').joinpath('static/index.html').is_file()
-          print('vestigraph install smoke ok', vestigraph.__version__, klink.__name__)
+          cap = scan_backend.capability()
+          assert cap["available"], cap
+          assert scan_backend.select_backend("auto")[0] == "rust"
+          print('vestigraph install smoke ok', vestigraph.__version__, vestigraph_scan_core.__name__, klink.__name__)
           PY
           python -I tools/check_installed.py
 
-  publish-testpypi:
+  publish-testpypi-native:
+    name: publish vestigraph-scan-core to TestPyPI
+    needs: [public-ci, version-check, build-dist, native-sdist, audit-dist, install-smoke]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && inputs.target == 'testpypi'
+    environment: testpypi-vestigraph-scan-core
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-native
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist
+          skip-existing: true
+          repository-url: https://test.pypi.org/legacy/
+
+  publish-testpypi-vestigraph:
     name: publish vestigraph to TestPyPI
-    needs: [public-ci, version-check, build-dist, install-smoke]
+    needs: [publish-testpypi-native]
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' && inputs.target == 'testpypi'
     environment: testpypi-vestigraph
@@ -149,9 +241,27 @@ jobs:
           skip-existing: true
           repository-url: https://test.pypi.org/legacy/
 
-  publish:
+  publish-native:
+    name: publish vestigraph-scan-core to PyPI
+    needs: [public-ci, version-check, build-dist, native-sdist, audit-dist, install-smoke]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    environment: pypi-vestigraph-scan-core
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-native
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist
+
+  publish-vestigraph:
     name: publish vestigraph to PyPI
-    needs: [public-ci, version-check, build-dist, install-smoke]
+    needs: [publish-native]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     environment: pypi-vestigraph

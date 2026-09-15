@@ -1,1 +1,1 @@
-"""GDS implementation. Optional native scanner is loaded only on request."""
+"""GDS implementation. Native scanner is imported lazily and auto-selected with Python fallback."""

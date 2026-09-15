@@ -61,7 +61,7 @@ def probe_capabilities(*, generic=False) -> dict:
             "open_history": True, "preview": False, "preview_dependency": False}
            if generic else legacy_capabilities()),
         "storage_delta": _storage_delta_available(),  # optional bsdiff4 encoder (pip install vestigraph[storage-delta])
-        "scan_native": _scan_native_available(),      # optional Rust scanner (vestigraph_scan_core); python is the default
+        "scan_native": _scan_native_available(),      # default Rust scanner availability; auto falls back to Python
         "remote_access": False,
         "remote_edit": False,
     }

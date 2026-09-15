@@ -1,11 +1,11 @@
 """Backend selection + Rust adapter for GDS scanning (SPEC_PERFORMANCE_READ_ACCESS.md P1 3.1/3.2).
 
-The pure-Python reference scanner (`vestigraph.vesti_formats.vesti_format_gds.scan.scan_gds`) stays the default
-and the fallback; this module adds an explicit python/rust/auto backend choice plus a
+The pure-Python reference scanner (`vestigraph.vesti_formats.vesti_format_gds.scan.scan_gds`) remains
+the fallback; this module adds an explicit python/rust/auto backend choice plus a
 capability probe, and implements the Rust session-API feed loop against
-`vestigraph_scan_core.Scanner` (native crate under `native/scan_core/`, not a runtime
-dependency of this package -- see `native/scan_core/README.md`). The engine's prepare path
-uses this adapter when native scanning is explicitly selected (or selected through auto).
+`vestigraph_scan_core.Scanner` (native crate under `native/scan_core/`, installed with
+the package and imported lazily so status probes stay safe). The engine's prepare path
+uses this adapter for the default auto selection and explicit python/rust choices.
 
 Backend selection:
 
@@ -57,10 +57,10 @@ RUST_MODULE_NAME = "vestigraph_scan_core"
 
 
 def _import_rust():
-    """Return (module, reason). module is None (with reason explaining why) when the optional
+    """Return (module, reason). module is None (with reason explaining why) when the
     native backend is not installed or fails to import for any other reason."""
     try:
-        import vestigraph_scan_core as module  # noqa: PLC0415 -- optional, imported lazily
+        import vestigraph_scan_core as module  # noqa: PLC0415 -- imported lazily
     except ImportError as exc:
         return None, f"{RUST_MODULE_NAME} not importable: {exc}"
     except Exception as exc:  # pragma: no cover - a broken native build, not a missing one

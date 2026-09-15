@@ -1,19 +1,19 @@
 [
   {
     "path": ".github/workflows/ci.yml",
-    "sha256": "57f0bb5267dc41763dbc45fff4d0f898415b42b81da365a5ab624b3740c90b8f"
+    "sha256": "22fad40ef9359037756945338207aac61f7d1d6cb8590fd2b6a94769fe62c430"
   },
   {
     "path": ".github/workflows/release.yml",
-    "sha256": "45b24de85562604d1faedc1ecc04f322293c0932bb20852915394c01d8d6f7ef"
+    "sha256": "e3799e1533911a9acd159cbfb6403cb8fc43db94e30c4b9f6a5821757958f311"
   },
   {
     "path": "CHANGELOG.md",
-    "sha256": "3ec538286f9f77d4198dabb840068b6235c93025f99f4adc850ea1ad560f8963"
+    "sha256": "ed70675a839b7d8636319a8ad56f1e708b0241022b41bdbfff39da6f0c426106"
   },
   {
     "path": "CHANGELOG.zh-CN.md",
-    "sha256": "13537de270fe99935fbccf4205b491236cb59a03bfbef948423fd50b00004b9e"
+    "sha256": "e6b4393ee9e260b2adc68e81948cdd7bbd48abb2ce95afac43cbe76ca0126b2b"
   },
   {
     "path": "docs/AGENT_LOCAL.md",
@@ -41,19 +41,19 @@
   },
   {
     "path": "docs/INSTALLATION.md",
-    "sha256": "21b2c58a3d4c513b2fe620e7ed8c6c098e00f0944434b5584ab4b18f4b370988"
+    "sha256": "f42da9646981f3b5ce53fed0a572336a6c6b8553278ea0a336bf8192ebfa7012"
   },
   {
     "path": "docs/INSTALLATION.zh-CN.md",
-    "sha256": "7f53de6062ea7a78fe7dfbb3395f4ab2ebdb2027721e617542b239690ee04a0f"
+    "sha256": "4fda4f34987d1509e93ab08249f5b63003707c718f5b00f09b6af0680d3b9376"
   },
   {
     "path": "docs/PUBLIC_RELEASE.md",
-    "sha256": "69827ba6e205e06e5cc43c993e17ddb5bb246894ed52bc9472baac17ca4864c3"
+    "sha256": "c1ea5b83b743801529612640f20dff613cfd8ce50f936fb60f20da7956eb6800"
   },
   {
     "path": "docs/PUBLIC_RELEASE.zh-CN.md",
-    "sha256": "d59376ee43e8a670e25476876cd488d2abfc447d29e5f1472f2d1ef10bdb63d7"
+    "sha256": "43c4c855487c09e7608291f638eb9684d0d20cc4fa5927d419758fb1450b0e62"
   },
   {
     "path": "docs/README.md",
@@ -85,27 +85,67 @@
   },
   {
     "path": "MANIFEST.in",
-    "sha256": "60db36fa4467e663feca1f9b4eac12e09e4bd5c15126e601cdfe5ae66753f93d"
+    "sha256": "0b61eed1e1ae2010414ecb5a51bf54382773deab337d6eb481a3c5131ec9e29d"
+  },
+  {
+    "path": "native/scan_core/Cargo.lock",
+    "sha256": "42c2787a0bc3dd586a6acb02836d39f743575c3f2f6c49182b778f37e56b8cb1"
+  },
+  {
+    "path": "native/scan_core/Cargo.toml",
+    "sha256": "6a73fa4a9fe15de402fbe86c741596c76d7bfc21315afa007b5b7ea2b1340585"
+  },
+  {
+    "path": "native/scan_core/LICENSE",
+    "sha256": "b395af9dd26d2f910bfbf7ab50bdc3ce103991169ea22e6a64368fed48934ad0"
+  },
+  {
+    "path": "native/scan_core/pyproject.toml",
+    "sha256": "29be9fbf16d88059b870050a7a618b8d0ee74839017e8849a6d51dd98dd2750f"
+  },
+  {
+    "path": "native/scan_core/README.md",
+    "sha256": "e6312aabae76ba79d4d9778661e50e98e253a13b9f4a89b69312551ab9063709"
+  },
+  {
+    "path": "native/scan_core/README.zh-CN.md",
+    "sha256": "1fae21ee2f483bd62f111f070e1770da11d8a0ce5a35488b0a9a5b8814587ac0"
+  },
+  {
+    "path": "native/scan_core/src/lib.rs",
+    "sha256": "ddf3e32e9002388b41f2276d2b5d10b962f52c9d0c7e91443b3cd9bff0d00745"
+  },
+  {
+    "path": "native/scan_core/src/scan.rs",
+    "sha256": "d5f8e06c3b100108230023a26998de1ea605339e0dc7525bdeb9eb661cb82ab7"
+  },
+  {
+    "path": "native/scan_core/THIRD_PARTY.md",
+    "sha256": "1bded74466ff5c745f6d250691d8a3ab165b3163ee62c013e3ee0a2e81fd062b"
+  },
+  {
+    "path": "native/scan_core/THIRD_PARTY.zh-CN.md",
+    "sha256": "48d3a17e2e76776e05b7ddd066d4b6cb40982eee7d3957150756bea81248cf42"
   },
   {
     "path": "pyproject.toml",
-    "sha256": "e3d39f0af99295c4fa2e1fc1c22a0fd7b5a044cf18252fb9e59fd051ef8da711"
+    "sha256": "a24f1977096f31c09f086b6af5a15dca869cd04dfc8529254eb296b5d5154135"
   },
   {
     "path": "README.md",
-    "sha256": "fc9948d81dad540fd4e90d106c081715b8809f52eb7d0b7b5fca5b5a3ad8b696"
+    "sha256": "84d59deb001f23f4de1ce37db628cbb215b9319a8ff39c3dfe627cca0ce3c724"
   },
   {
     "path": "README.zh-CN.md",
-    "sha256": "bd0e4213438ad83d11077bc92caa85e54828d5f186692f60cb5d2fe74e935cea"
+    "sha256": "b6ea933fbf13b220ccc7d18009d44878e856f73f22e78df0a487f17f89f18fa1"
   },
   {
     "path": "release/ci.yml",
-    "sha256": "57f0bb5267dc41763dbc45fff4d0f898415b42b81da365a5ab624b3740c90b8f"
+    "sha256": "22fad40ef9359037756945338207aac61f7d1d6cb8590fd2b6a94769fe62c430"
   },
   {
     "path": "release/manifest.json",
-    "sha256": "24246c5f2dbe6327ed8a6f34e7f80778b0c6f5fbb0b7b607f5da3bda91769517"
+    "sha256": "24efcfba7f418fc8707688b9cadfc0938eafb070d9828f4243a1998fbc493a20"
   },
   {
     "path": "release/overrides/docs/AGENT_LOCAL.md",
@@ -133,19 +173,19 @@
   },
   {
     "path": "release/overrides/docs/INSTALLATION.md",
-    "sha256": "21b2c58a3d4c513b2fe620e7ed8c6c098e00f0944434b5584ab4b18f4b370988"
+    "sha256": "f42da9646981f3b5ce53fed0a572336a6c6b8553278ea0a336bf8192ebfa7012"
   },
   {
     "path": "release/overrides/docs/INSTALLATION.zh-CN.md",
-    "sha256": "7f53de6062ea7a78fe7dfbb3395f4ab2ebdb2027721e617542b239690ee04a0f"
+    "sha256": "4fda4f34987d1509e93ab08249f5b63003707c718f5b00f09b6af0680d3b9376"
   },
   {
     "path": "release/overrides/docs/PUBLIC_RELEASE.md",
-    "sha256": "69827ba6e205e06e5cc43c993e17ddb5bb246894ed52bc9472baac17ca4864c3"
+    "sha256": "c1ea5b83b743801529612640f20dff613cfd8ce50f936fb60f20da7956eb6800"
   },
   {
     "path": "release/overrides/docs/PUBLIC_RELEASE.zh-CN.md",
-    "sha256": "d59376ee43e8a670e25476876cd488d2abfc447d29e5f1472f2d1ef10bdb63d7"
+    "sha256": "43c4c855487c09e7608291f638eb9684d0d20cc4fa5927d419758fb1450b0e62"
   },
   {
     "path": "release/overrides/docs/README.md",
@@ -172,16 +212,32 @@
     "sha256": "bfc333a6a0a0d69f22aa646b0c71975e7be59b66a7cff546e71030333ccd29db"
   },
   {
+    "path": "release/overrides/native/scan_core/README.md",
+    "sha256": "e6312aabae76ba79d4d9778661e50e98e253a13b9f4a89b69312551ab9063709"
+  },
+  {
+    "path": "release/overrides/native/scan_core/README.zh-CN.md",
+    "sha256": "1fae21ee2f483bd62f111f070e1770da11d8a0ce5a35488b0a9a5b8814587ac0"
+  },
+  {
+    "path": "release/overrides/native/scan_core/THIRD_PARTY.md",
+    "sha256": "1bded74466ff5c745f6d250691d8a3ab165b3163ee62c013e3ee0a2e81fd062b"
+  },
+  {
+    "path": "release/overrides/native/scan_core/THIRD_PARTY.zh-CN.md",
+    "sha256": "48d3a17e2e76776e05b7ddd066d4b6cb40982eee7d3957150756bea81248cf42"
+  },
+  {
     "path": "release/overrides/README.md",
-    "sha256": "fc9948d81dad540fd4e90d106c081715b8809f52eb7d0b7b5fca5b5a3ad8b696"
+    "sha256": "84d59deb001f23f4de1ce37db628cbb215b9319a8ff39c3dfe627cca0ce3c724"
   },
   {
     "path": "release/overrides/README.zh-CN.md",
-    "sha256": "bd0e4213438ad83d11077bc92caa85e54828d5f186692f60cb5d2fe74e935cea"
+    "sha256": "b6ea933fbf13b220ccc7d18009d44878e856f73f22e78df0a487f17f89f18fa1"
   },
   {
     "path": "release/release.yml",
-    "sha256": "45b24de85562604d1faedc1ecc04f322293c0932bb20852915394c01d8d6f7ef"
+    "sha256": "e3799e1533911a9acd159cbfb6403cb8fc43db94e30c4b9f6a5821757958f311"
   },
   {
     "path": "SECURITY.md",
@@ -244,6 +300,10 @@
     "sha256": "f965a98eb6c4a15fa4d61e8c92ada778c1889fccc079d2be75cfdbfa3c80e884"
   },
   {
+    "path": "tests/scan_transcript.py",
+    "sha256": "01e7fbd07aeee461fc8055ef2edeb0538d5e5bd29f1160fee2beeeca41160899"
+  },
+  {
     "path": "tests/service_helpers.py",
     "sha256": "0e5e0f2d13316f19ea2cc8b339267067dd5a1dd80fefd485b15e98d6fc94b0a5"
   },
@@ -269,11 +329,27 @@
   },
   {
     "path": "tests/test_release_tools.py",
-    "sha256": "e14c457a36215262147b9f3281860ad25a0ed55e759931583f119bb914159028"
+    "sha256": "a5cfe632e58e692dd7173cc93f1d2a86b633af07ad60a0cf070d537caf8ced80"
+  },
+  {
+    "path": "tests/test_scan_backend.py",
+    "sha256": "0f48b163c35920cce5524548c07c2a948080e443ccd2db3ed30d1e79dd58fc0d"
+  },
+  {
+    "path": "tests/test_scan_backend_engine.py",
+    "sha256": "f7cc24f725dcbdbf2990f905e47599d0e73c20d35497cdad3ae6cb3e20ad06a0"
+  },
+  {
+    "path": "tests/test_scan_backpressure.py",
+    "sha256": "505fe6674a50ea3821912259fe2ad022fb27bcd16e4ee76176299fc714857397"
+  },
+  {
+    "path": "tests/test_scan_equivalence.py",
+    "sha256": "6df3074681231f6631bcd09f6429dd79cbee74eb7baa0306690b32d5f7a41e1f"
   },
   {
     "path": "tests/test_setup.py",
-    "sha256": "01104615a9ed488561c97806451f831fe49dd16fbf825c97e38094bfd776330b"
+    "sha256": "dcf7e3c35e6b22d3dfbe13ccebecd407e51c88d87205b1c6085a731a7a80d34d"
   },
   {
     "path": "tests/test_standalone_install.py",
@@ -309,11 +385,11 @@
   },
   {
     "path": "THIRD_PARTY_NOTICES.md",
-    "sha256": "01d0c1ec605c93038be9b053aa81a84353c33b45bb10e0c0e5ae6b4121697006"
+    "sha256": "04d5a8df7c7752c886ca9f134fe8042c15d38c6d5999824cda2096b90ff776e9"
   },
   {
     "path": "THIRD_PARTY_NOTICES.zh-CN.md",
-    "sha256": "1077960ffe6c5cf73099b62ab9a4901dafb95007f6771492c7f8ef358a6cae97"
+    "sha256": "2e4c94a746c691348e0b72659ac76fab22481809f1b992cb1ca9143e07094edd"
   },
   {
     "path": "tools/check_agent_flow.py",
@@ -321,7 +397,7 @@
   },
   {
     "path": "tools/check_installed.py",
-    "sha256": "563fcc13b04c8090301fc17be845bb581e11bc5f9cd9834b42dfc6f795a7d3f2"
+    "sha256": "990cdc3182fa216e4a318334b056b5e6b2aef0eaab24a39de587df15cdb02794"
   },
   {
     "path": "tools/release_sync.py",
@@ -485,7 +561,7 @@
   },
   {
     "path": "vestigraph/service/supervisor.py",
-    "sha256": "9114f59b08f0dbfe096f79457b5a0d87aa636a0ce8c95bc192092bc1bc55091c"
+    "sha256": "66e6a87e63a0e4abc74926eb4bae9de6310f884a4be43313e4112b5e81f2f1c2"
   },
   {
     "path": "vestigraph/service/thumbnails.py",
@@ -505,7 +581,7 @@
   },
   {
     "path": "vestigraph/storage/engine.py",
-    "sha256": "23bf60e38d97eb3c1516a38fc8e7be0eb1bbe830d91b5768df47ef9ac4a1880f"
+    "sha256": "cb17df6a5dce266716ea03f02630c6240f9d49c14e828092c1eb0c3aefb7048e"
   },
   {
     "path": "vestigraph/storage/errors.py",
@@ -533,7 +609,7 @@
   },
   {
     "path": "vestigraph/storage/policy.py",
-    "sha256": "cd1ee4ce546f0408eee92f4b361f0c084cab82b6ec9a6cf48e96cf30316f4775"
+    "sha256": "3e0afb52d32408d164866233b67c7533a9961c39506e6b698bb1dc175f9bd28c"
   },
   {
     "path": "vestigraph/storage/publish.py",
@@ -641,7 +717,7 @@
   },
   {
     "path": "vestigraph/vesti_formats/vesti_format_gds/__init__.py",
-    "sha256": "42b90349fca712cb402c44cde2fa13055d7700a4b4f0a811634b20e33ec45f51"
+    "sha256": "12c8e9d83cc90660456ed40c823abe3f175b37de685a06198c3550139b92358f"
   },
   {
     "path": "vestigraph/vesti_formats/vesti_format_gds/changes.py",
@@ -661,7 +737,7 @@
   },
   {
     "path": "vestigraph/vesti_formats/vesti_format_gds/native.py",
-    "sha256": "ae35802e304f384ded2a663b1b5b2eff42f113d82fba1f0fa677cf333deab48f"
+    "sha256": "4030a54b8a051d28590a0591e1046028ced180c48c1c0bb503c23ecaf336b8f6"
   },
   {
     "path": "vestigraph/vesti_formats/vesti_format_gds/noop.py",
@@ -845,7 +921,7 @@
   },
   {
     "path": "vestigraph_backends/vesti_backend_klayout/installation.py",
-    "sha256": "72fbcd5711c0f0cfd7d915b8d850a65d83e091f36e30022d018b103fe31458fc"
+    "sha256": "ab5a75a5af91dd091381454898a3ca65cc1a59ba408095b4b4283b0676addf21"
   },
   {
     "path": "vestigraph_backends/vesti_backend_klayout/protocol.py",

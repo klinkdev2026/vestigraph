@@ -1,0 +1,21 @@
+[package]
+name = "vestigraph_scan_core"
+version = "0.1.2"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Optional bounded Rust backend for Vestigraph's strict GDS record scanner."
+publish = false
+
+[lib]
+name = "vestigraph_scan_core"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.27.2", features = ["extension-module", "abi3-py310"] }
+sha2 = "0.10"
+crc32fast = "1.4"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1

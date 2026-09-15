@@ -6,7 +6,7 @@
 
 Vestigraph is local file and layout history for KLayout users. It stores versions on the user's machine, shows a browser timeline, previews GDS/OASIS content, imports older files, and exports saved versions for recovery.
 
-Vestigraph requires Python 3.10 or newer, KLayout desktop 0.30.x, and `klayout-klink>=0.6.0,<0.7`. The normal installation installs Klink as a dependency. Install the Klink KLayout plugin with the Klink command, restart MCP so Vestigraph registers its local companion for the active Python environment, then restart KLayout and open **HIST**.
+Vestigraph requires Python 3.10 or newer, KLayout desktop 0.30.x, `klayout-klink>=0.6.0,<0.7`, and the `vestigraph-scan-core` scanner package. The normal installation resolves Klink and the scanner as dependencies. Install the Klink KLayout plugin with the Klink command, restart MCP so Vestigraph registers its local companion for the active Python environment, then restart KLayout and open **HIST**.
 
 ## What it does
 
@@ -31,23 +31,25 @@ klink plugin install
 python -m vestigraph doctor --integration
 ```
 
-`pip install vestigraph` installs the compatible `klayout-klink` dependency. `klink plugin install` is still the Klink command that installs or upgrades the KLayout plugin. Restarting the MCP client lets the Klink extension registry discover Vestigraph and register the companion for that Python environment. No separate Vestigraph MCP server is needed. Installing Python packages does not configure arbitrary chat clients.
+`pip install vestigraph` installs the compatible `klayout-klink` and `vestigraph-scan-core` dependencies. `klink plugin install` is still the Klink command that installs or upgrades the KLayout plugin. Restarting the MCP client lets the Klink extension registry discover Vestigraph and register the companion for that Python environment. No separate Vestigraph MCP server is needed. Installing Python packages does not configure arbitrary chat clients.
+
+The scanner prefers the Rust `vestigraph-scan-core` backend when it is importable and falls back to the Python scanner with a diagnostic reason if the native wheel is unavailable. Users on supported wheel platforms do not need a local Rust toolchain.
 
 After KLayout restarts, open a saved GDS/OASIS layout and click **HIST**. The panel opens the local web history UI and shows recording status. Confirm that recording is active before editing.
 
 ## Release artifacts before PyPI
 
-Download the Vestigraph artifact archive from the [release workflow](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml), extract it, and install the wheel from that directory:
+Download the Vestigraph artifact archive from the [release workflow](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml), extract it, and install the wheel with its matching scanner wheel from that directory:
 
 ```console
-python -m pip install ./wheels/vestigraph-0.2.0-py3-none-any.whl
+python -m pip install --find-links ./wheels "vestigraph-scan-core" ./wheels/vestigraph-0.2.0-py3-none-any.whl
 klink plugin install
 ```
 
-Before both projects are on PyPI, put the matching platform wheels in one local directory: the two Klink Rust wheels, the `klayout_klink` core wheel, and the Vestigraph wheel. Then install from that directory:
+Before both projects are on PyPI, put the matching platform wheels in one local directory: the two Klink Rust wheels, the `klayout_klink` core wheel, the `vestigraph_scan_core` wheel, and the Vestigraph wheel. Then install from that directory:
 
 ```console
-python -m pip install --find-links ./wheels "klayout-klink>=0.6.0,<0.7" "vestigraph>=0.2,<0.3"
+python -m pip install --find-links ./wheels "klayout-klink>=0.6.0,<0.7" "vestigraph-scan-core" "vestigraph>=0.2,<0.3"
 klink plugin install
 ```
 

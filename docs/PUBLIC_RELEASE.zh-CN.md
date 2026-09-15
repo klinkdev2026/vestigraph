@@ -18,7 +18,9 @@
 
 ## 兼容性
 
-Vestigraph 需要 Python 3.10 或更新版本、KLayout 桌面 0.30.x，以及 Klink 0.6.0 或兼容的后续 0.6.x。Klink 0.5.x 不提供 0.6 companion 和工具发现约定。基础包安装 Python 预览引擎。基本历史和恢复不需要可选扫描器或 delta encoder 包。
+Vestigraph 需要 Python 3.10 或更新版本、KLayout 桌面 0.30.x、Klink 0.6.0 或兼容的后续 0.6.x，以及 `vestigraph-scan-core` 扫描器包。Klink 0.5.x 不提供 0.6 companion 和工具发现约定。基础包安装 Python 预览引擎。扫描器会在可导入时优先使用 Rust 后端；如果本机 wheel 不可用，则带诊断原因回退到 Python。
+
+`bsdiff4` 等 delta encoder 包仍是可选项；基础恢复仍可使用已保存字节。
 
 GitHub Actions 会在配置的 Python 与操作系统矩阵上构建并测试公开包。发布使用经过审核的 tag 和 OIDC trusted publishing 的仓库 CI/CD 路径。
 

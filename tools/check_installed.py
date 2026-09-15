@@ -9,6 +9,7 @@ from importlib.resources import files
 import tempfile
 
 import klayout.db as db
+import vestigraph_scan_core
 from vestigraph.store import Repository
 from vestigraph.web.app import create_app
 from vestigraph_backends.registry import default_registry
@@ -19,6 +20,7 @@ def _assert_installed_klink_contract():
     normalized = [req.lower().replace(" ", "") for req in requirements]
     base_requirements = [req for req in normalized if ";" not in req or "extra==" not in req]
     assert any(req.startswith("klayout-klink") and ">=0.6.0" in req and "<0.7" in req for req in base_requirements), requirements
+    assert any(req.startswith("vestigraph-scan-core") and ">=0.2" in req and "<0.3" in req for req in base_requirements), requirements
 
     entry_points = list(metadata.entry_points(group="klink.plugins"))
     assert any(ep.name == "vestigraph" and ep.value == "vestigraph.klink_extension:register" for ep in entry_points), entry_points
@@ -71,32 +73,44 @@ def _assert_installed_klink_contract():
 
 def check():
     _assert_installed_klink_contract()
-    assert files("vestigraph.web").joinpath("static/index.html").is_file()
-    assert default_registry().backend_ids == ("klayout",)
-    result = []
-    with tempfile.TemporaryDirectory(prefix="vestigraph-wheel-") as temporary:
-        root = Path(temporary)
-        repository = Repository.init(root / "history")
-        for extension in ("gds", "oas"):
-            layout = db.Layout()
-            layout.dbu = 0.001
-            layer = layout.layer(1, 0)
-            unit = layout.create_cell("UNIT")
-            unit.shapes(layer).insert(db.Box(0, 0, 1000, 2000))
-            top = layout.create_cell("TOP")
-            top.insert(db.CellInstArray(unit.cell_index(), db.ICplxTrans(2, 45, False, 3000, 0)))
-            path = root / ("sample." + extension)
-            for step in range(2):
-                top.shapes(layer).insert(db.Text(str(step), db.Trans(step * 2000, 0)))
-                layout.write(str(path))
-                content = path.read_bytes()
-                record = repository.checkpoint(path, title=str(step))
-                restored = Repository(root / "history", readonly=True).export(record["id"], root / f"restored-{step}.{extension}")
-                assert restored.read_bytes() == content
-                readback = db.Layout(); readback.read(str(restored))
-                assert readback.cell("UNIT") is not None
-                result.append({"format": extension, "step": step, "sha256": hashlib.sha256(content).hexdigest()})
-    print(json.dumps({"ok": True, "checks": result}))
+    assert vestigraph_scan_core.__name__ == "vestigraph_scan_core"
+    original_scan_backend = os.environ.pop("VESTIGRAPH_SCAN_BACKEND", None)
+    try:
+        from vestigraph.vesti_formats.vesti_format_gds import native as scan_backend
+        cap = scan_backend.capability()
+        assert cap["available"], cap
+        assert scan_backend.select_backend("auto")[0] == "rust"
+        assert files("vestigraph.web").joinpath("static/index.html").is_file()
+        assert default_registry().backend_ids == ("klayout",)
+        result = []
+        with tempfile.TemporaryDirectory(prefix="vestigraph-wheel-") as temporary:
+            root = Path(temporary)
+            repository = Repository.init(root / "history")
+            for extension in ("gds", "oas"):
+                layout = db.Layout()
+                layout.dbu = 0.001
+                layer = layout.layer(1, 0)
+                unit = layout.create_cell("UNIT")
+                unit.shapes(layer).insert(db.Box(0, 0, 1000, 2000))
+                top = layout.create_cell("TOP")
+                top.insert(db.CellInstArray(unit.cell_index(), db.ICplxTrans(2, 45, False, 3000, 0)))
+                path = root / ("sample." + extension)
+                for step in range(2):
+                    top.shapes(layer).insert(db.Text(str(step), db.Trans(step * 2000, 0)))
+                    layout.write(str(path))
+                    content = path.read_bytes()
+                    record = repository.checkpoint(path, title=str(step))
+                    if extension == "gds" and record["manifest"]["format_analysis"].get("status") == "complete":
+                        assert record["scan"]["backend"] == "rust", record["scan"]
+                    restored = Repository(root / "history", readonly=True).export(record["id"], root / f"restored-{step}.{extension}")
+                    assert restored.read_bytes() == content
+                    readback = db.Layout(); readback.read(str(restored))
+                    assert readback.cell("UNIT") is not None
+                    result.append({"format": extension, "step": step, "sha256": hashlib.sha256(content).hexdigest()})
+        print(json.dumps({"ok": True, "checks": result}))
+    finally:
+        if original_scan_backend is not None:
+            os.environ["VESTIGRAPH_SCAN_BACKEND"] = original_scan_backend
 
 
 if __name__ == "__main__":

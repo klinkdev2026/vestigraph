@@ -29,8 +29,29 @@ env:
   PIP_NO_PYTHON_VERSION_WARNING: "1"
 
 jobs:
+  native-wheels:
+    name: native ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-14, macos-15-intel]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build abi3 native scan wheel with maturin
+        uses: PyO3/maturin-action@v1
+        with:
+          command: build
+          args: --release --out dist -m native/scan_core/Cargo.toml
+          manylinux: auto
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-wheels-${{ matrix.os }}
+          path: dist/*.whl
+
   basic-package:
     name: basic ${{ matrix.os }} py${{ matrix.python }}
+    needs: [native-wheels]
     strategy:
       fail-fast: false
       matrix:
@@ -42,6 +63,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: native-wheels-*
+          path: native-wheels
+          merge-multiple: true
       - name: Build wheel and sdist
         shell: bash
         run: |
@@ -53,7 +79,7 @@ jobs:
         shell: bash
         run: |
           wheel="$(python -c 'from pathlib import Path; print(next(Path("dist").glob("vestigraph-*.whl")))')"
-          python -m pip install "${wheel}[test]"
+          python -m pip install --find-links native-wheels "${wheel}[test]"
           python -m pip check
       - name: Installed package checks
         shell: bash
@@ -61,30 +87,64 @@ jobs:
       - name: Public package tests
         shell: bash
         run: |
-          python -m pytest \
-            tests/test_cli.py \
-            tests/test_store.py \
-            tests/test_storage_v2.py \
-            tests/test_storage_recovery_safety.py \
-            tests/test_layout_roundtrip.py \
-            tests/test_companion_register.py \
-            tests/test_klayout_backend_package.py \
-            tests/test_web_static.py \
-            tests/test_web_api_auth.py \
-            tests/test_web_api_history.py \
-            tests/test_setup.py \
-            tests/test_release_tools.py \
-            tests/test_standalone_install.py \
-            -q --basetemp="${RUNNER_TEMP}/vestigraph-tests" -p no:cacheprovider
+          python -m pytest             tests/test_cli.py             tests/test_store.py             tests/test_storage_v2.py             tests/test_storage_recovery_safety.py             tests/test_layout_roundtrip.py             tests/test_companion_register.py             tests/test_klayout_backend_package.py             tests/test_web_static.py             tests/test_web_api_auth.py             tests/test_web_api_history.py             tests/test_setup.py             tests/test_release_tools.py             tests/test_standalone_install.py             -q --basetemp="${RUNNER_TEMP}/vestigraph-tests" -p no:cacheprovider
+
+  native-parity:
+    name: native parity ${{ matrix.os }} py3.13
+    needs: [native-wheels]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-14, macos-15-intel]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: native-wheels-*
+          path: native-wheels
+          merge-multiple: true
+      - name: Build and install package with native scan core
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build twine pytest
+          python -m build
+          python -m twine check dist/*
+          wheel="$(python -c 'from pathlib import Path; print(next(Path("dist").glob("vestigraph-*.whl")))')"
+          python -m pip install --find-links native-wheels "${wheel}[test]"
+          python -m pip check
+      - name: Assert native scan core is available
+        shell: bash
+        run: |
+          python - <<'PY'
+          from vestigraph.vesti_formats.vesti_format_gds import native as scan_backend
+          cap = scan_backend.capability()
+          assert cap["available"], cap
+          assert scan_backend.select_backend("auto")[0] == "rust"
+          PY
+      - name: Native scan parity tests
+        shell: bash
+        run: |
+          python -m pytest             tests/test_scan_backend.py             tests/test_scan_backend_engine.py             tests/test_scan_equivalence.py             tests/test_scan_backpressure.py             -q --basetemp="${RUNNER_TEMP}/vestigraph-scan" -p no:cacheprovider
 
   browser-smoke:
     name: browser ubuntu-latest py3.13
+    needs: [native-wheels]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: native-wheels-*
+          path: native-wheels
+          merge-multiple: true
       - name: Build and install package
         shell: bash
         run: |
@@ -93,7 +153,7 @@ jobs:
           python -m build
           python -m twine check dist/*
           wheel="$(python -c 'from pathlib import Path; print(next(Path("dist").glob("vestigraph-*.whl")))')"
-          python -m pip install "${wheel}[test]"
+          python -m pip install --find-links native-wheels "${wheel}[test]"
           python -m pip check
       - name: Install Chromium for browser smoke tests
         shell: bash
@@ -110,11 +170,11 @@ jobs:
       - name: Browser public smoke tests
         shell: bash
         run: |
-          python -m pytest tests/test_web_presentation.py \
-            -q --basetemp="${RUNNER_TEMP}/vestigraph-browser" -p no:cacheprovider
+          python -m pytest tests/test_web_presentation.py             -q --basetemp="${RUNNER_TEMP}/vestigraph-browser" -p no:cacheprovider
 
   klink-integration:
     name: klink integration
+    needs: [native-wheels]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Vestigraph
@@ -130,6 +190,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: native-wheels-*
+          path: native-wheels
+          merge-multiple: true
       - name: Select stable Rust toolchain
         shell: bash
         run: rustup default stable
@@ -143,11 +208,10 @@ jobs:
           python -m build
           python -m twine check dist/*
           wheel="$(python -c 'from pathlib import Path; print(next(Path("dist").glob("vestigraph-*.whl")))')"
-          python -m pip install "${wheel}[test]"
+          python -m pip install --find-links ../native-wheels "${wheel}[test]"
           python -m pip check
       - name: Klink extension discovery tests
         shell: bash
         working-directory: vestigraph
         run: |
-          python -m pytest tests/test_agent_skills.py tests/test_setup.py \
-            -q --basetemp="${RUNNER_TEMP}/vestigraph-klink" -p no:cacheprovider
+          python -m pytest tests/test_agent_skills.py tests/test_setup.py             -q --basetemp="${RUNNER_TEMP}/vestigraph-klink" -p no:cacheprovider

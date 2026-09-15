@@ -55,11 +55,25 @@ def test_klink_version_gate_accepts_only_0_6_series(monkeypatch, version, ok):
     assert result["ok"] is ok
 
 
+@pytest.mark.parametrize(
+    ("version", "ok"),
+    [("0.1.9", False), ("0.2.0", True), ("0.2.5", True), ("0.3.0", False)],
+)
+def test_scan_core_version_gate_accepts_only_0_2_series(monkeypatch, version, ok):
+    monkeypatch.setattr(installation.importlib, "import_module", lambda module: object())
+    monkeypatch.setattr(installation.metadata, "version", lambda distribution: version)
+
+    result = installation._check("vestigraph-scan-core", "vestigraph_scan_core")
+
+    assert result["ok"] is ok
+
+
 def test_doctor_default_requires_klink_but_does_not_inspect_registration(monkeypatch):
     monkeypatch.setattr(installation, "dependencies", lambda: [
         {"package": "fastapi", "ok": True},
         {"package": "uvicorn", "ok": True},
         {"package": "klayout", "ok": True},
+        {"package": "vestigraph-scan-core", "ok": True},
         {"package": "klayout-klink", "ok": True},
     ])
     monkeypatch.setattr(companion, "status", lambda *a, **k: pytest.fail("default doctor must not inspect registration"))
@@ -68,7 +82,7 @@ def test_doctor_default_requires_klink_but_does_not_inspect_registration(monkeyp
 
     assert result["ok"] is True
     assert result["scope"] == "package_installation"
-    assert [check["package"] for check in result["dependencies"]] == ["fastapi", "uvicorn", "klayout", "klayout-klink"]
+    assert [check["package"] for check in result["dependencies"]] == ["fastapi", "uvicorn", "klayout", "vestigraph-scan-core", "klayout-klink"]
     assert "klink_optional" not in result
     assert "MCP server" in result["next_action"]
     assert "HIST" in result["next_action"]
@@ -81,6 +95,7 @@ def test_doctor_default_fails_when_required_klink_is_missing(monkeypatch):
         {"package": "fastapi", "ok": True},
         {"package": "uvicorn", "ok": True},
         {"package": "klayout", "ok": True},
+        {"package": "vestigraph-scan-core", "ok": True},
         {"package": "klayout-klink", "ok": False, "problem": "blocked in test"},
     ])
     monkeypatch.setattr(companion, "status", lambda *a, **k: pytest.fail("default doctor must not inspect registration"))

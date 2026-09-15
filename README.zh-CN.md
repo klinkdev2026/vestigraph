@@ -6,7 +6,7 @@
 
 Vestigraph 是面向 KLayout 用户的本地文件与版图历史。它把版本保存在用户本机，提供浏览器时间线、GDS/OASIS 预览、旧文件导入，以及已保存版本导出恢复。
 
-Vestigraph 需要 Python 3.10 或更新版本、KLayout 桌面 0.30.x，以及 `klayout-klink>=0.6.0,<0.7`。正常安装会安装 Klink 依赖。使用 Klink 命令安装 KLayout 插件，重启 MCP 使 Vestigraph 为当前 Python 环境自动登记本地 companion，然后重启 KLayout 并打开 **HIST**。
+Vestigraph 需要 Python 3.10 或更新版本、KLayout 桌面 0.30.x、`klayout-klink>=0.6.0,<0.7`，以及 `vestigraph-scan-core` 扫描器包。正常安装会解析 Klink 和扫描器依赖。使用 Klink 命令安装 KLayout 插件，重启 MCP 使 Vestigraph 为当前 Python 环境自动登记本地 companion，然后重启 KLayout 并打开 **HIST**。
 
 ## 功能
 
@@ -31,23 +31,25 @@ klink plugin install
 python -m vestigraph doctor --integration
 ```
 
-`pip install vestigraph` 会安装兼容的 `klayout-klink` 依赖。`klink plugin install` 仍是安装或升级 KLayout 插件的 Klink 命令。重启 MCP 客户端后，Klink 扩展注册表会发现 Vestigraph，并为该 Python 环境登记 companion。不需要单独的 Vestigraph MCP server。安装 Python 包不会自动配置任意聊天客户端。
+`pip install vestigraph` 会安装兼容的 `klayout-klink` 和 `vestigraph-scan-core` 依赖。`klink plugin install` 仍是安装或升级 KLayout 插件的 Klink 命令。重启 MCP 客户端后，Klink 扩展注册表会发现 Vestigraph，并为该 Python 环境登记 companion。不需要单独的 Vestigraph MCP server。安装 Python 包不会自动配置任意聊天客户端。
+
+扫描器会在可导入时优先使用 Rust `vestigraph-scan-core` 后端；如果本机 wheel 不可用，则带诊断原因回退到 Python 扫描器。受支持 wheel 平台上的用户通常不需要本地 Rust 工具链。
 
 KLayout 重启后，打开已保存的 GDS/OASIS 并点击 **HIST**。面板会打开本地历史网页并显示记录状态。开始编辑前请确认记录已启用。
 
 ## PyPI 发布前的 artifacts
 
-从 [release workflow](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml) 下载 Vestigraph artifact 压缩包，解压后从该目录安装 wheel：
+从 [release workflow](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml) 下载 Vestigraph artifact 压缩包，解压后从该目录安装 Vestigraph wheel 及其匹配的扫描器 wheel：
 
 ```console
-python -m pip install ./wheels/vestigraph-0.2.0-py3-none-any.whl
+python -m pip install --find-links ./wheels "vestigraph-scan-core" ./wheels/vestigraph-0.2.0-py3-none-any.whl
 klink plugin install
 ```
 
-在两个项目都发布到 PyPI 之前，把匹配平台的 wheels 放在同一个本地目录：两个 Klink Rust wheel、`klayout_klink` core wheel 和 Vestigraph wheel。然后从该目录安装：
+在两个项目都发布到 PyPI 之前，把匹配平台的 wheels 放在同一个本地目录：两个 Klink Rust wheel、`klayout_klink` core wheel、`vestigraph_scan_core` wheel 和 Vestigraph wheel。然后从该目录安装：
 
 ```console
-python -m pip install --find-links ./wheels "klayout-klink>=0.6.0,<0.7" "vestigraph>=0.2,<0.3"
+python -m pip install --find-links ./wheels "klayout-klink>=0.6.0,<0.7" "vestigraph-scan-core" "vestigraph>=0.2,<0.3"
 klink plugin install
 ```
 

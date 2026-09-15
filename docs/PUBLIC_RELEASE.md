@@ -18,7 +18,9 @@ When explicitly enabled, Vestigraph supports range requests, frozen evidence, dr
 
 ## Compatibility
 
-Vestigraph requires Python 3.10 or newer, KLayout desktop 0.30.x, and Klink 0.6.0 or a compatible later 0.6.x release. Klink 0.5.x does not provide the 0.6 companion and tool-discovery contract. The Python preview engine is installed with the base package. Optional scanner and delta encoder packages are not required for basic history or restore.
+Vestigraph requires Python 3.10 or newer, KLayout desktop 0.30.x, Klink 0.6.0 or a compatible later 0.6.x release, and the `vestigraph-scan-core` scanner package. Klink 0.5.x does not provide the 0.6 companion and tool-discovery contract. The Python preview engine is installed with the base package. The scanner prefers the Rust backend when it is importable and falls back to Python with a diagnostic reason if a native wheel is unavailable.
+
+Delta encoder packages such as `bsdiff4` remain optional; basic restore can still use stored bytes without them.
 
 GitHub Actions builds and tests the public package across the configured Python and operating-system matrix. Release publication uses the repository CI/CD path from a reviewed tag with OIDC trusted publishing.
 

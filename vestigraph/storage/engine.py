@@ -36,9 +36,9 @@ def compress_workers_preference(explicit=None):
     return policy.max_workers if policy.mode == "fixed" else policy.mode
 
 def scan_backend_preference(explicit=None):
-    """Which scanner to use: an explicit argument, else the environment, else python.
-    Python stays the default until the native backend has passed its gates (spec P1 §3.1)."""
-    value = explicit or os.environ.get(policy.SCAN_BACKEND_ENV) or "python"
+    """Which scanner to use: an explicit argument, else the environment, else auto.
+    Auto prefers the installed Rust scanner and falls back to Python with diagnostics."""
+    value = explicit or os.environ.get(policy.SCAN_BACKEND_ENV) or "auto"
     if value not in ("python", "rust", "auto"):
         raise StorageError("scan backend must be python, rust or auto (got %r)" % value)
     return value
