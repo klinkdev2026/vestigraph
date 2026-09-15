@@ -116,7 +116,7 @@ jobs:
           python -m build
           python -m twine check dist/*
           rm -rf build vestigraph.egg-info
-          python -B tools/stage_public.py --check . --dist-dir dist
+          python -B tools/audit_public_artifacts.py --root . --dist-dir dist
       - uses: actions/upload-artifact@v4
         with:
           name: dist-vestigraph
@@ -150,7 +150,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install twine
           python -m twine check dist/*
-          python -B tools/stage_public.py --check . --dist-dir dist
+          python -B tools/audit_public_artifacts.py --root . --dist-dir dist
       - uses: actions/upload-artifact@v4
         with:
           name: dist-native
@@ -276,3 +276,4 @@ jobs:
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: dist
+

@@ -5,7 +5,7 @@
   },
   {
     "path": ".github/workflows/release.yml",
-    "sha256": "e3799e1533911a9acd159cbfb6403cb8fc43db94e30c4b9f6a5821757958f311"
+    "sha256": "82a31687c7853094f9c40d61c21663c404b919554fc674f0445dd31b251643c4"
   },
   {
     "path": "CHANGELOG.md",
@@ -85,7 +85,7 @@
   },
   {
     "path": "MANIFEST.in",
-    "sha256": "0b61eed1e1ae2010414ecb5a51bf54382773deab337d6eb481a3c5131ec9e29d"
+    "sha256": "0fe005f9bafff97c635e01241ab0a6c8bd686458665aec2aca3366b7c06d9230"
   },
   {
     "path": "native/scan_core/Cargo.lock",
@@ -138,106 +138,6 @@
   {
     "path": "README.zh-CN.md",
     "sha256": "b6ea933fbf13b220ccc7d18009d44878e856f73f22e78df0a487f17f89f18fa1"
-  },
-  {
-    "path": "release/ci.yml",
-    "sha256": "22fad40ef9359037756945338207aac61f7d1d6cb8590fd2b6a94769fe62c430"
-  },
-  {
-    "path": "release/manifest.json",
-    "sha256": "24efcfba7f418fc8707688b9cadfc0938eafb070d9828f4243a1998fbc493a20"
-  },
-  {
-    "path": "release/overrides/docs/AGENT_LOCAL.md",
-    "sha256": "89366eeaddb0890d354e0f4316f014ce7d47ca9d187e08f726e7540b981a93c7"
-  },
-  {
-    "path": "release/overrides/docs/AGENT_LOCAL.zh-CN.md",
-    "sha256": "f08ced4a8bbbbf9f348eaabc2e060805eae44208704e8ffaecb68d8f0c29862a"
-  },
-  {
-    "path": "release/overrides/docs/CLI.md",
-    "sha256": "23597491f5bf9774c6eb872cf2f52560826b8690970502e2db2062c2b7ad880c"
-  },
-  {
-    "path": "release/overrides/docs/CLI.zh-CN.md",
-    "sha256": "2f1682018b94d62cba2f1684d73d5ca7f8f78499e1bd9440b29724ead444f3b3"
-  },
-  {
-    "path": "release/overrides/docs/HISTORY.md",
-    "sha256": "e476f1c47bd6483b147b897ab9bfec0ac96d1535e8a15a3ab9327c6c385605e3"
-  },
-  {
-    "path": "release/overrides/docs/HISTORY.zh-CN.md",
-    "sha256": "67537c21f137c7e8e397b24947c4639615ba6313cd215bf39edd4d54cc1b5fbe"
-  },
-  {
-    "path": "release/overrides/docs/INSTALLATION.md",
-    "sha256": "f42da9646981f3b5ce53fed0a572336a6c6b8553278ea0a336bf8192ebfa7012"
-  },
-  {
-    "path": "release/overrides/docs/INSTALLATION.zh-CN.md",
-    "sha256": "4fda4f34987d1509e93ab08249f5b63003707c718f5b00f09b6af0680d3b9376"
-  },
-  {
-    "path": "release/overrides/docs/PUBLIC_RELEASE.md",
-    "sha256": "c1ea5b83b743801529612640f20dff613cfd8ce50f936fb60f20da7956eb6800"
-  },
-  {
-    "path": "release/overrides/docs/PUBLIC_RELEASE.zh-CN.md",
-    "sha256": "43c4c855487c09e7608291f638eb9684d0d20cc4fa5927d419758fb1450b0e62"
-  },
-  {
-    "path": "release/overrides/docs/README.md",
-    "sha256": "e7b28a917a26f1215874324980f20c28a8205b2260bc5c426e7477f877a81299"
-  },
-  {
-    "path": "release/overrides/docs/README.zh-CN.md",
-    "sha256": "5710e9e63383876a1b66714728e9e1b6520059484d3f7fc4f665ca586c0a3b2d"
-  },
-  {
-    "path": "release/overrides/docs/RECOVERY.md",
-    "sha256": "0a12678d98582ef9a2edad2d980b3d1c94f75f4dc578823b102434ed5ec7e8ea"
-  },
-  {
-    "path": "release/overrides/docs/RECOVERY.zh-CN.md",
-    "sha256": "b95f2b5e5ee708a87eb37e687f6458e00837f19737b01a5b3c37c2c86392dbcd"
-  },
-  {
-    "path": "release/overrides/docs/TROUBLESHOOTING.md",
-    "sha256": "fdd424f16a52e9f326b56dcca4805007f664cb2636d5482d50c4376d9b3fc77f"
-  },
-  {
-    "path": "release/overrides/docs/TROUBLESHOOTING.zh-CN.md",
-    "sha256": "bfc333a6a0a0d69f22aa646b0c71975e7be59b66a7cff546e71030333ccd29db"
-  },
-  {
-    "path": "release/overrides/native/scan_core/README.md",
-    "sha256": "e6312aabae76ba79d4d9778661e50e98e253a13b9f4a89b69312551ab9063709"
-  },
-  {
-    "path": "release/overrides/native/scan_core/README.zh-CN.md",
-    "sha256": "1fae21ee2f483bd62f111f070e1770da11d8a0ce5a35488b0a9a5b8814587ac0"
-  },
-  {
-    "path": "release/overrides/native/scan_core/THIRD_PARTY.md",
-    "sha256": "1bded74466ff5c745f6d250691d8a3ab165b3163ee62c013e3ee0a2e81fd062b"
-  },
-  {
-    "path": "release/overrides/native/scan_core/THIRD_PARTY.zh-CN.md",
-    "sha256": "48d3a17e2e76776e05b7ddd066d4b6cb40982eee7d3957150756bea81248cf42"
-  },
-  {
-    "path": "release/overrides/README.md",
-    "sha256": "84d59deb001f23f4de1ce37db628cbb215b9319a8ff39c3dfe627cca0ce3c724"
-  },
-  {
-    "path": "release/overrides/README.zh-CN.md",
-    "sha256": "b6ea933fbf13b220ccc7d18009d44878e856f73f22e78df0a487f17f89f18fa1"
-  },
-  {
-    "path": "release/release.yml",
-    "sha256": "e3799e1533911a9acd159cbfb6403cb8fc43db94e30c4b9f6a5821757958f311"
   },
   {
     "path": "SECURITY.md",
@@ -329,7 +229,7 @@
   },
   {
     "path": "tests/test_release_tools.py",
-    "sha256": "a5cfe632e58e692dd7173cc93f1d2a86b633af07ad60a0cf070d537caf8ced80"
+    "sha256": "28405bc060e9fb650734026306bd900b8276d61fc3a5f19e4eeb13a020c5263a"
   },
   {
     "path": "tests/test_scan_backend.py",
@@ -392,20 +292,16 @@
     "sha256": "2e4c94a746c691348e0b72659ac76fab22481809f1b992cb1ca9143e07094edd"
   },
   {
+    "path": "tools/audit_public_artifacts.py",
+    "sha256": "c62cef0abc9a779b3550f46b165dc423b13ee6e2085e1db6bea37a8a684b4ff0"
+  },
+  {
     "path": "tools/check_agent_flow.py",
     "sha256": "257d5b78435e3a8777dbbcb715b73c7568325761817d32830dd1cfc3e85ec199"
   },
   {
     "path": "tools/check_installed.py",
     "sha256": "990cdc3182fa216e4a318334b056b5e6b2aef0eaab24a39de587df15cdb02794"
-  },
-  {
-    "path": "tools/release_sync.py",
-    "sha256": "01859bcca01161a3e48fc063ab6c8f8fce3c6ad1ddb385a60b2f5d2d1f03bb4e"
-  },
-  {
-    "path": "tools/stage_public.py",
-    "sha256": "0caa969d70f8b0c96f4af90213c16a7a70b3ea62e88d4d27f099bffe23c0c181"
   },
   {
     "path": "vestigraph/__init__.py",

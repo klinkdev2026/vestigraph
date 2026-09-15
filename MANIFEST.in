@@ -1,10 +1,7 @@
 include LICENSE THIRD_PARTY_NOTICES.md THIRD_PARTY_NOTICES.zh-CN.md README.md README.zh-CN.md CHANGELOG.md CHANGELOG.zh-CN.md SECURITY.md SECURITY.zh-CN.md
 include docs/README.md docs/README.zh-CN.md docs/INSTALLATION.md docs/INSTALLATION.zh-CN.md docs/HISTORY.md docs/HISTORY.zh-CN.md docs/RECOVERY.md docs/RECOVERY.zh-CN.md docs/CLI.md docs/CLI.zh-CN.md docs/AGENT_LOCAL.md docs/AGENT_LOCAL.zh-CN.md docs/TROUBLESHOOTING.md docs/TROUBLESHOOTING.zh-CN.md docs/PUBLIC_RELEASE.md docs/PUBLIC_RELEASE.zh-CN.md
-include release/manifest.json release/ci.yml release/release.yml release/overrides/README.md release/overrides/README.zh-CN.md
-include release/overrides/docs/README.md release/overrides/docs/README.zh-CN.md release/overrides/docs/INSTALLATION.md release/overrides/docs/INSTALLATION.zh-CN.md release/overrides/docs/HISTORY.md release/overrides/docs/HISTORY.zh-CN.md release/overrides/docs/RECOVERY.md release/overrides/docs/RECOVERY.zh-CN.md release/overrides/docs/CLI.md release/overrides/docs/CLI.zh-CN.md release/overrides/docs/AGENT_LOCAL.md release/overrides/docs/AGENT_LOCAL.zh-CN.md release/overrides/docs/TROUBLESHOOTING.md release/overrides/docs/TROUBLESHOOTING.zh-CN.md release/overrides/docs/PUBLIC_RELEASE.md release/overrides/docs/PUBLIC_RELEASE.zh-CN.md
-include tools/stage_public.py tools/release_sync.py tools/check_installed.py tools/check_agent_flow.py
+include tools/audit_public_artifacts.py tools/check_installed.py tools/check_agent_flow.py
 include native/scan_core/pyproject.toml native/scan_core/Cargo.toml native/scan_core/Cargo.lock native/scan_core/README.md native/scan_core/README.zh-CN.md native/scan_core/THIRD_PARTY.md native/scan_core/THIRD_PARTY.zh-CN.md native/scan_core/LICENSE
-include release/overrides/native/scan_core/README.md release/overrides/native/scan_core/README.zh-CN.md release/overrides/native/scan_core/THIRD_PARTY.md release/overrides/native/scan_core/THIRD_PARTY.zh-CN.md
 recursive-include native/scan_core/src *.rs
 recursive-include tests *.py
 recursive-include vestigraph/web/static *
