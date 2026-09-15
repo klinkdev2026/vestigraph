@@ -1,0 +1,786 @@
+[
+  {
+    "path": ".github/workflows/ci.yml",
+    "sha256": "73dc78279bb17286f74cd16a033bc5bcdbbff030cd30ca4fc3047f1acb150308"
+  },
+  {
+    "path": "CHANGELOG.md",
+    "sha256": "e5af19ae4cc2205f115ec5728ad9e59d49cbc599d48abd4bbb6732676e1ac327"
+  },
+  {
+    "path": "docs/AGENT_LOCAL.md",
+    "sha256": "60191fef246f4aea8806392f205927368c508feb23e57f8e78a2dba3e5eb8ff6"
+  },
+  {
+    "path": "docs/CLI.md",
+    "sha256": "24dffd1705d6b42262b1f5212e70314123e9824c9835f0809e6b38b3e6682d96"
+  },
+  {
+    "path": "docs/HISTORY.md",
+    "sha256": "f024fb11f4a7747d15389cad79b703c31029f2233af26b13d34053251c8f2d10"
+  },
+  {
+    "path": "docs/INSTALLATION.md",
+    "sha256": "6c6a918d7cce3c73ec245fe3b03fcaec381d52d1d6207662b25f53442ea536af"
+  },
+  {
+    "path": "docs/PUBLIC_RELEASE.md",
+    "sha256": "7c77a8af3aad4e8b2d8dd6c41839860a992a3d5ea061544c742022c5ba521ad7"
+  },
+  {
+    "path": "docs/README.md",
+    "sha256": "1a838a4602670f9d6add0c8422a291fb8a1132e8625da4a68938096f0aa9b923"
+  },
+  {
+    "path": "docs/RECOVERY.md",
+    "sha256": "c10151aa9b2aa5d0f664cbf2d633665f8808975008410ba2b136350d80d5b25a"
+  },
+  {
+    "path": "docs/TROUBLESHOOTING.md",
+    "sha256": "81965c9256633c6cc6a9e4365300851920675bc0a757a9c23541dbdcfd63a755"
+  },
+  {
+    "path": "LICENSE",
+    "sha256": "b395af9dd26d2f910bfbf7ab50bdc3ce103991169ea22e6a64368fed48934ad0"
+  },
+  {
+    "path": "MANIFEST.in",
+    "sha256": "c0fc45d8266d956f2cf6fa1eb09ba05905ea9906690c308a0670079d0e006262"
+  },
+  {
+    "path": "pyproject.toml",
+    "sha256": "75bf762183fd6e2f7d5f986d13504d399fc654791f58e3691ad6b44ec897336c"
+  },
+  {
+    "path": "README.md",
+    "sha256": "817b7e432fb30ee8e68cb82accfa58318629284d3cfe53c540ff3404118e07ec"
+  },
+  {
+    "path": "release/ci.yml",
+    "sha256": "73dc78279bb17286f74cd16a033bc5bcdbbff030cd30ca4fc3047f1acb150308"
+  },
+  {
+    "path": "release/manifest.json",
+    "sha256": "4a7d8fec8beef212e536320b537ca483cd9b254cf01e209d862c90b3203cf7cd"
+  },
+  {
+    "path": "release/overrides/docs/AGENT_LOCAL.md",
+    "sha256": "60191fef246f4aea8806392f205927368c508feb23e57f8e78a2dba3e5eb8ff6"
+  },
+  {
+    "path": "release/overrides/docs/CLI.md",
+    "sha256": "24dffd1705d6b42262b1f5212e70314123e9824c9835f0809e6b38b3e6682d96"
+  },
+  {
+    "path": "release/overrides/docs/HISTORY.md",
+    "sha256": "f024fb11f4a7747d15389cad79b703c31029f2233af26b13d34053251c8f2d10"
+  },
+  {
+    "path": "release/overrides/docs/INSTALLATION.md",
+    "sha256": "6c6a918d7cce3c73ec245fe3b03fcaec381d52d1d6207662b25f53442ea536af"
+  },
+  {
+    "path": "release/overrides/docs/PUBLIC_RELEASE.md",
+    "sha256": "7c77a8af3aad4e8b2d8dd6c41839860a992a3d5ea061544c742022c5ba521ad7"
+  },
+  {
+    "path": "release/overrides/docs/README.md",
+    "sha256": "1a838a4602670f9d6add0c8422a291fb8a1132e8625da4a68938096f0aa9b923"
+  },
+  {
+    "path": "release/overrides/docs/RECOVERY.md",
+    "sha256": "c10151aa9b2aa5d0f664cbf2d633665f8808975008410ba2b136350d80d5b25a"
+  },
+  {
+    "path": "release/overrides/docs/TROUBLESHOOTING.md",
+    "sha256": "81965c9256633c6cc6a9e4365300851920675bc0a757a9c23541dbdcfd63a755"
+  },
+  {
+    "path": "release/overrides/README.md",
+    "sha256": "817b7e432fb30ee8e68cb82accfa58318629284d3cfe53c540ff3404118e07ec"
+  },
+  {
+    "path": "SECURITY.md",
+    "sha256": "9e9eb62cedd4600e8234a17f4d412083e998c2c780be2e21f059dd140fd246ff"
+  },
+  {
+    "path": "tests/__init__.py",
+    "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+  },
+  {
+    "path": "tests/autocapture_fakes.py",
+    "sha256": "ce4e6f8e3801cd243eba54866b530a86d05517b1f6a2ce5c7dd3c365333406af"
+  },
+  {
+    "path": "tests/backend_fakes.py",
+    "sha256": "fde836d0f333011cd55eea45e825c344f4b560f314aa7631e2ee4aee94155730"
+  },
+  {
+    "path": "tests/conftest.py",
+    "sha256": "44ff3b36f04837da9c03e8187bf69c45f0930bb18258f89020a087f37a370e87"
+  },
+  {
+    "path": "tests/fixtures_capture_pipeline.py",
+    "sha256": "52bde2d6f4923176e3221ad2e0f09b7ec67b550197e3374eaa7273c7a3fabbc3"
+  },
+  {
+    "path": "tests/fixtures_capture_safety.py",
+    "sha256": "68df510a2010ee7d6f02bc685158f7d449cd560c2d4581059f140a51f4400912"
+  },
+  {
+    "path": "tests/fixtures_legacy_imports.py",
+    "sha256": "2c6331400ae7987ddbc98e5693ce8cbe4dbe0957768e6e54793b94b1447df844"
+  },
+  {
+    "path": "tests/fixtures_presentation.py",
+    "sha256": "90a51316807d6b8e5e99b4a43b4d057fcf842fd8b67279766c26159fc751b07c"
+  },
+  {
+    "path": "tests/fixtures_relocate_service.py",
+    "sha256": "7f91f0cfdfeec2cbe6954bb176a3df798a7c09ee78c930e0f0141e56dfce6756"
+  },
+  {
+    "path": "tests/fixtures_web_api_auth.py",
+    "sha256": "f1f46d939690dab206963881dc4fdd84624fd10b82c215e93010c030d9b949c5"
+  },
+  {
+    "path": "tests/fixtures_web_api_history.py",
+    "sha256": "7eaa9163856cc39c06ce546e2639c1d871975167ab41c05f80dadd5127e65e2d"
+  },
+  {
+    "path": "tests/fixtures_web_browser.py",
+    "sha256": "83a6e63fd461bc902259ccf0b135bad5d20f07a2cef182b21ee235601ea46b43"
+  },
+  {
+    "path": "tests/gds_fixtures.py",
+    "sha256": "f965a98eb6c4a15fa4d61e8c92ada778c1889fccc079d2be75cfdbfa3c80e884"
+  },
+  {
+    "path": "tests/service_helpers.py",
+    "sha256": "0e5e0f2d13316f19ea2cc8b339267067dd5a1dd80fefd485b15e98d6fc94b0a5"
+  },
+  {
+    "path": "tests/test_agent_skills.py",
+    "sha256": "fdc65f62fafde951c138f91e9e1fb985351e65379bde9a6682ecef611126a991"
+  },
+  {
+    "path": "tests/test_cli.py",
+    "sha256": "3421f9e50c41a84afb2c6e43a1c229abb4b600a71899e54199f0cf98dddc307b"
+  },
+  {
+    "path": "tests/test_companion_register.py",
+    "sha256": "c848260850ce3f2664b5476c3fd31218743cd53ca8e1edb33f4933953e86a4e7"
+  },
+  {
+    "path": "tests/test_klayout_backend_package.py",
+    "sha256": "3f5b526e02769cea75ab51940cbd855af89638367ef8d30661c1537f9ac413e2"
+  },
+  {
+    "path": "tests/test_layout_roundtrip.py",
+    "sha256": "65c532dfad1650bdbdf5af32e7b4252241bb19a6f5c7edab32b7a8a42da67c43"
+  },
+  {
+    "path": "tests/test_release_tools.py",
+    "sha256": "3af7406610651acd591cecd0ba1adb137bd4bc3bb3d2cb914106e4c69217f486"
+  },
+  {
+    "path": "tests/test_setup.py",
+    "sha256": "d21efc404a29813a1621291585abaaf8eac0809f68162eec2f11d76f4cfe888a"
+  },
+  {
+    "path": "tests/test_standalone_install.py",
+    "sha256": "92f94f9d26103ada8cc15cca361ce19906f7fab339eda4269724e23c2dea67b8"
+  },
+  {
+    "path": "tests/test_storage_recovery_safety.py",
+    "sha256": "4968f807f0e78f8a7240d87af3d0c7f24d7ec91d76b2edabf8fdcd8d4c5d6d17"
+  },
+  {
+    "path": "tests/test_storage_v2.py",
+    "sha256": "ca765fa983a34c3710c761adbd3cc12ff4ff110cdc1682babf979edbb28876ea"
+  },
+  {
+    "path": "tests/test_store.py",
+    "sha256": "97c8e9d24f2e085973024e0c53303256a9b7024a292c6c5cefc145ba823d4e55"
+  },
+  {
+    "path": "tests/test_web_api_auth.py",
+    "sha256": "59f4c405b63a1a7c85290424f0b29eda0bf9c25d0393e5ee7901e93a5854ffa1"
+  },
+  {
+    "path": "tests/test_web_api_history.py",
+    "sha256": "a088b663c614906c1e60c6d9fda0c5d223f16b04e1686f2e77d7283096df539e"
+  },
+  {
+    "path": "tests/test_web_presentation.py",
+    "sha256": "6b2f584fe5aeecc5481ac9246ca84594406cc209495f75a1a566e827acdb1409"
+  },
+  {
+    "path": "tests/test_web_static.py",
+    "sha256": "27999c9aae193b0d8eac580506550eb78b07f515a82ad7612c6be9c5bd7bfbce"
+  },
+  {
+    "path": "THIRD_PARTY_NOTICES.md",
+    "sha256": "86e766dc5119ea186acee5dfbe97b99e200838e219efb8b8d4c8a37e48405e57"
+  },
+  {
+    "path": "tools/check_agent_flow.py",
+    "sha256": "257d5b78435e3a8777dbbcb715b73c7568325761817d32830dd1cfc3e85ec199"
+  },
+  {
+    "path": "tools/check_installed.py",
+    "sha256": "0b4b2a077995202083f11e16423b874a3eedf1c7de0d9adad7bd3bbdf26af9fc"
+  },
+  {
+    "path": "tools/release_sync.py",
+    "sha256": "01859bcca01161a3e48fc063ab6c8f8fce3c6ad1ddb385a60b2f5d2d1f03bb4e"
+  },
+  {
+    "path": "tools/stage_public.py",
+    "sha256": "0caa969d70f8b0c96f4af90213c16a7a70b3ea62e88d4d27f099bffe23c0c181"
+  },
+  {
+    "path": "vestigraph/__init__.py",
+    "sha256": "b2fcf922ed0b77c98c9048f058ce2d9f62ca4849cdae435736b38f0f67b625b3"
+  },
+  {
+    "path": "vestigraph/__main__.py",
+    "sha256": "7642a54c4d86d68cddebf98b3ae29cbf7df3724f48cf4a5a64ce63a2980c2152"
+  },
+  {
+    "path": "vestigraph/agent_client.py",
+    "sha256": "3bed57d1ae12bf30f4a8ea9c56369999b1ad06148e48efb3d39420e78371292b"
+  },
+  {
+    "path": "vestigraph/agent_contract.py",
+    "sha256": "318ba7fefe26dd74f856d31c8ac73dacdc0d5e549ed0f1ada5f49431198cd7c2"
+  },
+  {
+    "path": "vestigraph/baseline_duplicates.py",
+    "sha256": "b838553a3959d4b479ea82ce8305c8b24be39a840060107ad47a63781bcda7e5"
+  },
+  {
+    "path": "vestigraph/capture_errors.py",
+    "sha256": "f1248c1ac071ba12e68141156ef921dd0bc8d7ede0640944992bcafb7183b5a3"
+  },
+  {
+    "path": "vestigraph/capture_noop.py",
+    "sha256": "afc5521d67507172b643e7b9934b40be75ad78c78951b8e6cc38a8eefb3d8d38"
+  },
+  {
+    "path": "vestigraph/capture_pipeline.py",
+    "sha256": "5d6a040a63404ae138828cbd82227a505b27595365ade9cccd31719c8b83d136"
+  },
+  {
+    "path": "vestigraph/capture_runtime.py",
+    "sha256": "0f6fb7f0166e2f9c0af5493d865cb43ef7312902fa3a6a04521aa76acf59b94d"
+  },
+  {
+    "path": "vestigraph/capture_spool.py",
+    "sha256": "77410e66c5a60a4a92f6dd9921a2d3288ff2d6429e1d39d913deb541bada0816"
+  },
+  {
+    "path": "vestigraph/capture_thumbnail.py",
+    "sha256": "f7fd2e5d1116ad85138857ec8741198cfcdb3d98cb3bee0738f7de7dd5745623"
+  },
+  {
+    "path": "vestigraph/cli.py",
+    "sha256": "ff388bd041c3898e8654e006541e5a9e64c793d28e25161489ed6c09abccb790"
+  },
+  {
+    "path": "vestigraph/filelock.py",
+    "sha256": "4c0a3f73375c705a155cdf62aa15e2beb528bc59e1ca407836cfb534861c39b4"
+  },
+  {
+    "path": "vestigraph/fingerprint.py",
+    "sha256": "48d20a4dbeab1692a21ec32f86a24e2afb3568f7ceb88ef542b4a079502c2dde"
+  },
+  {
+    "path": "vestigraph/history_order.py",
+    "sha256": "16dd96da93ecff894148948ab3584258902c2f92f53758c7617af4e05b9c2f89"
+  },
+  {
+    "path": "vestigraph/klink_extension.py",
+    "sha256": "857d6a82fb8a2f0bd45015d02f90c22128e0687ee4913e298bc7537b6df650e4"
+  },
+  {
+    "path": "vestigraph/presentation.py",
+    "sha256": "53c8399ba0573dcc7b001a94b09a0ce9270cc99eb4f80cd348ea262499e25bc7"
+  },
+  {
+    "path": "vestigraph/preview/__init__.py",
+    "sha256": "c6ba2b823124e78a5429cafcf0c3d9eddbae947dc7618a15947c460ef61a4ed9"
+  },
+  {
+    "path": "vestigraph/preview/base.py",
+    "sha256": "598fc3524e6a134ebdeac1c2e67c470843838cf80715259c90a4e3d7f819e583"
+  },
+  {
+    "path": "vestigraph/preview/budgets.py",
+    "sha256": "149f548e8f6cf15bcfe9567de474be54a49a1ecff0826bfb73737681621a20ae"
+  },
+  {
+    "path": "vestigraph/preview/worker.py",
+    "sha256": "958d96ffb6f855be8b6fb0361d7a4bcd8ea6dc9bb6826027e0bceef4c29afbad"
+  },
+  {
+    "path": "vestigraph/service/__init__.py",
+    "sha256": "123fad854e08d400b0b6072823ebb2162b5651fe166192ce3ac56b6810855e40"
+  },
+  {
+    "path": "vestigraph/service/agent.py",
+    "sha256": "af1defcea0d65ac1a195669e7f1ba225163cd2540afe344ad94647d6bad22e5a"
+  },
+  {
+    "path": "vestigraph/service/application.py",
+    "sha256": "11aef2c8390ad12c03e8eb85ac90afcac78ebc5115a13c9d84078963a83e7ff0"
+  },
+  {
+    "path": "vestigraph/service/capture_recovery.py",
+    "sha256": "b34dd30d252b68fc3977113fa4412a64681133b988eca806e1bc710a4fcdfec8"
+  },
+  {
+    "path": "vestigraph/service/catalog.py",
+    "sha256": "82200420bb0075fc108e7aacaee9bc05ad70855d91c31a2b1b23069b077d7d5f"
+  },
+  {
+    "path": "vestigraph/service/cli_commands.py",
+    "sha256": "385e7e093b68c668e579aa4dd6f634cf7d34ab1ceb7e5c3004e4ca879f1203f6"
+  },
+  {
+    "path": "vestigraph/service/coordinator.py",
+    "sha256": "384759aef7d3e430651c9956875e0f869a49aa78093646e58de2d65c2bd46f9c"
+  },
+  {
+    "path": "vestigraph/service/cursors.py",
+    "sha256": "6a7e193a8e47fe3328f61768c43e0d6ac113ef9b27c42383a1c0e1dd286c6495"
+  },
+  {
+    "path": "vestigraph/service/dialogs.py",
+    "sha256": "1ecb2ef568986fa8036a3fc8713d2b94e27998ada49bbfaafbee394526816c76"
+  },
+  {
+    "path": "vestigraph/service/editors.py",
+    "sha256": "d20de1edf806ee38404d24200d2f517df7ca9bc2fdd168c4ebdb5aafdc4d49bd"
+  },
+  {
+    "path": "vestigraph/service/errors.py",
+    "sha256": "0eded9f307674697a8983a86ded4cc718c463f89947cb0203ecb052b1cf058af"
+  },
+  {
+    "path": "vestigraph/service/jobs.py",
+    "sha256": "7c551a7b4b78cdcc60e0be05c561ad70e6a34bd3f3a446c89175a27b5e36c88c"
+  },
+  {
+    "path": "vestigraph/service/legacy_imports.py",
+    "sha256": "404c822f89034759665999122a6448c80e47a82a1ea23ee0e2f56f884dd9c24a"
+  },
+  {
+    "path": "vestigraph/service/paths.py",
+    "sha256": "a2cbaf577016b0e27badca7d42da3bcfce0c0a51d7ef79b846f4a58d68b4818f"
+  },
+  {
+    "path": "vestigraph/service/queries.py",
+    "sha256": "81b669c611e4e10210ebd440eb34cf39b3141fd8600f29f8e2c78f322b9d93bf"
+  },
+  {
+    "path": "vestigraph/service/skills.py",
+    "sha256": "7eaeaeca7b6554ad76598e272cc39164671ecb0072297f9e9212d9fa9d0c3379"
+  },
+  {
+    "path": "vestigraph/service/state.py",
+    "sha256": "249b653ef95f86bb8a0fa6bef2be77d216287d0b9de78c40856d3798c012563e"
+  },
+  {
+    "path": "vestigraph/service/supervisor.py",
+    "sha256": "9114f59b08f0dbfe096f79457b5a0d87aa636a0ce8c95bc192092bc1bc55091c"
+  },
+  {
+    "path": "vestigraph/service/thumbnails.py",
+    "sha256": "f8e7c8d625b0eab6ae554930fa80114f1046b1325bd5e27305b8fee45c94865f"
+  },
+  {
+    "path": "vestigraph/storage/__init__.py",
+    "sha256": "8ad378bdbfc555cec8d4ad447aec293cc7b22ec598e34b8837becbe6d0586abb"
+  },
+  {
+    "path": "vestigraph/storage/adaptive.py",
+    "sha256": "d19303cab16484b80b715477e5395dbc3b97904dff89829567554b8e6b4d4a07"
+  },
+  {
+    "path": "vestigraph/storage/changes.py",
+    "sha256": "b1fdc184f220065b4ad4a754fadd8db1d6e207cc6d113ae9af132fa3e6441407"
+  },
+  {
+    "path": "vestigraph/storage/engine.py",
+    "sha256": "23bf60e38d97eb3c1516a38fc8e7be0eb1bbe830d91b5768df47ef9ac4a1880f"
+  },
+  {
+    "path": "vestigraph/storage/errors.py",
+    "sha256": "00ee25215c1289e13daa44871f02f579e5391456fb1261f75e8f2aa411b0c130"
+  },
+  {
+    "path": "vestigraph/storage/evidence.py",
+    "sha256": "4b314abb9a55b0e4630d046c13d65b21c1cec0e540f63f6b3dfe5a87f9e83a6d"
+  },
+  {
+    "path": "vestigraph/storage/metadata.py",
+    "sha256": "1f0b24359e54875f7ed214fa17d582ff4e565cad626308d23eb838f1ec0ad7a2"
+  },
+  {
+    "path": "vestigraph/storage/object_access.py",
+    "sha256": "52ded3d91995c6fa636a38ff7677ae1e7ffb2289dc2896f90b1c78c99386fb01"
+  },
+  {
+    "path": "vestigraph/storage/object_writer.py",
+    "sha256": "f0d86564ed6773d2e8fbf7e70eff1a8d1a0a01531aad40faf77cc3fbe77bb602"
+  },
+  {
+    "path": "vestigraph/storage/packs.py",
+    "sha256": "a4bd8de5322819277943cac05d9e99e0f8f4f90467effd0341e6cf094a24894a"
+  },
+  {
+    "path": "vestigraph/storage/policy.py",
+    "sha256": "cd1ee4ce546f0408eee92f4b361f0c084cab82b6ec9a6cf48e96cf30316f4775"
+  },
+  {
+    "path": "vestigraph/storage/publish.py",
+    "sha256": "b212c11c3d1c125fafdb127f403a38f136fdf176938612ee3c1b0620d2f4b65d"
+  },
+  {
+    "path": "vestigraph/storage/recovery.py",
+    "sha256": "e9101b108c29b2a51bffac3bdf618736b5669dd84d7b7da43f6fabd0381ae0ce"
+  },
+  {
+    "path": "vestigraph/storage/summaries.py",
+    "sha256": "bbb25dcab2c13593d7afea76063f56870f4988c723d73de286567e570ae7de17"
+  },
+  {
+    "path": "vestigraph/storage/timing.py",
+    "sha256": "4058f42316c564f1b060472230eafd8d38a1ea12effbcc7c752a4a92362474ae"
+  },
+  {
+    "path": "vestigraph/store.py",
+    "sha256": "63413cf29ecc6b05923b02aed4ba53ffc74597ca59808cd7a4da4e23ade159e8"
+  },
+  {
+    "path": "vestigraph/thumbnail_diagnostics.py",
+    "sha256": "31913dad80213e79590bd4d3751149ba7e403bdae1f84931cdaefa12f27bc22d"
+  },
+  {
+    "path": "vestigraph/ui.py",
+    "sha256": "7e16e08f2ad0ae27c217d1d91865cf6edd5d5862472df0807e42aac101a3429c"
+  },
+  {
+    "path": "vestigraph/ui_model.py",
+    "sha256": "86dcfd4088954d05d7ebf0e2d89a258d2ed528a9ee208681e7fc71ef9d0a8610"
+  },
+  {
+    "path": "vestigraph/vesti_codecs/__init__.py",
+    "sha256": "605fc662da77aefd99183a3d477ee776c2a041ac0c7988f905b74d7b4c215c8f"
+  },
+  {
+    "path": "vestigraph/vesti_codecs/bsdiff.py",
+    "sha256": "6a153bde10e2c3cd8ef2f1a2aa929f104ca43d58c9fe7e82c52d2040764c52aa"
+  },
+  {
+    "path": "vestigraph/vesti_codecs/contract.py",
+    "sha256": "ef2b7fb9c426be640d5320e55f296e9481d93c1c2083cc8c450379fe73ca6fef"
+  },
+  {
+    "path": "vestigraph/vesti_codecs/defaults.py",
+    "sha256": "d86a9f3d0c31d6012a9642e75baa35137ed8a760cce4b22bbe5fc03ec73892f3"
+  },
+  {
+    "path": "vestigraph/vesti_codecs/raw.py",
+    "sha256": "e936699161d4fb8823a65e4c32cfbc3f6a9db34df7421f3dd7d97d63e63a11ff"
+  },
+  {
+    "path": "vestigraph/vesti_codecs/registry.py",
+    "sha256": "042b45559fc315efec6145b42fdcc1ecf04b03eb30ad9bde00197513e361b8cf"
+  },
+  {
+    "path": "vestigraph/vesti_codecs/selection.py",
+    "sha256": "1dcc9329f8d05f1758161fb4fe7a46f07600cb7a6f67353ca0bc6ccecad0f984"
+  },
+  {
+    "path": "vestigraph/vesti_codecs/services.py",
+    "sha256": "e9d3aead1b76ccc7b3ef7658f484b3996510127b0bb24f378b5d0b53d444a4a7"
+  },
+  {
+    "path": "vestigraph/vesti_codecs/zlib.py",
+    "sha256": "83fe0ecbef20affdcea49186fe3ff60afa9ce048f0767926c25ad5bf0a3b31ef"
+  },
+  {
+    "path": "vestigraph/vesti_formats/__init__.py",
+    "sha256": "46ced5c633b10f35b843a896386c77b8578c396c1204c979f0ca701788367a37"
+  },
+  {
+    "path": "vestigraph/vesti_formats/changes.py",
+    "sha256": "15e3bccb59e6ef4d92d5ae9f2b1ea29d9292470f774754b1eff0d3f3ab5736df"
+  },
+  {
+    "path": "vestigraph/vesti_formats/contract.py",
+    "sha256": "d4195ef820a2fee76a49399c7c8303a58930c59a609cc1e909367c0df197298f"
+  },
+  {
+    "path": "vestigraph/vesti_formats/defaults.py",
+    "sha256": "a6e4bf970c96381e509b36eb858bdd9895f883affe3eb2c40ca97af228056d5e"
+  },
+  {
+    "path": "vestigraph/vesti_formats/opaque.py",
+    "sha256": "2936c13c7a6aacca968e940b788a30d64b3729f7f80a107e45ef51f891aa272c"
+  },
+  {
+    "path": "vestigraph/vesti_formats/readers.py",
+    "sha256": "0bf09583b806b949e8e13c11459fa17d469c0ea36bfc14aa9bc457478f9cdaee"
+  },
+  {
+    "path": "vestigraph/vesti_formats/recipe.py",
+    "sha256": "ce914f8b051c5eccf6fd578b395634bc7591425f9cc52da17b02a6f5db2c4320"
+  },
+  {
+    "path": "vestigraph/vesti_formats/registry.py",
+    "sha256": "65118dac59bc493c848965041db014640ec62e94e662c2d1710a1f047c158fe9"
+  },
+  {
+    "path": "vestigraph/vesti_formats/restore.py",
+    "sha256": "d92341a10bda4e69dc56846931297b016006c97e0e526c78a693259b6cce230e"
+  },
+  {
+    "path": "vestigraph/vesti_formats/vesti_format_gds/__init__.py",
+    "sha256": "42b90349fca712cb402c44cde2fa13055d7700a4b4f0a811634b20e33ec45f51"
+  },
+  {
+    "path": "vestigraph/vesti_formats/vesti_format_gds/changes.py",
+    "sha256": "d398a3b693ce77ed73da4c4799ce0077f135e7df1548a002089c4edd7cd719c1"
+  },
+  {
+    "path": "vestigraph/vesti_formats/vesti_format_gds/fingerprint.py",
+    "sha256": "6d1e9f916617fd2b1c10e4002a3839c23b37c6f1a84db9dfe18b20416c7fbe23"
+  },
+  {
+    "path": "vestigraph/vesti_formats/vesti_format_gds/handler.py",
+    "sha256": "a3e3970eaee3bff3541f27a0112aec9012d9d13e9607ceed0d05a396973b8ed4"
+  },
+  {
+    "path": "vestigraph/vesti_formats/vesti_format_gds/legacy.py",
+    "sha256": "b375f25602f8f43e56e886b2a216c8aabc34e7d34e278f856ad1e558549c50ad"
+  },
+  {
+    "path": "vestigraph/vesti_formats/vesti_format_gds/native.py",
+    "sha256": "ae35802e304f384ded2a663b1b5b2eff42f113d82fba1f0fa677cf333deab48f"
+  },
+  {
+    "path": "vestigraph/vesti_formats/vesti_format_gds/noop.py",
+    "sha256": "94efbd984c553d10d680fb1f4fe52ba2e0cbdfd417bb119f191f216db6979b7e"
+  },
+  {
+    "path": "vestigraph/vesti_formats/vesti_format_gds/recipe.py",
+    "sha256": "df03ab9e12dd61071b7294fe78de23815235867e8fc16b19afd55d6a9f1882fa"
+  },
+  {
+    "path": "vestigraph/vesti_formats/vesti_format_gds/scan.py",
+    "sha256": "9136ce929750f3035155ad11e78d63dc18e123d6f3e4f64f0fd4c0d22323fb98"
+  },
+  {
+    "path": "vestigraph/vesti_formats/vesti_format_gds/sink.py",
+    "sha256": "ef9a28b619338e8a6ac272fd153534bc5de7e2873c1807a53f81789132572843"
+  },
+  {
+    "path": "vestigraph/vesti_runtime/__init__.py",
+    "sha256": "6d49f4dc5d7fe80f85fb81d0ff8130ecec171711786a8c13cf246d7099154689"
+  },
+  {
+    "path": "vestigraph/vesti_runtime/capabilities.py",
+    "sha256": "27500bfb952717553f3fec9bf21463f67ac9c6b65a3d78f81470d1c925bf5ab2"
+  },
+  {
+    "path": "vestigraph/vesti_runtime/repository_capabilities.py",
+    "sha256": "7c77f4bb787f818353c1708f619d5aa7a51c85ff77a10a36053c5352648e1f9e"
+  },
+  {
+    "path": "vestigraph/vesti_runtime/services.py",
+    "sha256": "98b44bd41d3862539fc12d7ac3013b7d50f84c5e2ced4b905edc91ef2925ea85"
+  },
+  {
+    "path": "vestigraph/vesti_skills/__init__.py",
+    "sha256": "f9d822d027bf86debd0d6438b687d8fb315d67f7a4ff5ea0eae082eb2a49d543"
+  },
+  {
+    "path": "vestigraph/vesti_skills/capabilities.py",
+    "sha256": "e7d4128e1ce42fa2c748a7b806b613de4241771c6f5488c4eaf791e2d1b536d7"
+  },
+  {
+    "path": "vestigraph/vesti_skills/catalog.py",
+    "sha256": "e4a44f44b02037795c8f94949d89ba67065d4286f06e9c52459dfec2cfc04765"
+  },
+  {
+    "path": "vestigraph/vesti_skills/contracts.py",
+    "sha256": "a59298a8dea2cfd571de11a48b085780cdb5d10dc69b23ed3ce4b211c77eb08d"
+  },
+  {
+    "path": "vestigraph/vesti_skills/draft.py",
+    "sha256": "747f752e4fcdbb8c55c48d77a7e4c217227d6c1094944078cadb612acc3cc0d7"
+  },
+  {
+    "path": "vestigraph/vesti_skills/evidence.py",
+    "sha256": "2376b676bd3ff40348bfa6da4cfde725e5342e4cf4acf83837d8596c66e2f69a"
+  },
+  {
+    "path": "vestigraph/vesti_skills/exporters.py",
+    "sha256": "c7ecbcd4e138dd422686edc0d06c33aca3580e674354cc2df8764956235c203a"
+  },
+  {
+    "path": "vestigraph/web/__init__.py",
+    "sha256": "00ff397220f5b657ca7b91019cc8d27a9b1dda4669686ff03bd3a715407eefa6"
+  },
+  {
+    "path": "vestigraph/web/agent_routes.py",
+    "sha256": "f5b2baf6db61d3d866ad71639898d9eb5ca13a58613701b95d59c2e9389fb9cb"
+  },
+  {
+    "path": "vestigraph/web/app.py",
+    "sha256": "0afe8b5172e5b808a69866facc4b14cbfdcc1047712096be210605c3236e4254"
+  },
+  {
+    "path": "vestigraph/web/auth.py",
+    "sha256": "d8cc3f76de9289ac04ec0ce0bb92c377e4c579b601b2d39483f11e04f4a27344"
+  },
+  {
+    "path": "vestigraph/web/private_file.py",
+    "sha256": "f000aeb4479a877b22133c5553b2ea0909571560af0c7564589d3f8f0fbfe9d3"
+  },
+  {
+    "path": "vestigraph/web/routes.py",
+    "sha256": "863863eec708736a182785862fe28a97a64707766ebe56596494af080caefc96"
+  },
+  {
+    "path": "vestigraph/web/schemas.py",
+    "sha256": "e8f63ff109fc6eb2b3e188ca0dc354644ec6af07bf6f8e9887a9f353b1172fe8"
+  },
+  {
+    "path": "vestigraph/web/skill_routes.py",
+    "sha256": "2d24807d71fbf7a728724c33b681e92078fee00f623f70d205c3a8dc1432c0fc"
+  },
+  {
+    "path": "vestigraph/web/static/api.js",
+    "sha256": "7f3e2c93474bd4862969a63fa7ae020a1d22590253ee629b07a4226a12fc0068"
+  },
+  {
+    "path": "vestigraph/web/static/app.js",
+    "sha256": "ea1e4da92c42656592be68eeec7e7871de9504a12619ba65d6ec4c0d0bc6d9f0"
+  },
+  {
+    "path": "vestigraph/web/static/boot.js",
+    "sha256": "6e61f0860d0216834834a3f2fab0a40b182d90925263f24d519b2efd8e22eea8"
+  },
+  {
+    "path": "vestigraph/web/static/history_import.js",
+    "sha256": "38a0f516f42a49647d7b9a3ed4a8ede519d8f81358c6966d48b704cfeb83f9fd"
+  },
+  {
+    "path": "vestigraph/web/static/i18n.js",
+    "sha256": "7edd4420573d71c288af0280f3c15c0e1eecaa6478506480732230007f8b8245"
+  },
+  {
+    "path": "vestigraph/web/static/index.html",
+    "sha256": "ffe6e793ea11f58d3eb040636883bd0311a7a5f46662b470a1c27c2af5cc932b"
+  },
+  {
+    "path": "vestigraph/web/static/locales/en.json",
+    "sha256": "1395f5214b3a7ae163df5353a454f6df3aa1312985b1ed8fb9d5ef01c4875e32"
+  },
+  {
+    "path": "vestigraph/web/static/locales/zh-CN.json",
+    "sha256": "e64a13df2bffc87372b9f15f35d1e30771f8fca319da1b3dc9720c821cb20e05"
+  },
+  {
+    "path": "vestigraph/web/static/preview.js",
+    "sha256": "5d0d6c7431da320928851dd5e04940b96eff6863bdb90def42e9bc711625a6db"
+  },
+  {
+    "path": "vestigraph/web/static/skills.js",
+    "sha256": "b01239a42fb9a1cf65914f985c2bda9da295c4b000ebe4cd8c1bd39ad41bc91d"
+  },
+  {
+    "path": "vestigraph/web/static/styles.css",
+    "sha256": "cbb989f5b5b62d22089d028e5bf9f580b6656c2fd12321ee35835febeadb77be"
+  },
+  {
+    "path": "vestigraph_backends/__init__.py",
+    "sha256": "fbecf4b24f23a6e607597ee32d8df8f4a870712f2e50257a60408bc156126025"
+  },
+  {
+    "path": "vestigraph_backends/base.py",
+    "sha256": "254733c55305f82f9868ab31acbe675edd17e100998aef374f06efe927e445d7"
+  },
+  {
+    "path": "vestigraph_backends/guard.py",
+    "sha256": "3f365bd7bee9631204b66b356d8a43b368c4cb3772c41ac45a083bdb99e5b69d"
+  },
+  {
+    "path": "vestigraph_backends/registry.py",
+    "sha256": "96fdff1e0facf09c5f360705c0b4f7e83619ef9c5ff282ccf37c3e32234ab19f"
+  },
+  {
+    "path": "vestigraph_backends/types.py",
+    "sha256": "9d0e0311020cdc2a5315754830bdce9dd7e3db6203a76215c5c1f75d01f2a638"
+  },
+  {
+    "path": "vestigraph_backends/vesti_backend_klayout/__init__.py",
+    "sha256": "b0c69fe65f55864ce89d2fc6f7fd32e6fd43c2d14740070470442dbe78200f39"
+  },
+  {
+    "path": "vestigraph_backends/vesti_backend_klayout/adapter.py",
+    "sha256": "87ffc361cc810a9801ed835b03f6fde0dc91290b2745884d48705866b6e2d5a8"
+  },
+  {
+    "path": "vestigraph_backends/vesti_backend_klayout/capabilities.py",
+    "sha256": "9a4c6babf8ab894f867e3b609a0ccbb5d233ec9f88e795db78306f7cd5df04c9"
+  },
+  {
+    "path": "vestigraph_backends/vesti_backend_klayout/capture.py",
+    "sha256": "b7a25f753ed86cd495386acb714eafb5df822441105729ad302bfa851f31924f"
+  },
+  {
+    "path": "vestigraph_backends/vesti_backend_klayout/companion.py",
+    "sha256": "98fd809c0c01f4ff6f0f32c2651533b23bf02d6ab0cab25310b910019b7673bb"
+  },
+  {
+    "path": "vestigraph_backends/vesti_backend_klayout/discovery.py",
+    "sha256": "81fe6b8e1840de5dcfad7d1cef02362175efb2c61d448a8775602326b2a5bb82"
+  },
+  {
+    "path": "vestigraph_backends/vesti_backend_klayout/installation.py",
+    "sha256": "afc070bc213690ac34c65f6985ae9d173e1f1cdfda354d50b0588504ef9ed388"
+  },
+  {
+    "path": "vestigraph_backends/vesti_backend_klayout/protocol.py",
+    "sha256": "b858acffcffc5ce2046689f5ba25ffde6a2fb9163ce532d87c02ca0f08c83941"
+  },
+  {
+    "path": "vestigraph_backends/vesti_backend_klayout/vesti_klayout_rendering/__init__.py",
+    "sha256": "da8da23e21d8685af19d5bd969d94d7cf5842708a7b8780c631658306b8b9968"
+  },
+  {
+    "path": "vestigraph_backends/vesti_backend_klayout/vesti_klayout_rendering/adapter.py",
+    "sha256": "874ebdee0e1f0574bbd0fa70e62ef6a08961dea399eae8b418d4a3ea098b2550"
+  },
+  {
+    "path": "vestigraph_backends/vesti_backend_klayout/vesti_klayout_rendering/celldiff.py",
+    "sha256": "04d634b1b5820ae0b5626a6a0f922f3ca58c4454190364fcc3f017a98950c4e2"
+  },
+  {
+    "path": "vestigraph_backends/vesti_backend_klayout/vesti_klayout_rendering/geometry.py",
+    "sha256": "fe820d7e74e514409928e59e75d4bc1fa728dd1f60ef8c89cc332377a149246d"
+  },
+  {
+    "path": "vestigraph_backends/vesti_backend_klayout/vesti_klayout_rendering/thumbnail.py",
+    "sha256": "01c9d7b8fe24a7e6e693fdac0fda45906a401de0c98d05425be54dad903708ed"
+  },
+  {
+    "path": "vestigraph_backends/vesti_backend_klayout/vesti_klayout_rendering/worker.py",
+    "sha256": "2daba3834b2473a535eef9ce296667fd5b291e2ea22e99d609a350bc74dca1df"
+  }
+]

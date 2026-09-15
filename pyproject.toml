@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vestigraph"
+version = "0.2.0"
+description = "Local KLayout history: automatic snapshots, previews, and recoverable GDS/OASIS versions"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.110,<1",
+    "pydantic>=2,<3",
+    "uvicorn>=0.27,<1",
+    "klayout>=0.30,<0.31",
+]
+keywords = ["klayout", "gds", "oasis", "layout-history", "eda"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
+]
+
+[project.optional-dependencies]
+klink = ["klayout-klink>=0.6.0,<0.7"]
+web = ["fastapi>=0.110", "uvicorn>=0.27"]
+preview = ["klayout>=0.28"]
+storage-delta = ["bsdiff4>=1.2.6"]   # optional delta encoder (BSD-2); restore never needs it
+test = ["pytest", "httpx>=0.25", "playwright>=1.50"]
+
+[project.entry-points."klink.plugins"]
+vestigraph = "vestigraph.klink_extension:register"
+
+[project.scripts]
+vestigraph = "vestigraph.cli:main"
+
+[tool.setuptools]
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
+
+[tool.setuptools.packages.find]
+include = ["vestigraph", "vestigraph.*", "vestigraph_backends", "vestigraph_backends.*"]
+
+[tool.setuptools.package-data]
+"vestigraph.web" = ["static/**/*"]

@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Vestigraph</title>
+<link rel="stylesheet" href="/static/styles.css">
+<script src="/static/boot.js"></script>
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="a11y.skip">Skip to content</a>
+
+<header class="topbar" role="banner">
+  <div class="brand">
+    <span class="logo" aria-hidden="true">▣</span>
+    <span class="name">Vestigraph</span>
+  </div>
+  <div class="status">
+    <span id="state-pill" class="pill" role="status" aria-live="polite" hidden>…</span>
+    <span id="connection" class="connection" role="status" aria-live="polite"></span>
+  </div>
+  <div class="tools">
+    <button type="button" id="skills-open" data-i18n="skills.library">Skill library</button>
+    <div class="lang" role="group" data-i18n-aria="nav.language">
+      <button type="button" data-lang="zh-CN" aria-pressed="true">中文</button>
+      <button type="button" data-lang="en" aria-pressed="false">English</button>
+    </div>
+  </div>
+</header>
+
+<section id="login" class="login" hidden>
+  <h1 data-i18n="auth.title">Sign in to Vestigraph</h1>
+  <p data-i18n="auth.help">Open the one-time link printed by the service in this browser.</p>
+  <p class="muted" id="login-detail"></p>
+</section>
+
+<main id="main" class="shell" hidden>
+
+  <!-- ============================================================= Windows (home) ============================================================= -->
+  <section id="view-windows" class="view">
+    <div class="view-head">
+      <h1 data-i18n="windows.title">Open KLayout windows</h1>
+    </div>
+    <p id="windows-no-projects" class="empty" hidden data-i18n="recording.no_projects_hint">Run `service add-project` on this computer to add one.</p>
+    <p id="windows-empty" class="empty" hidden data-i18n="windows.empty">No KLayout window is online right now. Open KLayout with klink and recording will start on its own.</p>
+    <div id="windows-list" class="cards" aria-live="polite"></div>
+    <p class="view-actions">
+      <button type="button" id="goto-docs" class="link" data-i18n="windows.all_docs">All layouts</button>
+    </p>
+
+    <section class="card storage" id="storage" aria-labelledby="storage-heading">
+      <h2 id="storage-heading" data-i18n="storage.title">Where history is kept</h2>
+      <p id="storage-current" class="muted path"></p>
+      <p class="muted" data-i18n="storage.hint">Changing this moves every saved version to the new folder; the old folder is removed only after the copy is verified.</p>
+      <form id="storage-form" class="inline-form">
+        <label class="visually-hidden" for="storage-path" data-i18n="storage.label">New folder</label>
+        <button type="button" id="storage-browse" data-i18n="actions.browse_storage">Choose a folder…</button>
+        <input id="storage-path" type="text" maxlength="1000" data-i18n-placeholder="storage.placeholder">
+        <button type="submit" id="storage-change" data-i18n="actions.move_storage">Move history here</button>
+      </form>
+    </section>
+  </section>
+
+  <!-- ================================================================ Window ================================================================ -->
+  <section id="view-window" class="view" hidden>
+    <div class="view-head">
+      <button type="button" id="window-back" class="link" data-i18n="nav.back_windows">← All windows</button>
+      <h1 id="window-title"></h1>
+      <span id="window-badge" class="pill"></span>
+    </div>
+    <p id="window-reason" class="muted"></p>
+    <p id="window-gone" class="warn" hidden data-i18n="window.gone">This KLayout window is no longer online.</p>
+    <div class="actions">
+      <button type="button" id="window-pause" data-i18n="actions.pause_window">Pause this window</button>
+      <button type="button" id="window-resume" data-i18n="actions.resume_window">Resume this window</button>
+    </div>
+    <h2 data-i18n="windows.layouts_heading">Layouts open in this window</h2>
+    <ul id="window-documents" class="list"></ul>
+  </section>
+
+  <!-- ============================================================== All layouts ============================================================== -->
+  <section id="view-docs" class="view" hidden>
+    <div class="view-head">
+      <button type="button" id="docs-back" class="link" data-i18n="nav.back_windows">← All windows</button>
+      <h1 data-i18n="docs.title">All layouts</h1>
+    </div>
+    <p id="docs-empty" class="empty" hidden data-i18n="docs.empty">No layout has been recorded yet.</p>
+    <ul id="docs-list" class="list"></ul>
+  </section>
+
+  <!-- ================================================================= Document ============================================================== -->
+  <section id="view-doc" class="view" hidden>
+    <nav class="breadcrumb" id="doc-breadcrumb" data-i18n-aria="a11y.breadcrumb"></nav>
+    <div class="layout">
+      <section class="panel timeline" aria-labelledby="timeline-heading">
+        <div class="panel-head">
+          <h2 id="timeline-heading" data-i18n="timeline.title">Saved versions</h2>
+          <div class="filter" id="filter" hidden>
+            <span data-i18n="timeline.filtered_by">Showing one activity</span>
+            <button type="button" id="filter-clear" class="link" data-i18n="timeline.show_all">Show all</button>
+          </div>
+        </div>
+        <button type="button" id="history-import-open" data-i18n="import.title">Import older versions</button>
+        <button type="button" id="skill-refine" data-i18n="skills.refine">Refine into a skill</button>
+        <p id="timeline-empty" class="empty" hidden data-i18n="timeline.empty">No saved versions yet.</p>
+        <ol id="checkpoints" class="list" aria-live="polite"></ol>
+        <button type="button" id="more-checkpoints" class="ghost" hidden data-i18n="timeline.load_more">Load older versions</button>
+      </section>
+
+      <section class="panel detail" aria-labelledby="detail-heading">
+        <h2 id="detail-heading" data-i18n="detail.title">Selected version</h2>
+        <p id="detail-empty" class="empty" data-i18n="detail.empty">Select a saved version to see details.</p>
+        <div id="detail" hidden>
+          <div class="preview" id="preview">
+            <div class="preview-toolbar" role="group" data-i18n-aria="preview.controls">
+              <button type="button" id="step-older" data-i18n="preview.older">Older</button>
+              <button type="button" id="play" data-i18n="preview.play">Play</button>
+              <button type="button" id="step-newer" data-i18n="preview.newer">Newer</button>
+              <button type="button" id="fit" class="ghost" data-i18n="preview.fit">Fit</button>
+              <span id="preview-status" class="muted" role="status" aria-live="polite"></span>
+            </div>
+            <canvas id="canvas" width="960" height="540" data-i18n-aria="a11y.canvas"></canvas>
+            <p id="preview-note" class="warn" hidden></p>
+              <button type="button" id="preview-retry" class="ghost" hidden data-i18n="preview.retry">Retry</button>
+              <div class="actions">
+                <button type="button" id="zoom-in" data-i18n="preview.zoom_in">Zoom in</button>
+                <button type="button" id="zoom-out" data-i18n="preview.zoom_out">Zoom out</button>
+              </div>
+              <p class="muted" data-i18n="preview.navigation">Scroll or pinch to zoom; drag to move; Fit resets the view.</p>
+            <p id="preview-caption" class="muted"></p>
+          </div>
+          <section class="recorded-changes" id="recorded-changes" aria-labelledby="recorded-changes-heading">
+            <h3 id="recorded-changes-heading" data-i18n="recorded_changes.title">Recorded changes</h3>
+            <p id="recorded-changes-storage-delta-hint" class="warn" hidden data-i18n="recorded_changes.storage_delta_hint"></p>
+            <p id="recorded-changes-status" class="pill" role="status" aria-live="polite"></p>
+            <p id="recorded-changes-summary" class="muted" aria-live="polite"></p>
+            <ul id="recorded-changes-list" class="change-list"></ul>
+            <button type="button" id="recorded-changes-more" class="ghost" hidden data-i18n="recorded_changes.load_more">Load more</button>
+          </section>
+          <section class="changes" id="changes" aria-labelledby="changes-heading">
+            <h3 id="changes-heading" data-i18n="changes.title">What changed since the previous version</h3>
+            <p id="changes-summary" class="big" aria-live="polite"></p>
+            <p id="changes-note" class="warn" hidden></p>
+            <button type="button" id="changes-run" hidden data-i18n="changes.compare_now">Compare geometry</button>
+            <details id="changes-details" hidden>
+              <summary data-i18n="changes.details">Details</summary>
+              <div id="changes-list"></div>
+            </details>
+          </section>
+            <dl class="facts" id="facts"></dl>
+            <form id="rename-form" class="actions">
+              <label for="version-name" data-i18n="detail.version_name">Version name</label>
+              <input id="version-name" maxlength="200" required>
+              <button type="submit" id="rename-version" data-i18n="actions.rename">Rename</button>
+            </form>
+          <div class="actions">
+            <button type="button" id="download" data-i18n="actions.download">Download this version</button>
+            <label class="field" id="open-session-field" hidden>
+              <span data-i18n="open.choose_window">KLayout window</span>
+              <select id="open-session"></select>
+            </label>
+            <button type="button" id="open-klayout" data-i18n="actions.open_history">View this version in KLayout</button>
+            <span id="open-klayout-hint" class="muted"></span>
+          </div>
+          <section class="notes" aria-labelledby="notes-heading">
+            <h3 id="notes-heading" data-i18n="detail.notes">Notes</h3>
+            <ul id="annotations" class="notes-list"></ul>
+            <form id="note-form" class="note-form">
+              <label class="visually-hidden" for="note-text" data-i18n="detail.note_label">Add a note</label>
+              <textarea id="note-text" rows="2" maxlength="4000" data-i18n-placeholder="detail.note_placeholder"></textarea>
+              <button type="submit" data-i18n="actions.add_note">Add note</button>
+            </form>
+          </section>
+          <details class="technical">
+            <summary data-i18n="detail.technical">Technical details</summary>
+            <dl id="technical"></dl>
+          </details>
+        </div>
+      </section>
+
+      <aside class="panel side" aria-labelledby="recording-heading">
+        <section class="card recording">
+          <h2 id="recording-heading" data-i18n="recording.title">Automatic recording</h2>
+          <p id="recording-state" class="big"></p>
+          <p id="recording-detail" class="muted"></p>
+          <p id="recording-gap" class="warn" hidden></p>
+          <p id="recording-hint" class="muted"></p>
+          <p id="recording-progress" class="muted" hidden></p>
+          <p id="recording-queue" class="muted" hidden></p>
+          <p id="recording-pending" class="muted" hidden></p>
+          <p id="recording-coalesced" class="warn" hidden></p>
+          <div class="actions">
+            <button type="button" id="pause" data-i18n="actions.pause">Pause recording</button>
+            <button type="button" id="resume" data-i18n="actions.resume">Resume recording</button>
+            <button type="button" id="cancel-save" hidden data-i18n="actions.cancel_save">Cancel save</button>
+            <button type="button" id="retry-capture" hidden data-i18n="actions.retry_capture">Retry organizing</button>
+          </div>
+          <form id="milestone-form" class="inline-form">
+            <label class="visually-hidden" for="milestone-title" data-i18n="recording.milestone_label">Name for this version</label>
+            <input id="milestone-title" type="text" maxlength="200" data-i18n-placeholder="recording.milestone_placeholder">
+            <button type="submit" id="milestone" data-i18n="actions.save_named">Save a named version</button>
+          </form>
+          <details class="technical">
+            <summary data-i18n="detail.technical">Technical details</summary>
+            <dl id="recording-technical"></dl>
+          </details>
+        </section>
+
+        <section class="card" aria-labelledby="activities-heading">
+          <h2 id="activities-heading" data-i18n="activities.title">Activities</h2>
+          <p id="activities-empty" class="empty" hidden data-i18n="activities.empty">No activities yet.</p>
+          <ul id="activities" class="list compact"></ul>
+          <button type="button" id="more-activities" class="ghost" hidden data-i18n="activities.load_more">Load older activities</button>
+        </section>
+
+        <section class="card" aria-labelledby="events-heading">
+          <h2 id="events-heading" data-i18n="events.title">Recorded events</h2>
+          <p id="events-empty" class="empty" hidden data-i18n="events.empty">No recorded events.</p>
+          <ul id="events" class="list compact"></ul>
+        </section>
+
+        <section class="card" aria-labelledby="jobs-heading">
+          <h2 id="jobs-heading" data-i18n="jobs.title">Tasks</h2>
+          <ul id="jobs" class="list compact"></ul>
+        </section>
+      </aside>
+    </div>
+  </section>
+</main>
+
+
+<dialog id="history-import-dialog" aria-labelledby="history-import-heading">
+  <div class="panel-head">
+    <h2 id="history-import-heading" data-i18n="import.title">Import older versions</h2>
+    <button type="button" id="history-import-close" data-i18n="import.close">Close</button>
+  </div>
+  <p data-i18n="import.hint">Select saved files and confirm their order from oldest to newest. The current version stays current.</p>
+  <p class="muted" data-i18n="import.recording_hint">Recording briefly pauses during import and then resumes. Original files are unchanged.</p>
+  <button type="button" id="history-import-pick" data-i18n="import.pick">Select GDS / OASIS files</button>
+  <label for="history-import-before" data-i18n="import.before">Insert before this version</label>
+  <select id="history-import-before"></select>
+  <button type="button" id="history-import-more" hidden data-i18n="import.more">Load more versions</button>
+  <p data-i18n="import.order_hint">Oldest first. File names and modification times do not establish the true order.</p>
+  <ol id="history-import-items"></ol>
+  <p id="history-import-status" role="status" aria-live="polite"></p>
+  <div class="actions">
+    <button type="button" id="history-import-run" data-i18n="import.run">Confirm and import</button>
+    <button type="button" id="history-import-cancel" data-i18n="import.cancel">Pause import</button>
+  </div>
+  <h3 data-i18n="import.plans">Saved import plans</h3>
+  <div id="history-import-plans"></div>
+</dialog>
+
+
+<dialog id="skill-create-dialog" aria-labelledby="skill-create-heading" class="skill-dialog">
+  <div class="panel-head"><h2 id="skill-create-heading" data-i18n="skills.refine">Refine into a skill</h2><button type="button" id="skill-create-close" data-i18n="skills.close">Close</button></div>
+  <p data-i18n="skills.create_hint">Choose a start and end version. Explain the purpose and reasoning; saved evidence accompanies your request.</p>
+  <form id="skill-create-form" class="skill-form">
+    <div class="skill-columns"><label><span data-i18n="skills.from">Start version</span><select id="skill-from" required></select></label><label><span data-i18n="skills.to">End version</span><select id="skill-to" required></select></label></div>
+    <button type="button" id="skill-more-versions" hidden data-i18n="skills.more_versions">Load older versions</button>
+    <label><span data-i18n="skills.name">Skill name</span><input id="skill-title" required maxlength="200"></label>
+    <label><span data-i18n="skills.goal">What should it accomplish?</span><textarea id="skill-goal" required maxlength="4000" rows="2"></textarea></label>
+    <label><span data-i18n="skills.rationale">Why were these changes made?</span><textarea id="skill-rationale" maxlength="4000" rows="3"></textarea></label>
+    <div class="skill-columns"><label><span data-i18n="skills.applicability">When does it apply?</span><textarea id="skill-applicability" maxlength="4000" rows="2"></textarea></label><label><span data-i18n="skills.parameters">Which parameters can change?</span><textarea id="skill-parameters" maxlength="4000" rows="2"></textarea></label></div>
+    <label><span data-i18n="skills.criteria">How should the result be checked?</span><textarea id="skill-success_criteria" maxlength="4000" rows="2"></textarea></label>
+    <label><span data-i18n="skills.domain">Domain (optional)</span><input id="skill-domain" maxlength="200"></label>
+    <label><span data-i18n="skills.processing">Processing mode</span><select id="skill-processing"></select></label>
+    <p data-i18n="skills.agent_hint">The request is saved for an Agent to read and complete. No model is called automatically.</p>
+    <button id="skill-create-submit" type="submit" data-i18n="skills.create">Save refinement request</button>
+  </form><p id="skill-create-status" role="status"></p>
+</dialog>
+
+<dialog id="skill-library-dialog" aria-labelledby="skill-library-heading" class="skill-dialog skill-library">
+  <div class="panel-head"><h2 id="skill-library-heading" data-i18n="skills.library">Skill library</h2><button type="button" id="skill-library-close" data-i18n="skills.close">Close</button></div>
+  <div class="actions"><label><span data-i18n="skills.project">Project</span><select id="skill-project"></select></label><button id="skill-library-refresh" type="button" data-i18n="skills.refresh">Refresh</button></div>
+  <p id="skill-library-status" role="status"></p>
+  <div class="skill-columns">
+    <section><div id="skill-cards" class="skill-cards"></div><button id="skill-list-more" type="button" hidden data-i18n="skills.more">Load more skills</button></section>
+    <section id="skill-editor" hidden>
+      <h3 id="skill-editor-title"></h3><p id="skill-state" class="muted"></p>
+      <button id="skill-copy-task" type="button" data-i18n="skills.copy_task">Copy task for an Agent</button>
+      <p id="skill-source"></p><a id="skill-source-link" data-i18n="skills.source_link">View source history</a>
+      <details><summary data-i18n="skills.evidence">Source evidence and explanation</summary><pre id="skill-evidence" class="skill-evidence"></pre></details>
+      <label><span data-i18n="skills.instructions">Editable skill instructions</span><textarea id="skill-body" rows="16" maxlength="65536"></textarea></label>
+      <p id="skill-files" class="muted"></p>
+      <div class="actions"><button id="skill-save" type="button" data-i18n="skills.save">Save new revision</button><button id="skill-publish" type="button" data-i18n="skills.publish">Publish</button></div>
+      <p id="skill-verification" class="muted"></p>
+      <div class="actions"><select id="skill-validator" data-i18n-aria="skills.validator"></select><button id="skill-validate" type="button" data-i18n="skills.validate">Run validation</button></div>
+      <details><summary data-i18n="skills.providers">Generation providers</summary><p data-i18n="skills.outline_hint">The built-in outline only organizes evidence. Connect a provider or let an Agent write the actual skill.</p><select id="skill-generator" data-i18n-aria="skills.generator"></select><button id="skill-generate" type="button" data-i18n="skills.generate">Generate draft</button></details>
+      <div class="actions"><select id="skill-exporter" data-i18n-aria="skills.exporter"></select><a id="skill-export" data-i18n="skills.export">Export this revision</a></div>
+      <div class="actions"><button id="skill-previous" type="button" data-i18n="skills.previous">Previous revision</button><button id="skill-latest" type="button" data-i18n="skills.latest">Latest revision</button></div>
+    </section>
+  </div>
+</dialog>
+
+<div id="toasts" class="toasts" role="region" data-i18n-aria="a11y.messages"></div>
+
+<script type="module" src="/static/app.js"></script>
+</body>
+</html>

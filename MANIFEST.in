@@ -1,0 +1,8 @@
+include LICENSE THIRD_PARTY_NOTICES.md README.md CHANGELOG.md SECURITY.md
+include docs/README.md docs/INSTALLATION.md docs/HISTORY.md docs/RECOVERY.md docs/CLI.md docs/AGENT_LOCAL.md docs/TROUBLESHOOTING.md docs/PUBLIC_RELEASE.md
+include release/manifest.json release/ci.yml release/overrides/README.md
+include release/overrides/docs/README.md release/overrides/docs/INSTALLATION.md release/overrides/docs/HISTORY.md release/overrides/docs/RECOVERY.md release/overrides/docs/CLI.md release/overrides/docs/AGENT_LOCAL.md release/overrides/docs/TROUBLESHOOTING.md release/overrides/docs/PUBLIC_RELEASE.md
+include tools/stage_public.py tools/release_sync.py tools/check_installed.py tools/check_agent_flow.py
+recursive-include tests *.py
+recursive-include vestigraph/web/static *
+global-exclude *.pyc

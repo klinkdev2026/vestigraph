@@ -1,0 +1,146 @@
+﻿name: public-package
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      klink_ref:
+        description: "klinkdev2026/klayout-klink ref for optional integration tests"
+        required: false
+        default: "d308b6ae498ed512f8a7b372511f35f45ef7e4a4"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vestigraph-public-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_NO_PYTHON_VERSION_WARNING: "1"
+
+jobs:
+  basic-package:
+    name: basic ${{ matrix.os }} py${{ matrix.python }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-14, macos-15-intel]
+        python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Build wheel and sdist
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build twine
+          python -m build
+          python -m twine check dist/*
+      - name: Install built wheel with public test dependencies
+        shell: bash
+        run: |
+          wheel="$(python -c 'from pathlib import Path; print(next(Path("dist").glob("vestigraph-*.whl")))')"
+          python -m pip install "${wheel}[test]"
+          python -m pip check
+      - name: Installed package checks without klink
+        shell: bash
+        run: python -I tools/check_installed.py
+      - name: Public standalone tests
+        shell: bash
+        run: |
+          python -m pytest \
+            tests/test_cli.py \
+            tests/test_store.py \
+            tests/test_storage_v2.py \
+            tests/test_storage_recovery_safety.py \
+            tests/test_layout_roundtrip.py \
+            tests/test_companion_register.py \
+            tests/test_klayout_backend_package.py \
+            tests/test_web_static.py \
+            tests/test_web_api_auth.py \
+            tests/test_web_api_history.py \
+            tests/test_setup.py \
+            tests/test_release_tools.py \
+            tests/test_standalone_install.py \
+            -q --basetemp="${RUNNER_TEMP}/vestigraph-tests" -p no:cacheprovider
+
+  browser-smoke:
+    name: browser ubuntu-latest py3.13
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Build and install package
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build twine
+          python -m build
+          python -m twine check dist/*
+          wheel="$(python -c 'from pathlib import Path; print(next(Path("dist").glob("vestigraph-*.whl")))')"
+          python -m pip install "${wheel}[test]"
+          python -m pip check
+      - name: Install Chromium for browser smoke tests
+        shell: bash
+        run: python -m playwright install --with-deps chromium
+      - name: Verify Chromium launches
+        shell: bash
+        run: |
+          python - <<'PY'
+          from playwright.sync_api import sync_playwright
+          with sync_playwright() as playwright:
+              browser = playwright.chromium.launch(headless=True)
+              browser.close()
+          PY
+      - name: Browser public smoke tests
+        shell: bash
+        run: |
+          python -m pytest tests/test_web_presentation.py \
+            -q --basetemp="${RUNNER_TEMP}/vestigraph-browser" -p no:cacheprovider
+
+  klink-integration:
+    name: optional klink integration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Vestigraph
+        uses: actions/checkout@v4
+        with:
+          path: vestigraph
+      - name: Checkout public klink source
+        uses: actions/checkout@v4
+        with:
+          repository: klinkdev2026/klayout-klink
+          ref: ${{ github.event.inputs.klink_ref || 'd308b6ae498ed512f8a7b372511f35f45ef7e4a4' }}
+          path: klink
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Select stable Rust toolchain
+        shell: bash
+        run: rustup default stable
+      - name: Build and install Vestigraph with local klink 0.6 source
+        shell: bash
+        working-directory: vestigraph
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build twine pytest httpx
+          python -m pip install ../klink/rust/klink_boxmaze ../klink/rust/klink_trackmaze ../klink
+          python -m build
+          python -m twine check dist/*
+          wheel="$(python -c 'from pathlib import Path; print(next(Path("dist").glob("vestigraph-*.whl")))')"
+          python -m pip install "${wheel}[test,klink]"
+          python -m pip check
+      - name: Klink extension discovery tests
+        shell: bash
+        working-directory: vestigraph
+        run: |
+          python -m pytest tests/test_agent_skills.py tests/test_setup.py \
+            -q --basetemp="${RUNNER_TEMP}/vestigraph-klink" -p no:cacheprovider
