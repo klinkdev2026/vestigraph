@@ -41,11 +41,11 @@
   },
   {
     "path": "docs/INSTALLATION.md",
-    "sha256": "65032ce5e42db4797aa38541d55234c5e323136a468ac5faf95868146dadcdc3"
+    "sha256": "21b2c58a3d4c513b2fe620e7ed8c6c098e00f0944434b5584ab4b18f4b370988"
   },
   {
     "path": "docs/INSTALLATION.zh-CN.md",
-    "sha256": "e447e27b5c61baefd15fc372b270898ac7e0e2a37659aa6fc2d92c6090519ad4"
+    "sha256": "7f53de6062ea7a78fe7dfbb3395f4ab2ebdb2027721e617542b239690ee04a0f"
   },
   {
     "path": "docs/PUBLIC_RELEASE.md",
@@ -93,11 +93,11 @@
   },
   {
     "path": "README.md",
-    "sha256": "9b2dc8408945a0b9f0d7264e8ca6ebcf39d8731f1062b7c3bc1ac1da5b266b55"
+    "sha256": "fc9948d81dad540fd4e90d106c081715b8809f52eb7d0b7b5fca5b5a3ad8b696"
   },
   {
     "path": "README.zh-CN.md",
-    "sha256": "d76107b43b39d19212cccf210793f3ff7ba4c4b196e5cf0b330f6da33ee86bbe"
+    "sha256": "bd0e4213438ad83d11077bc92caa85e54828d5f186692f60cb5d2fe74e935cea"
   },
   {
     "path": "release/ci.yml",
@@ -133,11 +133,11 @@
   },
   {
     "path": "release/overrides/docs/INSTALLATION.md",
-    "sha256": "65032ce5e42db4797aa38541d55234c5e323136a468ac5faf95868146dadcdc3"
+    "sha256": "21b2c58a3d4c513b2fe620e7ed8c6c098e00f0944434b5584ab4b18f4b370988"
   },
   {
     "path": "release/overrides/docs/INSTALLATION.zh-CN.md",
-    "sha256": "e447e27b5c61baefd15fc372b270898ac7e0e2a37659aa6fc2d92c6090519ad4"
+    "sha256": "7f53de6062ea7a78fe7dfbb3395f4ab2ebdb2027721e617542b239690ee04a0f"
   },
   {
     "path": "release/overrides/docs/PUBLIC_RELEASE.md",
@@ -173,11 +173,11 @@
   },
   {
     "path": "release/overrides/README.md",
-    "sha256": "9b2dc8408945a0b9f0d7264e8ca6ebcf39d8731f1062b7c3bc1ac1da5b266b55"
+    "sha256": "fc9948d81dad540fd4e90d106c081715b8809f52eb7d0b7b5fca5b5a3ad8b696"
   },
   {
     "path": "release/overrides/README.zh-CN.md",
-    "sha256": "d76107b43b39d19212cccf210793f3ff7ba4c4b196e5cf0b330f6da33ee86bbe"
+    "sha256": "bd0e4213438ad83d11077bc92caa85e54828d5f186692f60cb5d2fe74e935cea"
   },
   {
     "path": "release/release.yml",
@@ -277,7 +277,7 @@
   },
   {
     "path": "tests/test_standalone_install.py",
-    "sha256": "25d966c67bfb89d0a19f48853a8dc4b9cc858b5b248cefec27c6643f664835fc"
+    "sha256": "1fe26f99413364f874a706b2e41375688ebb1cdede9202f070ce0224618f179b"
   },
   {
     "path": "tests/test_storage_recovery_safety.py",

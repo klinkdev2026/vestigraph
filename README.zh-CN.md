@@ -21,7 +21,7 @@ Vestigraph 不提供云同步、远程协作、托管存储、模型服务，也
 
 ## 安装
 
-首个公开版本尚未发布到 PyPI。在发布前，请从 [GitHub Actions](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml) 下载 build-only wheel 与 sdist artifacts。发布到 PyPI 后，可直接使用包名安装。
+下面的命令安装已经发布到 PyPI 的版本。对于尚未发布到 PyPI 的版本，请从 [GitHub Actions](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml) 下载 build-only wheel 与 sdist artifacts。
 
 ```console
 python -m pip install vestigraph

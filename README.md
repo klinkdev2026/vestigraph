@@ -21,7 +21,7 @@ Vestigraph does not provide cloud sync, remote collaboration, hosted storage, a 
 
 ## Install
 
-The first public release is pending PyPI publication. Until it is published, download the build-only wheel and sdist artifacts from [GitHub Actions](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml). After PyPI publication, use the package name directly.
+The commands below install published PyPI releases. For a version not yet on PyPI, download the build-only wheel and sdist artifacts from [GitHub Actions](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml).
 
 ```console
 python -m pip install vestigraph

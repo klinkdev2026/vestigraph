@@ -10,9 +10,9 @@ Vestigraph 需要 Python 3.10 或更新版本、KLayout 桌面 0.30.x，以及 `
 
 Klink 负责 KLayout 插件安装。首次安装和升级都使用 `klink plugin install`。
 
-## PyPI 发布后的安装
+## 从 PyPI 安装
 
-首个公开版本尚未发布到 PyPI。在发布前，请使用下面的 [GitHub Actions release artifacts](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml)。发布后可按包名安装。
+下面的命令安装已经发布到 PyPI 的版本。对于尚未发布到 PyPI 的版本，请使用下面的 [GitHub Actions release artifacts](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml)。
 
 ```console
 python -m pip install vestigraph
