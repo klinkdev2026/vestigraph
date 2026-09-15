@@ -1,14 +1,21 @@
-﻿name: public-package
+name: public-package
 
 on:
   push:
   pull_request:
+  workflow_call:
+    inputs:
+      klink_ref:
+        description: "klinkdev2026/klayout-klink ref for optional integration tests"
+        required: false
+        type: string
+        default: "c66aca167f0a897ff5f8c5d4834f61d0b1ff701a"
   workflow_dispatch:
     inputs:
       klink_ref:
         description: "klinkdev2026/klayout-klink ref for optional integration tests"
         required: false
-        default: "d308b6ae498ed512f8a7b372511f35f45ef7e4a4"
+        default: "c66aca167f0a897ff5f8c5d4834f61d0b1ff701a"
 
 permissions:
   contents: read
@@ -118,7 +125,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: klinkdev2026/klayout-klink
-          ref: ${{ github.event.inputs.klink_ref || 'd308b6ae498ed512f8a7b372511f35f45ef7e4a4' }}
+          ref: ${{ inputs.klink_ref || 'c66aca167f0a897ff5f8c5d4834f61d0b1ff701a' }}
           path: klink
       - uses: actions/setup-python@v5
         with:

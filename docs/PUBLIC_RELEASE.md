@@ -1,23 +1,25 @@
-﻿# 功能范围与兼容性
+# Release scope and compatibility
 
-## 独立功能
+## Standalone features
 
-文件检查点、版本查询、变化记录、字节导出、本地网页、GDS/OASIS 预览、命名、旧文件导入、历史完整性检查及向新目录恢复索引。
+The public package includes file checkpoints, version queries, change records, byte export, local browser UI, GDS/OASIS preview, naming, old-file import, history integrity checks, and index recovery into a new directory.
 
-## 可选 klink 集成
+## Optional klink integration
 
-本机 KLayout 会话发现、自动记录、HIST 入口、暂停与恢复记录、新标签页打开旧版本，以及现有 klink MCP 中的本地工具。
+With compatible klink installed in the same Python environment, Vestigraph adds local KLayout session discovery, automatic recording, the HIST entry, pause/resume controls, opening old versions in new KLayout tabs, and local tools through the existing klink MCP server.
 
-## 实验技能功能
+## Experimental skill features
 
-显式开关启用。支持区间请求、固定证据、草稿提交、文档结构检查、修订、本地发布状态及文件导出，不自动运行脚本、安装技能或联系模型。
+When explicitly enabled, Vestigraph supports range requests, frozen evidence, draft submission, document-structure validation, revisions, local published state, and file export. It does not run scripts, install skills, call models, or contact hosted services by itself.
 
-## 兼容性
+## Compatibility
 
-Python 3.10+。KLayout 桌面 0.30.x 仅为编辑器集成所需。klink 集成要求 0.6.0 或兼容的后续 0.6.x；0.5.x 缺少 0.6.0 的伴随服务与工具发现约定。Python 预览引擎随基础安装提供，Rust 扫描器及差分编码器可选。
+Vestigraph requires Python 3.10 or newer. KLayout desktop 0.30.x is needed only for editor integration. The klink integration requires klink 0.6.0 or a compatible later 0.6.x release; 0.5.x does not provide the 0.6 companion and tool-discovery contract. The Python preview engine is installed with the base package. Optional scanner and delta encoder packages are not required for basic history or restore.
 
-## 边界
+GitHub Actions builds and tests the public package across the configured Python and operating-system matrix. Release publication uses the repository CI/CD path from a reviewed tag with OIDC trusted publishing.
 
-服务面向可信本机用户。无远程协作、云同步、自动合并或完整编辑器环境恢复。GDS 可提供结构化变化；OASIS 保存字节并预览，无专用结构化历史分析。大文件受捕获时间、存储及预览预算限制。
+## Boundaries
 
-操作系统与可选组件以实际环境检查结果为准。CI 配置不代表各平台都已完成实机验收。
+The service is for a trusted local user. It does not provide remote collaboration, cloud sync, automatic merge, or full editor-environment recovery. GDS can provide structured changes; OASIS is saved and previewed, but does not have dedicated structured history analysis. Large files are limited by capture time, storage, and preview budgets.
+
+Operating-system and optional-component support is determined by actual CI and environment checks. A local environment may still fail if a required native or browser dependency is unavailable.

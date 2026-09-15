@@ -1,13 +1,15 @@
-﻿# 使用指南
+# Vestigraph public documentation
 
-Vestigraph 保存用户本地的文件版本，可独立使用，或与 klink 联合安装以记录 KLayout 编辑状态。
+Vestigraph stores local file history. It can run standalone, or it can integrate with klink to record KLayout sessions and expose local history tools through the existing klink MCP server.
 
-| 需要做什么 | 文档 |
-|---|---|
-| 安装、设置 HIST、同步升级 | [安装](INSTALLATION.md) |
-| 保存文件、接入网页、补录旧版本 | [文件与历史](HISTORY.md) |
-| 导出旧版本、检查历史库 | [恢复](RECOVERY.md) |
-| 使用 CLI | [命令行](CLI.md) |
-| 从历史区间形成可修订技能 | [本地 Agent 与技能](AGENT_LOCAL.md) |
-| 检查缺少工具、无法记录等问题 | [常见问题](TROUBLESHOOTING.md) |
-| 了解支持范围 | [功能范围](PUBLIC_RELEASE.md) |
+| Task | Document |
+| --- | --- |
+| Install standalone history or KLayout integration | [Installation](INSTALLATION.md) |
+| Save files, attach CLI history to the browser, import older files | [Files and history](HISTORY.md) |
+| Export old versions and understand data locations | [Recovery](RECOVERY.md) |
+| Use the command line | [Command line](CLI.md) |
+| Use local agent and skill-refinement tools | [Local agents and skills](AGENT_LOCAL.md) |
+| Diagnose missing tools, recording, or service problems | [Troubleshooting](TROUBLESHOOTING.md) |
+| Check supported scope and compatibility | [Release scope](PUBLIC_RELEASE.md) |
+
+Private history, local skills, exports, login links, and service control files are user data. Do not attach them to public issues.

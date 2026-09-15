@@ -1,0 +1,165 @@
+name: Release
+
+# Tag-triggered PyPI publish for Vestigraph. Push a tag like `v0.2.0`
+# after a green main, or run manually with target=none/testpypi.
+#
+# PyPI Trusted Publishing setup:
+#   owner/repo: klinkdev2026/vestigraph
+#   workflow: release.yml
+#   project: vestigraph
+#   environments:
+#     TestPyPI -> testpypi-vestigraph
+#     PyPI     -> pypi-vestigraph
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Manual run target: 'none' = build + smoke only; 'testpypi' = upload to TestPyPI."
+        type: choice
+        options: [none, testpypi]
+        default: none
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vestigraph-release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_NO_PYTHON_VERSION_WARNING: "1"
+
+jobs:
+  public-ci:
+    name: public package CI for this commit
+    uses: ./.github/workflows/ci.yml
+    permissions:
+      contents: read
+
+  version-check:
+    name: version and tag check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Check package metadata and tag
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os, runpy, sys, tomllib
+          from pathlib import Path
+
+          pyproject = tomllib.loads(Path('pyproject.toml').read_text(encoding='utf-8'))
+          project = pyproject['project']
+          version = project['version']
+          if project['name'] != 'vestigraph':
+              raise SystemExit(f"unexpected project name: {project['name']}")
+          init_version = runpy.run_path('vestigraph/__init__.py').get('__version__')
+          if init_version != version:
+              raise SystemExit(f"vestigraph.__version__ {init_version!r} != pyproject {version!r}")
+          ref = os.environ.get('GITHUB_REF', '')
+          event = os.environ.get('GITHUB_EVENT_NAME', '')
+          if event == 'push' and ref.startswith('refs/tags/'):
+              tag = ref.rsplit('/', 1)[-1]
+              if tag != f'v{version}':
+                  raise SystemExit(f"tag {tag!r} does not match pyproject version {version!r}")
+          print(f"vestigraph {version}")
+          PY
+
+  build-dist:
+    name: build wheel and sdist
+    needs: [public-ci, version-check]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Build and check distributions
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build twine
+          python -m build
+          python -m twine check dist/*
+          rm -rf build vestigraph.egg-info
+          python tools/stage_public.py --check . --dist-dir dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-vestigraph
+          path: dist/*
+
+  install-smoke:
+    name: install smoke ${{ matrix.os }} py${{ matrix.python }}
+    needs: [build-dist]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-14, macos-15-intel]
+        python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-vestigraph
+          path: dist
+      - name: Install built Vestigraph and run import smoke
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install dist/vestigraph-*.whl
+          python -m pip check
+          python - <<'PY'
+          import importlib.resources as resources
+          import vestigraph
+          import vestigraph.web.app
+          assert resources.files('vestigraph.web').joinpath('static/index.html').is_file()
+          print('vestigraph install smoke ok', vestigraph.__version__)
+          PY
+
+  publish-testpypi:
+    name: publish vestigraph to TestPyPI
+    needs: [public-ci, version-check, build-dist, install-smoke]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && inputs.target == 'testpypi'
+    environment: testpypi-vestigraph
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-vestigraph
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist
+          skip-existing: true
+          repository-url: https://test.pypi.org/legacy/
+
+  publish:
+    name: publish vestigraph to PyPI
+    needs: [public-ci, version-check, build-dist, install-smoke]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    environment: pypi-vestigraph
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-vestigraph
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist

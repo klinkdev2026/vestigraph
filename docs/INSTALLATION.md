@@ -1,54 +1,62 @@
-﻿# 安装与联合升级
+# Installation and upgrades
 
-## 选择安装方式
+## Choose a mode
 
-| 安装方式 | 功能 |
-|---|---|
-| `vestigraph` | 本地文件历史、网页、GDS/OASIS 预览、导入与导出 |
-| `vestigraph[klink]`，推荐 | 增加兼容的 klink；设置后自动记录 KLayout，并通过已有 klink MCP 使用本地工具 |
+| Mode | What it provides |
+| --- | --- |
+| `vestigraph` | Local file history, browser UI, GDS/OASIS preview, import, and export |
+| `vestigraph[klink]` | Everything above plus compatible klink integration for automatic KLayout recording, HIST, and local MCP tools |
 
-需要 Python 3.10+。Python 的 `klayout` 包用于离线预览，不会安装 KLayout 桌面。桌面集成使用 KLayout 0.30.x 和 klink 0.6.0 或兼容的后续 0.6.x。
+Vestigraph requires Python 3.10 or newer. The Python `klayout` package is used for offline preview; it does not install the KLayout desktop application. KLayout desktop integration uses KLayout 0.30.x plus compatible klink 0.6.x.
 
-## 独立模式
+## Standalone mode
+
+The first public release is pending PyPI publication. Until it is published, download the build-only wheel and sdist artifacts from [GitHub Actions](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml). After PyPI publication, install by package name.
 
 ```console
-python -m pip install "vestigraph==0.2.0"
+python -m pip install vestigraph
 python -m vestigraph doctor
 python -m vestigraph serve --open-browser
 ```
 
-不需要 `setup`，前台服务用 Ctrl+C 退出。已有 CLI 历史可按[文件与历史](HISTORY.md)接入网页。
+Do not run `setup` for standalone mode. Stop the foreground service with Ctrl+C. Existing CLI history can be attached to the browser service; see [Files and history](HISTORY.md).
 
-## KLayout 集成
+## KLayout integration
 
-在运行 klink MCP 的同一个 Python 环境安装：
+Install Vestigraph in the same Python environment that runs klink MCP:
 
 ```console
-python -m pip install "klayout-klink>=0.6.0,<0.7" "vestigraph[klink]==0.2.0"
+python -m pip install "klayout-klink>=0.6.0,<0.7" "vestigraph[klink]>=0.2,<0.3"
 python -m vestigraph setup
 python -m vestigraph doctor --integration
 ```
 
-重启 KLayout，打开已保存的版图，点击 HIST。`doctor --integration` 只检查安装、插件和登记，不连接编辑器；实际录制状态以面板为准。
+Restart KLayout, open a saved layout, and click **HIST**. `doctor --integration` checks packages, the plugin, and companion registration; the panel is the source of truth for live recording status.
 
-默认网页端口是 8787，与编辑器 RPC 端口不同。`setup --port 8788` 修改首选网页端口；伴随服务启动时可选择后续可用端口。
+The default browser service port is 8787, separate from editor RPC ports. Use `setup --port 8788` to change the preferred port; the companion service may choose a later free port at startup.
 
-`KLAYOUT_HOME` 指定 KLayout 配置目录，`KLINK_REGISTRY_ROOT` 指定会话注册表。设置与启动 KLayout 时使用相同环境。数据位置见[恢复](RECOVERY.md)。
+Use the same environment when running setup and starting KLayout. `KLAYOUT_HOME` selects the KLayout configuration directory. `KLINK_REGISTRY_ROOT` selects the local session registry. Data locations are described in [Recovery](RECOVERY.md).
 
-## 本地发行包
+## Release artifacts before PyPI
 
-在两个 wheel 所在目录执行：
+For unreleased versions, use the wheel and sdist artifacts created by the [GitHub Actions release workflow](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml). Do not assume unreleased packages already exist on PyPI.
+
+Standalone artifact install:
 
 ```console
-python -m pip install ./klayout_klink-0.6.0-py3-none-any.whl ./vestigraph-0.2.0-py3-none-any.whl
+python -m pip install ./wheels/vestigraph-0.2.0-py3-none-any.whl
+```
+
+For joint integration before both projects are on PyPI, download artifacts built from matching reviewed klink and Vestigraph revisions. Put the two klink Rust wheels, the `klayout_klink` core wheel, and the Vestigraph wheel in one local directory, then run:
+
+```console
+python -m pip install --find-links ./wheels "klayout-klink>=0.6.0,<0.7" "vestigraph[klink]>=0.2,<0.3"
 python -m vestigraph setup
 ```
 
-基础模式只需 Vestigraph wheel。完整离线安装还需准备所有依赖 wheel；两个产品 wheel 本身不包含全部第三方依赖。
+## Upgrade
 
-## 同步升级
-
-先退出旧 Vestigraph 服务，再执行：
+Stop the old Vestigraph service before upgrading:
 
 ```console
 python -m pip install --upgrade "klayout-klink>=0.6.0,<0.7" "vestigraph[klink]>=0.2,<0.3"
@@ -56,13 +64,13 @@ python -m vestigraph setup
 python -m vestigraph doctor --integration
 ```
 
-重启 KLayout 和 MCP 客户端。独立模式只升级 Vestigraph 并重启其服务。保留设置时使用的虚拟环境。
+Restart KLayout and the MCP client. Standalone mode only needs the Vestigraph package and service restarted. Keep the virtual environment used for setup.
 
-## 停用自动启动
+## Disable automatic companion startup
 
 ```console
 python -m vestigraph companion status
 python -m vestigraph companion unregister
 ```
 
-取消登记不删除历史，也不立即结束已经运行的服务。关闭全部 KLayout 窗口后，伴随服务在空闲超时后退出；手动前台服务用 Ctrl+C 退出。
+Unregistering does not delete history and does not immediately stop an already running service. Close all KLayout windows and allow the companion service to exit, or stop a foreground service with Ctrl+C.

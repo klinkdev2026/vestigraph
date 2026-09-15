@@ -1,7 +1,11 @@
 [
   {
     "path": ".github/workflows/ci.yml",
-    "sha256": "73dc78279bb17286f74cd16a033bc5bcdbbff030cd30ca4fc3047f1acb150308"
+    "sha256": "e0e5495cd2d0fa3d2c0df8b4c2ab632ccaebf609d03bf919f7c8f809796b898d"
+  },
+  {
+    "path": ".github/workflows/release.yml",
+    "sha256": "0719ecc75424da99d86ee34a275da76547d37608ad3c6adfbdd9ade011aaaf9b"
   },
   {
     "path": "CHANGELOG.md",
@@ -9,35 +13,35 @@
   },
   {
     "path": "docs/AGENT_LOCAL.md",
-    "sha256": "60191fef246f4aea8806392f205927368c508feb23e57f8e78a2dba3e5eb8ff6"
+    "sha256": "160a235bc482d12eed141d9420615839576400e210f568f70613c0008a17f393"
   },
   {
     "path": "docs/CLI.md",
-    "sha256": "24dffd1705d6b42262b1f5212e70314123e9824c9835f0809e6b38b3e6682d96"
+    "sha256": "1680fb038d0b9092760f1a44377592283b8bf5f23e59f9264dcbd485b001addf"
   },
   {
     "path": "docs/HISTORY.md",
-    "sha256": "f024fb11f4a7747d15389cad79b703c31029f2233af26b13d34053251c8f2d10"
+    "sha256": "bb9e327708e7171f95ca8e1f37bd24b74bd86dbeb22b2452d0d5139d6499c583"
   },
   {
     "path": "docs/INSTALLATION.md",
-    "sha256": "6c6a918d7cce3c73ec245fe3b03fcaec381d52d1d6207662b25f53442ea536af"
+    "sha256": "b364b7776dfb9080f2ebebc4627e5705953a521505c6d26f13be58c25b12a300"
   },
   {
     "path": "docs/PUBLIC_RELEASE.md",
-    "sha256": "7c77a8af3aad4e8b2d8dd6c41839860a992a3d5ea061544c742022c5ba521ad7"
+    "sha256": "072d3280c223f1f97966a3921dd648ac11942c229e4966960117fb983471a023"
   },
   {
     "path": "docs/README.md",
-    "sha256": "1a838a4602670f9d6add0c8422a291fb8a1132e8625da4a68938096f0aa9b923"
+    "sha256": "5dabc56cbd66fd011a95fbab6a9befae22de26c75b337b85a702645339c25c86"
   },
   {
     "path": "docs/RECOVERY.md",
-    "sha256": "c10151aa9b2aa5d0f664cbf2d633665f8808975008410ba2b136350d80d5b25a"
+    "sha256": "3b632c5b26580fb9d7c41cd299d84128501df85188bc2296fde4b0c93c5b38de"
   },
   {
     "path": "docs/TROUBLESHOOTING.md",
-    "sha256": "81965c9256633c6cc6a9e4365300851920675bc0a757a9c23541dbdcfd63a755"
+    "sha256": "5dcff9596764355a05d4347bb81501aab042202a2f4ade1ee9961025a3bd429f"
   },
   {
     "path": "LICENSE",
@@ -45,63 +49,67 @@
   },
   {
     "path": "MANIFEST.in",
-    "sha256": "c0fc45d8266d956f2cf6fa1eb09ba05905ea9906690c308a0670079d0e006262"
+    "sha256": "830e3a83292fab9e4ddd7cb9434669868a16b94376ed357ae7e26554bac50ab0"
   },
   {
     "path": "pyproject.toml",
-    "sha256": "75bf762183fd6e2f7d5f986d13504d399fc654791f58e3691ad6b44ec897336c"
+    "sha256": "7ad24b7499d307693b0052713cc4c15e977dc4904648df78a21a4a2975f9e1eb"
   },
   {
     "path": "README.md",
-    "sha256": "817b7e432fb30ee8e68cb82accfa58318629284d3cfe53c540ff3404118e07ec"
+    "sha256": "8fefde6ca38bf080ae326d1436159795f1ebed6d93424bcc3dd833d24b5f1f36"
   },
   {
     "path": "release/ci.yml",
-    "sha256": "73dc78279bb17286f74cd16a033bc5bcdbbff030cd30ca4fc3047f1acb150308"
+    "sha256": "e0e5495cd2d0fa3d2c0df8b4c2ab632ccaebf609d03bf919f7c8f809796b898d"
   },
   {
     "path": "release/manifest.json",
-    "sha256": "4a7d8fec8beef212e536320b537ca483cd9b254cf01e209d862c90b3203cf7cd"
+    "sha256": "e51535f3b3844fb734c71195662869e8a3918f9247d8bb90e121e4217a23171a"
   },
   {
     "path": "release/overrides/docs/AGENT_LOCAL.md",
-    "sha256": "60191fef246f4aea8806392f205927368c508feb23e57f8e78a2dba3e5eb8ff6"
+    "sha256": "160a235bc482d12eed141d9420615839576400e210f568f70613c0008a17f393"
   },
   {
     "path": "release/overrides/docs/CLI.md",
-    "sha256": "24dffd1705d6b42262b1f5212e70314123e9824c9835f0809e6b38b3e6682d96"
+    "sha256": "1680fb038d0b9092760f1a44377592283b8bf5f23e59f9264dcbd485b001addf"
   },
   {
     "path": "release/overrides/docs/HISTORY.md",
-    "sha256": "f024fb11f4a7747d15389cad79b703c31029f2233af26b13d34053251c8f2d10"
+    "sha256": "bb9e327708e7171f95ca8e1f37bd24b74bd86dbeb22b2452d0d5139d6499c583"
   },
   {
     "path": "release/overrides/docs/INSTALLATION.md",
-    "sha256": "6c6a918d7cce3c73ec245fe3b03fcaec381d52d1d6207662b25f53442ea536af"
+    "sha256": "b364b7776dfb9080f2ebebc4627e5705953a521505c6d26f13be58c25b12a300"
   },
   {
     "path": "release/overrides/docs/PUBLIC_RELEASE.md",
-    "sha256": "7c77a8af3aad4e8b2d8dd6c41839860a992a3d5ea061544c742022c5ba521ad7"
+    "sha256": "072d3280c223f1f97966a3921dd648ac11942c229e4966960117fb983471a023"
   },
   {
     "path": "release/overrides/docs/README.md",
-    "sha256": "1a838a4602670f9d6add0c8422a291fb8a1132e8625da4a68938096f0aa9b923"
+    "sha256": "5dabc56cbd66fd011a95fbab6a9befae22de26c75b337b85a702645339c25c86"
   },
   {
     "path": "release/overrides/docs/RECOVERY.md",
-    "sha256": "c10151aa9b2aa5d0f664cbf2d633665f8808975008410ba2b136350d80d5b25a"
+    "sha256": "3b632c5b26580fb9d7c41cd299d84128501df85188bc2296fde4b0c93c5b38de"
   },
   {
     "path": "release/overrides/docs/TROUBLESHOOTING.md",
-    "sha256": "81965c9256633c6cc6a9e4365300851920675bc0a757a9c23541dbdcfd63a755"
+    "sha256": "5dcff9596764355a05d4347bb81501aab042202a2f4ade1ee9961025a3bd429f"
   },
   {
     "path": "release/overrides/README.md",
-    "sha256": "817b7e432fb30ee8e68cb82accfa58318629284d3cfe53c540ff3404118e07ec"
+    "sha256": "8fefde6ca38bf080ae326d1436159795f1ebed6d93424bcc3dd833d24b5f1f36"
+  },
+  {
+    "path": "release/release.yml",
+    "sha256": "0719ecc75424da99d86ee34a275da76547d37608ad3c6adfbdd9ade011aaaf9b"
   },
   {
     "path": "SECURITY.md",
-    "sha256": "9e9eb62cedd4600e8234a17f4d412083e998c2c780be2e21f059dd140fd246ff"
+    "sha256": "fb66cd4f29b9b80c3d0e71ef4323962c0967334c253cd24f9bb6a8f76a5654da"
   },
   {
     "path": "tests/__init__.py",

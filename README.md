@@ -1,52 +1,75 @@
-﻿# Vestigraph
+# Vestigraph
 
-Vestigraph 在用户本地保存文件版本和版图历史，提供时间轴、预览、旧版本导入与恢复。基础功能可以独立安装；**推荐与 klink 一起安装**，获得 KLayout 自动记录、HIST 按钮和现有 klink MCP 中的历史与技能工具。
+Vestigraph is a local history service for layout files. It stores file versions on the user's machine, shows a browser timeline, previews GDS/OASIS content, imports older files, and exports saved versions for recovery.
 
-需要 Python 3.10+。基础安装包含网页服务和 KLayout Python 预览引擎，不要求 KLayout 桌面、klink、Git、Rust 或 AI 账号。桌面集成需要另行安装 KLayout 0.30.x。
+Vestigraph requires Python 3.10 or newer. It can run on its own. For KLayout automatic recording, the HIST toolbar entry, and local agent tools through the existing klink MCP server, install it with a compatible klink in the same Python environment.
 
-## 独立安装
+## What it does
+
+- Saves explicit file checkpoints from the CLI.
+- Runs a loopback-only browser service for browsing, naming, importing, and exporting history.
+- Previews GDS/OASIS versions with the Python `klayout` package.
+- Optionally registers as a local companion service for klink so KLayout can record saved GDS/OASIS documents automatically.
+- Optionally exposes local skill-refinement tools through the existing klink MCP extension registry.
+- Keeps history, evidence, drafts, revisions, exports, login links, and control files on the user's machine.
+
+Vestigraph does not provide cloud sync, remote collaboration, hosted storage, a model service, or automatic chat-client configuration.
+
+## Install standalone history
+
+The first public release is pending PyPI publication. Until it is published, download the build-only wheel and sdist artifacts from [GitHub Actions](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml). After PyPI publication, use the package name directly.
+
+Use standalone mode when you only need local file history and the browser UI.
 
 ```console
-python -m pip install "vestigraph==0.2.0"
+python -m pip install vestigraph
 python -m vestigraph doctor
 python -m vestigraph serve --open-browser
 ```
 
-独立模式可保存、导入、浏览和导出文件版本，不需要运行 `setup`。没有 klink 时，编辑器自动记录和在 KLayout 中打开版本不可用。
+Standalone mode does not require KLayout desktop, klink, Git, Rust, or an AI account. It does not run `setup`.
 
 ```console
 python -m vestigraph --repo ./my-history init
-python -m vestigraph --repo ./my-history checkpoint ./chip.gds --title first
+python -m vestigraph --repo ./my-history checkpoint ./chip.gds --title initial
 python -m vestigraph --repo ./my-history history
 python -m vestigraph --repo ./my-history export CHECKPOINT_ID ./restored.gds
 ```
 
-将 `CHECKPOINT_ID` 替换为返回的完整 ID。导出目标不得已存在，父目录必须存在，目标须位于历史库之外。如何把 CLI 历史接入网页，见[文件与历史](docs/HISTORY.md)。
+Replace `CHECKPOINT_ID` with the full id returned by `history` or `show`. The export destination must not already exist, its parent directory must exist, and it must be outside the history repository.
 
-## 推荐：与 klink 联合安装
+## Recommended KLayout integration
 
-在运行 klink MCP 的同一个 Python 环境中安装：
+Install Vestigraph into the same Python environment that runs `klink-mcp`:
 
 ```console
-python -m pip install "klayout-klink>=0.6.0,<0.7" "vestigraph[klink]==0.2.0"
+python -m pip install "klayout-klink>=0.6.0,<0.7" "vestigraph[klink]>=0.2,<0.3"
 python -m vestigraph setup
 python -m vestigraph doctor --integration
 ```
 
-重启 KLayout，打开已保存的 GDS/OASIS，点击 **HIST**。确认面板显示正在记录，再进行编辑。关闭网页不会停止伴随服务。
+Restart KLayout, open a saved GDS/OASIS layout, click **HIST**, and confirm the panel shows recording status before editing. Restart the MCP client after installing or upgrading packages. `klink.status` lists installed extensions, and `klink.find_tools` with `domain="vestigraph"` discovers the local tools.
 
-若使用本地发行包，在两个 wheel 所在目录执行：
+Installing Python packages does not configure arbitrary chat clients and does not upload history.
+
+## Release artifacts before PyPI
+
+Download the Vestigraph artifact archive from the [release workflow](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml), extract it, and install the wheel from that directory:
 
 ```console
-python -m pip install ./klayout_klink-0.6.0-py3-none-any.whl ./vestigraph-0.2.0-py3-none-any.whl
+python -m pip install ./wheels/vestigraph-0.2.0-py3-none-any.whl
+```
+
+For KLayout integration before both projects are on PyPI, put the matching platform wheels in one local directory: the two klink Rust wheels, the `klayout_klink` core wheel, and the Vestigraph wheel. Then install from that directory and run setup:
+
+```console
+python -m pip install --find-links ./wheels "klayout-klink>=0.6.0,<0.7" "vestigraph[klink]>=0.2,<0.3"
 python -m vestigraph setup
 ```
 
-PyPI 命令适用于对应版本已经可下载时；本地 wheel 安装不要求这两个版本已上传，但其余依赖仍须可获取。
+## Upgrade
 
-## 升级与同步
-
-先退出旧的 Vestigraph 服务，再升级两个包并同步插件：
+Stop the old Vestigraph service first. Then upgrade compatible packages, run setup again, and restart KLayout plus the MCP client:
 
 ```console
 python -m pip install --upgrade "klayout-klink>=0.6.0,<0.7" "vestigraph[klink]>=0.2,<0.3"
@@ -54,34 +77,28 @@ python -m vestigraph setup
 python -m vestigraph doctor --integration
 ```
 
-随后重启 KLayout 和 MCP 客户端。`setup` 同步插件并登记本地伴随服务，不迁移或上传历史。保留设置时使用的 Python 环境。
+Standalone mode only needs the Vestigraph package and service restarted. Keep using the same Python environment that ran setup.
 
-## 本地技能炼化与 MCP
+## Local skills and agents
 
-实验功能支持选择历史区间、保存解释、冻结证据、由用户选定的 agent 提交草稿、检查文档结构、保存修订和导出本地文件。
+Skill refinement is experimental and disabled by default. When enabled, users can select a history range, save a request, freeze evidence, let a chosen local agent submit a draft, review validation feedback, save revisions, and export files. The package does not include private skills and does not call a model by itself.
 
-联合安装并重启 MCP 后，已配置的 klink MCP 可发现 Vestigraph 工具。安装 Python 包不会自动配置任意聊天客户端或启动 agent。
+After joint installation and MCP restart, use the existing klink MCP server:
 
 ```json
 {"tool":"klink.find_tools","arguments":{"domain":"vestigraph"}}
 ```
 
-然后调用 `vestigraph.guide`，按返回指引操作。启用与完整流程见[本地 Agent 与技能](docs/AGENT_LOCAL.md)。
+Then call `vestigraph.guide` and follow `next_action`. See [Local agents and skills](docs/AGENT_LOCAL.md).
 
-## 数据与功能范围
+## Documentation
 
-历史、证据、技能及导出均保存在用户本地。软件不提供云同步或自动上传。默认使用用户应用数据目录，可用 `VESTIGRAPH_HOME` 指定位置。私人历史和技能不属于产品发行包。
+- [Installation and upgrades](docs/INSTALLATION.md)
+- [Files and history](docs/HISTORY.md)
+- [Recovery and data locations](docs/RECOVERY.md)
+- [Command line](docs/CLI.md)
+- [Local agents and skills](docs/AGENT_LOCAL.md)
+- [Troubleshooting](docs/TROUBLESHOOTING.md)
+- [Release scope](docs/PUBLIC_RELEASE.md)
 
-预览受资源预算限制，预览失败不影响已保存文件的导出。恢复对象是实际保存的文件，不包含编辑器撤销栈、外部 PDK、完整项目环境或每一个编辑中间态。OASIS 支持字节保存与预览，尚无专用结构化历史分析。
-
-## 文档
-
-- [安装与联合升级](docs/INSTALLATION.md)
-- [文件与历史](docs/HISTORY.md)
-- [恢复与数据位置](docs/RECOVERY.md)
-- [命令行](docs/CLI.md)
-- [本地 Agent 与技能](docs/AGENT_LOCAL.md)
-- [常见问题](docs/TROUBLESHOOTING.md)
-- [功能范围](docs/PUBLIC_RELEASE.md)
-
-许可证为 [Apache-2.0](LICENSE)。另见[本地访问边界](SECURITY.md)、[第三方声明](THIRD_PARTY_NOTICES.md)与[版本变化](CHANGELOG.md)。
+Vestigraph is Apache-2.0. See [Security and local access](SECURITY.md), [third-party notices](THIRD_PARTY_NOTICES.md), and [changelog](CHANGELOG.md).

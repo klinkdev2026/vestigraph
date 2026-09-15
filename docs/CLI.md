@@ -1,24 +1,26 @@
-﻿# 命令行
+# Command line
 
-使用 `python -m vestigraph`；`--help` 显示选项，`--repo` 放在子命令之前。
+Use `python -m vestigraph`. Put global options such as `--repo` before the subcommand.
 
-| 命令 | 用途 |
-|---|---|
-| `--version` | 查看版本 |
-| `doctor` | 检查独立安装 |
-| `doctor --integration` | 检查可选 klink、插件与登记 |
-| `setup` | 安装 KLayout 插件并登记伴随服务 |
-| `serve --open-browser` | 启动本地网页 |
-| `init` | 创建历史库 |
-| `checkpoint FILE --title NAME` | 保存文件 |
-| `history` / `show ID` | 查询检查点 |
-| `changes ID` | 查看记录变化 |
-| `export ID DEST` | 导出文件到新路径 |
-| `stats` | 查看存储统计 |
-| `fsck` | 检查历史完整性 |
-| `rebuild-index DEST` | 向新目录恢复索引 |
-| `companion status` | 查看自动启动登记 |
-| `companion unregister` | 取消自动启动登记 |
+| Command | Purpose |
+| --- | --- |
+| `--version` | Print the installed version |
+| `doctor` | Check standalone installation |
+| `doctor --integration` | Check optional klink, plugin, and companion registration |
+| `setup` | Install the KLayout plugin integration and register the companion service |
+| `serve --open-browser` | Start the local browser service |
+| `init` | Create a history repository |
+| `checkpoint FILE --title NAME` | Save a file version |
+| `history` / `show ID` | Inspect checkpoints |
+| `changes ID` | Show recorded changes for a checkpoint |
+| `export ID DEST` | Export a saved file to a new path |
+| `stats` | Show storage statistics |
+| `fsck` | Check history integrity |
+| `rebuild-index DEST` | Rebuild an index into a new directory |
+| `companion status` | Show automatic-start registration |
+| `companion unregister` | Remove automatic-start registration |
+
+Examples:
 
 ```console
 python -m vestigraph --repo ./my-history history --limit 20
@@ -27,6 +29,6 @@ python -m vestigraph --repo ./my-history changes CHECKPOINT_ID --limit 20
 python -m vestigraph --repo ./my-history stats
 ```
 
-读取输出中的 ID、状态与 `next_action`，按具体错误修正后重试，不把排队任务当作已保存文件。
+Read ids, statuses, and `next_action` values from command output. Fix the specific problem and retry. Do not treat a queued job as a saved file.
 
-`capabilities --mcp-tools` 输出存储查询工具描述，不启动 MCP 服务。联合使用入口见[本地 Agent 与技能](AGENT_LOCAL.md)。
+`capabilities --mcp-tools` prints storage-query tool descriptions. It does not start an MCP server. The joint MCP path is described in [Local agents and skills](AGENT_LOCAL.md).

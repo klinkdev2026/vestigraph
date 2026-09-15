@@ -1,7 +1,7 @@
-﻿# 本地访问边界
+# Security and local access
 
-Vestigraph 0.2.0 仅用于可信本机，服务绑定 loopback。不要通过公网、局域网反向代理或多用户共享服务公开面板。浏览器 cookie 按主机而非端口隔离，同主机的不可信服务可能影响会话安全。
+Vestigraph is designed for a trusted local user. The browser service binds to loopback. Do not expose the panel through the public internet, a LAN reverse proxy, or a shared multi-user service. Browser cookies are scoped by host rather than by port, so an untrusted service on the same host can affect session safety.
 
-基础功能不调用模型，不自动上传设计数据。一次性登录链接、控制文件中的密钥和本地历史应按用户私有数据保护，不要附在公开 issue 中。
+The base product does not call models and does not upload design data automatically. Treat one-time login links, control-file secrets, local history repositories, skill drafts, exports, and service state as private user data. Do not attach them to public issues.
 
-报错时可以提供软件版本、操作步骤和合成复现样本。不要上传客户版图、PDK、历史库、会话链接、密钥或未经处理的真实日志。公开版本不承诺消除第三方编辑器、任意用户脚本或同机不可信进程带来的风险。
+For bug reports, share the software version, exact steps, and a synthetic reproduction sample when possible. Do not upload customer layouts, PDKs, history repositories, service links, secrets, or raw real-world logs. The public package does not claim to remove risks from third-party editors, arbitrary user scripts, or untrusted local processes on the same machine.

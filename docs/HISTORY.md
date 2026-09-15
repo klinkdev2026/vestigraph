@@ -1,6 +1,6 @@
-﻿# 文件与历史
+# Files and history
 
-## 保存文件版本
+## Save file versions
 
 ```console
 python -m vestigraph --repo ./my-history init
@@ -8,11 +8,11 @@ python -m vestigraph --repo ./my-history checkpoint ./chip.gds --title initial
 python -m vestigraph --repo ./my-history history
 ```
 
-每个检查点有独立 ID。CLI 保存输入文件当时的字节；后续编辑原文件不改变已有版本。
+Each checkpoint has its own id. A checkpoint stores the bytes of the input file at that moment. Later edits to the source file do not change saved versions.
 
-## 网页浏览 CLI 历史
+## Browse CLI history in the web service
 
-在 Git 仓库之外的本地目录执行下面的命令。先准备已有的 `./workspace` 目录作为待管理文件位置；`./history-storage` 使用空目录或新目录。工作区、历史根目录和服务状态目录应彼此分开，不能互相包含。
+Run these commands in local directories outside the product source tree and outside any Git repository you plan to publish. Keep the workspace, history root, and service state separate; they must not contain each other.
 
 ```console
 python -m vestigraph service init --state ./service-state
@@ -21,21 +21,20 @@ python -m vestigraph service add-history --state ./service-state --project PROJE
 python -m vestigraph serve --state ./service-state --open-browser
 ```
 
-`PROJECT_ID` 使用 `add-project` 返回值。默认只读接入已有历史；需要补录时，接入命令加 `--writable`。历史存储应放在产品源码与 Git 仓库之外。
+Use the `PROJECT_ID` returned by `add-project`. Existing history is attached read-only by default. Add `--writable` only when you want the browser service to append to that history. Store history outside product source and outside Git repositories.
 
-## 自动记录 KLayout
+## Automatic KLayout recording
 
-完成[联合安装](INSTALLATION.md)后，打开已保存文件并点击 HIST。确认面板中的当前窗口和文档正在记录，再编辑版图。可以暂停、恢复记录，或给重要状态命名。
+After [KLayout integration](INSTALLATION.md), open a saved file and click **HIST**. Confirm the panel shows the current window and document as recording before editing. You can pause, resume, and name important states.
 
-记录保存的是 KLayout 导出的副本，可能与磁盘原文件字节不同。捕获中、排队中、失败状态不能当作已保存版本。自动记录不保证捕获每个瞬间变化。
+The recorded version is an exported copy from KLayout. It may differ from the original file on disk. Queued, in-progress, or failed captures are not saved versions. Automatic recording does not guarantee every intermediate editor state is captured.
 
-## 补录旧文件
+## Import older files
 
-在文档的导入操作中选择本机旧文件，查看预览计划、顺序和目标位置，再确认执行。补录的浏览顺序不代表原始编辑操作顺序。重复文件、失败条目和冲突以面板说明为准。
+Use the document import action to select local older files, review the preview plan, order, and target document, then confirm. Import order is not proof of original edit order. Duplicates, failures, and conflicts are reported in the panel.
 
-## 预览与说明
+## Preview and notes
 
-选择已保存版本可查看预览并编辑名称。大版图受时间和内存预算限制；预览失败不影响原始历史文件。版本名称、说明和技能草稿不等于版图文件本身。
+Select a saved version to preview it and edit its name or notes. Large layouts are limited by time and memory budgets. Preview failure does not change the stored history file. Names, notes, and skill drafts are metadata, not the layout file itself.
 
-导出与在新标签页打开旧版本见[恢复](RECOVERY.md)。
-
+Export and opening older versions in a new KLayout tab are covered in [Recovery](RECOVERY.md).

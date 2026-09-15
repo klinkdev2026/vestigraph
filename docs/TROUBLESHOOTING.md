@@ -1,37 +1,37 @@
-﻿# 常见问题
+# Troubleshooting
 
-## 独立安装没有 klink
+## Standalone install has no klink
 
-基础文件历史不要求 klink。用 `doctor` 检查基础安装；需要自动记录、HIST 或联合 MCP 时才安装 `vestigraph[klink]` 并运行 `setup`。
+Basic file history does not require klink. Run `python -m vestigraph doctor` for the standalone install. Install `vestigraph[klink]` and run `setup` only when you need automatic KLayout recording, HIST, or joint MCP tools.
 
-## HIST 不出现
+## HIST does not appear
 
-确认 KLayout 桌面已安装，运行 `python -m vestigraph setup`，随后重启 KLayout。用 `doctor --integration` 检查插件与伴随服务登记。设置和启动时使用一致的配置目录及注册表环境。
+Confirm KLayout desktop is installed. Run `python -m vestigraph setup`, then restart KLayout. Use `python -m vestigraph doctor --integration` to check the plugin and companion registration. Use the same configuration and registry environment for setup and KLayout startup.
 
-## MCP 没有 Vestigraph 工具
+## MCP does not show Vestigraph tools
 
-确认 Vestigraph 安装在运行 klink MCP 的 Python 中，安装后重启 MCP。查看 `klink.status` 的扩展加载失败，再用 `klink.find_tools` 查询 `vestigraph`。安装 Python 包不会自动配置任意聊天客户端。
+Confirm Vestigraph is installed in the Python environment that runs klink MCP. Restart MCP after installation. Check extension load errors in `klink.status`, then query `klink.find_tools` with `domain="vestigraph"`. Installing Python packages does not configure arbitrary chat clients.
 
-## 工具可发现，但服务不可用
+## Tools are discoverable but the service is unavailable
 
-检查旧服务是否仍在运行。启动 `python -m vestigraph serve --control-file`，再调用 `vestigraph.guide`。自定义状态目录通过 MCP 环境中的 `VESTIGRAPH_CONTROL_FILE` 指定。不要复制控制密钥到聊天。
+Check whether an old service is still running. Start `python -m vestigraph serve --control-file`, then call `vestigraph.guide`. For custom service state, set `VESTIGRAPH_CONTROL_FILE` in the MCP environment. Do not copy control secrets into chat.
 
-## 技能炼化未启用
+## Skill refinement is not enabled
 
-设置 `VESTIGRAPH_EXPERIMENTAL_SKILLS=1` 后重启 Vestigraph 服务，仅重启网页或 MCP 不够。
+Set `VESTIGRAPH_EXPERIMENTAL_SKILLS=1` and restart the Vestigraph service. Restarting only the browser page or MCP client is not enough if the running service did not inherit the switch.
 
-## 修订冲突
+## Revision conflict
 
-另一个窗口或 agent 已保存内容。按返回的指引重新读取，比较最新修订再提交，不直接重放过期正文。
+Another window or agent saved a revision. Read the latest state, compare it, and submit again with the new `expected_revision`. Do not replay stale content directly.
 
-## 面板打开但没有记录
+## Panel opens but nothing records
 
-打开已保存的 GDS/OASIS，检查会话、文档、暂停状态和捕获错误。`doctor` 成功不代表正在记录。独立模式没有编辑器自动记录。
+Open a saved GDS/OASIS file, then check the current session, document, pause state, and capture errors in the panel. A successful doctor check means installation is valid; it does not mean the current editor window is recording.
 
-## 预览失败或大文件缓慢
+## Preview fails or large files are slow
 
-预览受资源预算限制，可导出已保存版本或缩小范围。整文件捕获可能暂时占用编辑器，不保证记录所有中间态。
+Preview is bounded by time and memory budgets. Export the saved version or narrow the target. Whole-file capture can temporarily use editor resources and does not promise every intermediate state.
 
-## 历史库被占用
+## History repository is busy
 
-正常停止占用它的服务或录制进程后重试，不手动删除锁。检查方法见[恢复](RECOVERY.md)。
+Stop services or recording processes that write to it, then retry. Do not delete locks by hand. See [Recovery](RECOVERY.md) for integrity checks.
