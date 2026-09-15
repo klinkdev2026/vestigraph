@@ -1,24 +1,30 @@
+<p align="right">
+  <a href="TROUBLESHOOTING.md">English</a> | <a href="TROUBLESHOOTING.zh-CN.md">中文</a>
+</p>
+
 # Troubleshooting
-
-## Standalone install has no klink
-
-Basic file history does not require klink. Run `python -m vestigraph doctor` for the standalone install. Install `vestigraph[klink]` and run `setup` only when you need automatic KLayout recording, HIST, or joint MCP tools.
 
 ## HIST does not appear
 
-Confirm KLayout desktop is installed. Run `python -m vestigraph setup`, then restart KLayout. Use `python -m vestigraph doctor --integration` to check the plugin and companion registration. Use the same configuration and registry environment for setup and KLayout startup.
+Confirm KLayout desktop is installed and Klink's plugin is installed:
+
+```console
+klink plugin install
+```
+
+Restart the MCP client, then restart KLayout. Open a saved GDS/OASIS file and click **HIST**. Use `python -m vestigraph doctor --integration` to check packages, plugin installation, and companion registration. Use the same Python environment for Vestigraph, Klink MCP, and companion registration.
 
 ## MCP does not show Vestigraph tools
 
-Confirm Vestigraph is installed in the Python environment that runs klink MCP. Restart MCP after installation. Check extension load errors in `klink.status`, then query `klink.find_tools` with `domain="vestigraph"`. Installing Python packages does not configure arbitrary chat clients.
+Confirm Vestigraph is installed in the Python environment that runs Klink MCP. Restart MCP after installation or upgrade. Check extension load errors in `klink.status`, then query `klink.find_tools` with `domain="vestigraph"`. No separate Vestigraph MCP server is needed. Installing Python packages does not configure arbitrary chat clients.
 
 ## Tools are discoverable but the service is unavailable
 
-Check whether an old service is still running. Start `python -m vestigraph serve --control-file`, then call `vestigraph.guide`. For custom service state, set `VESTIGRAPH_CONTROL_FILE` in the MCP environment. Do not copy control secrets into chat.
+Check whether an old service is still running. Start `python -m vestigraph serve --control-file` only for diagnosis or a custom local service state, then call `vestigraph.guide`. For custom service state, set `VESTIGRAPH_CONTROL_FILE` in the MCP environment. Do not copy control secrets into chat.
 
 ## Skill refinement is not enabled
 
-Set `VESTIGRAPH_EXPERIMENTAL_SKILLS=1` and restart the Vestigraph service. Restarting only the browser page or MCP client is not enough if the running service did not inherit the switch.
+Set `VESTIGRAPH_EXPERIMENTAL_SKILLS=1` and restart the Vestigraph service path that KLayout or MCP uses. Restarting only the browser page or MCP client is not enough if the running service did not inherit the switch.
 
 ## Revision conflict
 

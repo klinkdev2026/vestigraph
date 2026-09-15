@@ -6,14 +6,14 @@ on:
   workflow_call:
     inputs:
       klink_ref:
-        description: "klinkdev2026/klayout-klink ref for optional integration tests"
+        description: "klinkdev2026/klayout-klink ref for integration tests"
         required: false
         type: string
         default: "c66aca167f0a897ff5f8c5d4834f61d0b1ff701a"
   workflow_dispatch:
     inputs:
       klink_ref:
-        description: "klinkdev2026/klayout-klink ref for optional integration tests"
+        description: "klinkdev2026/klayout-klink ref for integration tests"
         required: false
         default: "c66aca167f0a897ff5f8c5d4834f61d0b1ff701a"
 
@@ -55,10 +55,10 @@ jobs:
           wheel="$(python -c 'from pathlib import Path; print(next(Path("dist").glob("vestigraph-*.whl")))')"
           python -m pip install "${wheel}[test]"
           python -m pip check
-      - name: Installed package checks without klink
+      - name: Installed package checks
         shell: bash
         run: python -I tools/check_installed.py
-      - name: Public standalone tests
+      - name: Public package tests
         shell: bash
         run: |
           python -m pytest \
@@ -114,7 +114,7 @@ jobs:
             -q --basetemp="${RUNNER_TEMP}/vestigraph-browser" -p no:cacheprovider
 
   klink-integration:
-    name: optional klink integration
+    name: klink integration
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Vestigraph
@@ -143,7 +143,7 @@ jobs:
           python -m build
           python -m twine check dist/*
           wheel="$(python -c 'from pathlib import Path; print(next(Path("dist").glob("vestigraph-*.whl")))')"
-          python -m pip install "${wheel}[test,klink]"
+          python -m pip install "${wheel}[test]"
           python -m pip check
       - name: Klink extension discovery tests
         shell: bash

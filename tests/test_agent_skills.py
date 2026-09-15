@@ -3,6 +3,7 @@ import hashlib
 import json
 from pathlib import Path
 import socket
+import types
 import threading
 import time
 import zipfile
@@ -120,7 +121,6 @@ def test_skill_auth_disabled_scope_and_typed_inputs(service, tmp_path, monkeypat
 
 def test_skill_real_http_extension_discovery_and_call(service, tmp_path, monkeypatch):
     import uvicorn
-    from klink.ext import ExtRegistry, PluginHook
     from klink.mcp.bridge import KLinkMCPBridge
     from klink import ext
     from vestigraph.web.app import create_app
@@ -143,9 +143,21 @@ def test_skill_real_http_extension_discovery_and_call(service, tmp_path, monkeyp
         while not server.started and time.monotonic() < deadline:
             time.sleep(0.01)
         assert server.started
-        registry = ExtRegistry()
-        register(PluginHook(registry, "vestigraph"))
-        monkeypatch.setattr(ext, "_REGISTRY", registry)
+        class InstalledVestigraphEP:
+            name = "vestigraph"
+            value = "vestigraph.klink_extension:register"
+            dist = types.SimpleNamespace(metadata={"Name": "vestigraph"})
+
+            def load(self):
+                return register
+
+        def fake_entry_points(group=None):
+            assert group == ext.ENTRY_POINT_GROUP
+            return [InstalledVestigraphEP()]
+
+        monkeypatch.setattr("importlib.metadata.entry_points", fake_entry_points)
+        registry = ext.discover(force=True)
+        assert "vestigraph.guide" in registry.tools
         bridge = KLinkMCPBridge(context_root=tmp_path / "context", registry_root=tmp_path / "registry")
         assert "extensions" in bridge.status()
         assert "vestigraph.refine" in {t["name"] for t in bridge.list_tools()["tools"]}
@@ -157,7 +169,7 @@ def test_skill_real_http_extension_discovery_and_call(service, tmp_path, monkeyp
         sid = result["skill"]["id"]
         for revision in (1, 2):
             result = call("submit", {"skill_id": sid, "expected_revision": revision, "body": "# Synthetic instructions"})
-            assert result["revision"] == revision + 1, result
+            assert result.get("revision") == revision + 1, result
         assert "synthetic-test-secret" not in json.dumps(result)
         assert not web.state.auth._sessions
     finally:
@@ -170,7 +182,11 @@ def test_skill_transport_rejects_remote_control_and_invalid_input(tmp_path, monk
     control = tmp_path / "control.json"
     control.write_text(json.dumps({"port": 80, "host": "192.0.2.1", "secret": "test"}), encoding="utf-8")
     monkeypatch.setenv("VESTIGRAPH_CONTROL_FILE", str(control))
-    assert call("guide", {})["ok"] is False
+    failed = call("guide", {})
+    assert failed["ok"] is False
+    assert "vestigraph setup" not in failed["next_action"]
+    assert "vestigraph serve" not in failed["next_action"]
+    assert "KLINK_REGISTRY_ROOT" in failed["next_action"]
     assert call("submit", {"skill_id": "test", "expected_revision": True, "body": "text"})["ok"] is False
 
 

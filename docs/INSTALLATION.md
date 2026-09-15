@@ -1,70 +1,69 @@
+<p align="right">
+  <a href="INSTALLATION.md">English</a> | <a href="INSTALLATION.zh-CN.md">中文</a>
+</p>
+
 # Installation and upgrades
 
-## Choose a mode
+## Requirements
 
-| Mode | What it provides |
-| --- | --- |
-| `vestigraph` | Local file history, browser UI, GDS/OASIS preview, import, and export |
-| `vestigraph[klink]` | Everything above plus compatible klink integration for automatic KLayout recording, HIST, and local MCP tools |
+Vestigraph requires Python 3.10 or newer, KLayout desktop 0.30.x, and `klayout-klink>=0.6.0,<0.7`. The normal `vestigraph` package installs the compatible Klink dependency. The Python `klayout` package is used for offline preview; it does not install the KLayout desktop application.
 
-Vestigraph requires Python 3.10 or newer. The Python `klayout` package is used for offline preview; it does not install the KLayout desktop application. KLayout desktop integration uses KLayout 0.30.x plus compatible klink 0.6.x.
+Klink owns the KLayout plugin installation. Use `klink plugin install` for first install and upgrades.
 
-## Standalone mode
+## Install after PyPI publication
 
-The first public release is pending PyPI publication. Until it is published, download the build-only wheel and sdist artifacts from [GitHub Actions](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml). After PyPI publication, install by package name.
+The first public release is pending PyPI publication. Until it is published, use the [GitHub Actions release artifacts](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml) described below.
 
 ```console
 python -m pip install vestigraph
-python -m vestigraph doctor
-python -m vestigraph serve --open-browser
+klink plugin install
 ```
 
-Do not run `setup` for standalone mode. Stop the foreground service with Ctrl+C. Existing CLI history can be attached to the browser service; see [Files and history](HISTORY.md).
+Restart the MCP client that runs `klink-mcp`. The Klink extension registry discovers Vestigraph in that Python environment and registers the local companion. No separate Vestigraph MCP server is needed.
 
-## KLayout integration
-
-Install Vestigraph in the same Python environment that runs klink MCP:
+Restart KLayout, open a saved GDS/OASIS layout, and click **HIST**. The panel opens the local history UI and shows live recording status. Run the integration doctor when you need an installation check:
 
 ```console
-python -m pip install "klayout-klink>=0.6.0,<0.7" "vestigraph[klink]>=0.2,<0.3"
-python -m vestigraph setup
 python -m vestigraph doctor --integration
 ```
 
-Restart KLayout, open a saved layout, and click **HIST**. `doctor --integration` checks packages, the plugin, and companion registration; the panel is the source of truth for live recording status.
-
-The default browser service port is 8787, separate from editor RPC ports. Use `setup --port 8788` to change the preferred port; the companion service may choose a later free port at startup.
-
-Use the same environment when running setup and starting KLayout. `KLAYOUT_HOME` selects the KLayout configuration directory. `KLINK_REGISTRY_ROOT` selects the local session registry. Data locations are described in [Recovery](RECOVERY.md).
+Installing Python packages does not configure arbitrary chat clients. Configure or restart the MCP client you actually use.
 
 ## Release artifacts before PyPI
 
 For unreleased versions, use the wheel and sdist artifacts created by the [GitHub Actions release workflow](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml). Do not assume unreleased packages already exist on PyPI.
 
-Standalone artifact install:
+Vestigraph artifact install:
 
 ```console
 python -m pip install ./wheels/vestigraph-0.2.0-py3-none-any.whl
+klink plugin install
 ```
 
-For joint integration before both projects are on PyPI, download artifacts built from matching reviewed klink and Vestigraph revisions. Put the two klink Rust wheels, the `klayout_klink` core wheel, and the Vestigraph wheel in one local directory, then run:
+Before both projects are on PyPI, download artifacts built from matching reviewed Klink and Vestigraph revisions. Put the two Klink Rust wheels, the `klayout_klink` core wheel, and the Vestigraph wheel in one local directory, then run:
 
 ```console
-python -m pip install --find-links ./wheels "klayout-klink>=0.6.0,<0.7" "vestigraph[klink]>=0.2,<0.3"
-python -m vestigraph setup
+python -m pip install --find-links ./wheels "klayout-klink>=0.6.0,<0.7" "vestigraph>=0.2,<0.3"
+klink plugin install
 ```
+
+Then restart MCP, restart KLayout, open a saved layout, and click **HIST**.
 
 ## Upgrade
 
-Stop the old Vestigraph service before upgrading:
+Stop the old Vestigraph service if one is running. Upgrade packages and the Klink plugin, then restart MCP and KLayout:
 
 ```console
-python -m pip install --upgrade "klayout-klink>=0.6.0,<0.7" "vestigraph[klink]>=0.2,<0.3"
-python -m vestigraph setup
+python -m pip install --upgrade "vestigraph>=0.2,<0.3"
+klink plugin install
 python -m vestigraph doctor --integration
 ```
 
-Restart KLayout and the MCP client. Standalone mode only needs the Vestigraph package and service restarted. Keep the virtual environment used for setup.
+Keep the same Python environment for Klink MCP, Vestigraph, and KLayout companion registration. `KLAYOUT_HOME` selects the KLayout configuration directory. `KLINK_REGISTRY_ROOT` selects the local session registry. Data locations are described in [Recovery](RECOVERY.md).
+
+## Underlying storage CLI
+
+Vestigraph still includes a local storage CLI for explicit file checkpoints and exports. It is useful for recovery tasks and tests, but the main user install path is the full Klink-backed KLayout history flow.
 
 ## Disable automatic companion startup
 

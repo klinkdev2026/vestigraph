@@ -89,7 +89,7 @@ jobs:
           python -m build
           python -m twine check dist/*
           rm -rf build vestigraph.egg-info
-          python tools/stage_public.py --check . --dist-dir dist
+          python -B tools/stage_public.py --check . --dist-dir dist
       - uses: actions/upload-artifact@v4
         with:
           name: dist-vestigraph
@@ -105,6 +105,7 @@ jobs:
         python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
     runs-on: ${{ matrix.os }}
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
@@ -112,7 +113,7 @@ jobs:
         with:
           name: dist-vestigraph
           path: dist
-      - name: Install built Vestigraph and run import smoke
+      - name: Install built Vestigraph with required KLink and run import smoke
         shell: bash
         run: |
           python -m pip install --upgrade pip
@@ -122,9 +123,11 @@ jobs:
           import importlib.resources as resources
           import vestigraph
           import vestigraph.web.app
+          import klink
           assert resources.files('vestigraph.web').joinpath('static/index.html').is_file()
-          print('vestigraph install smoke ok', vestigraph.__version__)
+          print('vestigraph install smoke ok', vestigraph.__version__, klink.__name__)
           PY
+          python -I tools/check_installed.py
 
   publish-testpypi:
     name: publish vestigraph to TestPyPI

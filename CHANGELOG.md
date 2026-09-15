@@ -1,10 +1,14 @@
+<p align="right">
+  <a href="CHANGELOG.md">English</a> | <a href="CHANGELOG.zh-CN.md">中文</a>
+</p>
+
 # Changelog
 
 ## 0.2.0
 
-- Standalone local file history, GDS/OASIS previews, import and recovery.
-- Optional recommended klink integration for KLayout recording and HIST.
-- Separate standalone and integration installation checks.
-- Local skill requests, frozen evidence, revisioned drafts and exports behind an explicit experimental switch.
-- Automatic tool discovery through the existing klink extension interface.
-- Authenticated loopback calls with structured arguments, revision checks and scoped validation reports.
+- Complete KLayout history path uses compatible Klink as a required dependency for the KLayout plugin, HIST entry, companion service, and MCP tool discovery.
+- Local file history, GDS/OASIS previews, import, recovery, and byte export stay in local user storage.
+- Restarting the existing Klink MCP process discovers Vestigraph tools; no separate Vestigraph MCP server is required.
+- KLayout plugin installation remains the Klink command path (`klink plugin install`) for first install and upgrades.
+- Local skill requests, frozen evidence, revisioned drafts, and exports are available behind an explicit experimental switch.
+- Authenticated loopback calls use structured arguments, revision checks, and scoped validation reports.

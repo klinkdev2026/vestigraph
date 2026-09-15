@@ -1,4 +1,4 @@
-"""Typed local agent workflow shared by HTTP and the optional KLink extension."""
+"""Typed local agent workflow shared by HTTP and the installed KLink extension."""
 from typing import Annotated, Literal
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 

@@ -1,3 +1,7 @@
+<p align="right">
+  <a href="AGENT_LOCAL.md">English</a> | <a href="AGENT_LOCAL.zh-CN.md">中文</a>
+</p>
+
 # Local agents and skills
 
 Skill refinement turns a user-selected history range, notes, and frozen evidence into revisioned instructions. Requests, evidence, draft text, validation reports, revisions, and exports stay on the user's machine. The package does not include private skills and does not install or execute skills automatically.

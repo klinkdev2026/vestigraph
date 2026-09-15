@@ -1,3 +1,7 @@
+<p align="right">
+  <a href="RECOVERY.md">English</a> | <a href="RECOVERY.zh-CN.md">中文</a>
+</p>
+
 # Recovery and data locations
 
 ## Export an old version

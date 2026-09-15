@@ -101,7 +101,7 @@ def call(name, arguments, registry_root=None):
     except Exception:
         # Never echo an HTTP header, bootstrap URL, control record, or private body.
         return {"ok": False, "problems": ["The local Vestigraph call could not complete."],
-                "next_action": "Check tool arguments. Start the matching service with python -m vestigraph serve --control-file, then call vestigraph.guide with {}. For KLayout integration run python -m vestigraph setup and restart KLayout."}
+                "next_action": "Check tool arguments. Restart this MCP server so Vestigraph can register its KLink companion descriptor, then open or restart KLayout with the KLink plugin and click HIST. If you use KLINK_REGISTRY_ROOT, set the same root for MCP and KLayout. Read klink.status if the HIST button or local service is still unavailable."}
     finally:
         if client is not None:
             client.close()

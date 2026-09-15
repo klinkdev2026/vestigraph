@@ -165,6 +165,122 @@ def descriptor(python: str, *, port: int = DEFAULT_PORT, state: Path | None = No
     }
 
 
+def _serve_command_index(command: list) -> int | None:
+    if not isinstance(command, list) or not all(isinstance(item, str) for item in command):
+        return None
+    needle = ["-m", "vestigraph", "serve"]
+    for index in range(1, len(command) - len(needle) + 1):
+        if command[index:index + len(needle)] == needle:
+            return index
+    return None
+
+
+def _path_problem(value, field: str, *, required: bool = True) -> str | None:
+    if value is None and not required:
+        return None
+    if not isinstance(value, str) or not value:
+        return f"{field} must be a non-empty path"
+    if not Path(value).expanduser().is_absolute():
+        return f"{field} must be an absolute path"
+    return None
+
+
+def _optional_str_problem(spec: dict, field: str) -> str | None:
+    if field in spec and (not isinstance(spec[field], str) or not spec[field]):
+        return f"{field} must be a non-empty string"
+    return None
+
+
+def _validate_existing_descriptor(spec: dict) -> str | None:
+    if spec.get("name") != COMPANION_NAME:
+        return f"descriptor name must be {COMPANION_NAME!r}"
+    if _serve_command_index(spec.get("command")) is None:
+        return "descriptor command is not a supported 'python -m vestigraph serve' command"
+    port = spec.get("port")
+    if type(port) is not int or not 1 <= port <= 65535:
+        return "port must be an integer between 1 and 65535"
+    problem = _path_problem(spec.get("control_file"), "control_file")
+    if problem:
+        return problem
+    problem = _path_problem(spec.get("cwd"), "cwd")
+    if problem:
+        return problem
+    problem = _path_problem(spec.get("log_file"), "log_file", required=False)
+    if problem:
+        return problem
+    for field in ("label", "title"):
+        problem = _optional_str_problem(spec, field)
+        if problem:
+            return problem
+    for field in ("health_path", "link_path"):
+        problem = _optional_str_problem(spec, field)
+        if problem:
+            return problem
+        if field in spec and not spec[field].startswith("/"):
+            return f"{field} must start with '/'"
+    if "autostart" in spec and type(spec["autostart"]) is not bool:
+        return "autostart must be a boolean"
+    env = spec.get("env", {})
+    if not isinstance(env, dict) or not all(isinstance(k, str) and isinstance(v, str) for k, v in env.items()):
+        return "env must be an object of string keys and values"
+    return None
+
+
+def _auto_descriptor(python: str, existing: dict | None = None) -> tuple[dict | None, str | None]:
+    if existing is None:
+        return descriptor(python), None
+    problem = _validate_existing_descriptor(existing)
+    if problem:
+        return None, problem
+    command = existing["command"]
+    index = _serve_command_index(command)
+    spec = dict(existing)
+    spec["command"] = [*_argv(python), *command[index:]]
+    spec["name"] = COMPANION_NAME
+    return spec, None
+
+
+def _read_descriptor(path: Path) -> tuple[dict | None, str | None]:
+    if not path.exists():
+        return None, None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        return None, f"descriptor unreadable: {exc}"
+    if not isinstance(data, dict):
+        return None, "descriptor is not a JSON object"
+    return data, None
+
+
+def ensure_auto_registered(*, root: str | Path | None = None, python: str | None = None) -> dict:
+    """Best-effort MCP-discovery registration for the current interpreter.
+
+    This never installs or overwrites the KLayout KLink plugin, never starts the
+    service, never opens a browser and never raises to KLink discovery. Existing
+    descriptors are only updated when they are valid Vestigraph serve descriptors;
+    their service flags and user choices are preserved while the interpreter
+    prefix is refreshed to the current MCP Python. Invalid descriptors are
+    reported but not overwritten.
+    """
+    path = descriptor_path(root)
+    try:
+        existing, problem = _read_descriptor(path)
+        if problem:
+            return {"registered": False, "descriptor": str(path), "changed": False, "problem": problem}
+        spec, problem = _auto_descriptor(python or sys.executable, existing)
+        if problem:
+            return {"registered": False, "descriptor": str(path), "changed": False, "problem": problem}
+        if existing == spec:
+            return {"registered": True, "descriptor": str(path), "changed": False,
+                    "python": spec["command"][0], "port": spec["port"]}
+        Path(spec["cwd"]).mkdir(parents=True, exist_ok=True)
+        _write_json_atomic(path, spec)
+        return {"registered": True, "descriptor": str(path), "changed": True,
+                "python": spec["command"][0], "port": spec["port"]}
+    except Exception as exc:
+        return {"registered": False, "descriptor": str(path), "changed": False,
+                "problem": f"auto registration failed: {type(exc).__name__}: {exc}"}
+
 def register(*, python: str | None = None, port: int = DEFAULT_PORT, root: str | Path | None = None,
              state: Path | None = None) -> dict:
     """Write the descriptor klink reads at KLayout startup. Idempotent; overwrites a previous one."""

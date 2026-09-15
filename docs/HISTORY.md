@@ -1,3 +1,7 @@
+<p align="right">
+  <a href="HISTORY.md">English</a> | <a href="HISTORY.zh-CN.md">中文</a>
+</p>
+
 # Files and history
 
 ## Save file versions

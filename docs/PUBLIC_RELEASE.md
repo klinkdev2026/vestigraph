@@ -1,12 +1,16 @@
+<p align="right">
+  <a href="PUBLIC_RELEASE.md">English</a> | <a href="PUBLIC_RELEASE.zh-CN.md">中文</a>
+</p>
+
 # Release scope and compatibility
 
-## Standalone features
+## Complete product path
 
-The public package includes file checkpoints, version queries, change records, byte export, local browser UI, GDS/OASIS preview, naming, old-file import, history integrity checks, and index recovery into a new directory.
+The public package installs local file and KLayout history. With compatible Klink in the same Python environment, Vestigraph records saved GDS/OASIS documents from KLayout, provides the HIST entry, supports pause/resume controls, opens old versions in new KLayout tabs, and exposes local tools through the existing Klink MCP server.
 
-## Optional klink integration
+## Underlying storage features
 
-With compatible klink installed in the same Python environment, Vestigraph adds local KLayout session discovery, automatic recording, the HIST entry, pause/resume controls, opening old versions in new KLayout tabs, and local tools through the existing klink MCP server.
+The storage layer includes file checkpoints, version queries, change records, byte export, local browser UI, GDS/OASIS preview, naming, old-file import, history integrity checks, and index recovery into a new directory. These pieces remain local and are used by the complete KLayout flow.
 
 ## Experimental skill features
 
@@ -14,7 +18,7 @@ When explicitly enabled, Vestigraph supports range requests, frozen evidence, dr
 
 ## Compatibility
 
-Vestigraph requires Python 3.10 or newer. KLayout desktop 0.30.x is needed only for editor integration. The klink integration requires klink 0.6.0 or a compatible later 0.6.x release; 0.5.x does not provide the 0.6 companion and tool-discovery contract. The Python preview engine is installed with the base package. Optional scanner and delta encoder packages are not required for basic history or restore.
+Vestigraph requires Python 3.10 or newer, KLayout desktop 0.30.x, and Klink 0.6.0 or a compatible later 0.6.x release. Klink 0.5.x does not provide the 0.6 companion and tool-discovery contract. The Python preview engine is installed with the base package. Optional scanner and delta encoder packages are not required for basic history or restore.
 
 GitHub Actions builds and tests the public package across the configured Python and operating-system matrix. Release publication uses the repository CI/CD path from a reviewed tag with OIDC trusted publishing.
 

@@ -9,7 +9,7 @@ import subprocess
 import sys
 
 
-BASE_REQUIRED = {"fastapi": "fastapi", "uvicorn": "uvicorn", "klayout": "klayout.db"}
+BASE_REQUIRED = {"fastapi": "fastapi", "uvicorn": "uvicorn", "klayout": "klayout.db", "klayout-klink": "klink"}
 INTEGRATION_REQUIRED = {"klayout-klink": "klink"}
 KLINK_SPEC = "klayout-klink>=0.6.0,<0.7"
 KLINK_MIN = (0, 6, 0)
@@ -38,29 +38,26 @@ def _checks(required: dict[str, str]) -> list[dict]:
 
 
 def dependencies():
-    """Packages required for standalone web/history usage."""
+    """Packages required for installed web/history usage, including KLink discovery."""
     return _checks(BASE_REQUIRED)
 
 
 def integration_dependencies():
-    """Optional KLayout integration packages."""
+    """KLink packages required before registering the KLayout HIST plugin."""
     return _checks(INTEGRATION_REQUIRED)
 
 
 def _required_for_setup() -> list[dict]:
-    return dependencies() + integration_dependencies()
+    return dependencies()
 
 
 def doctor(*, integration=False):
-    base_checks = dependencies()
-    optional_klink = integration_dependencies()[0]
+    checks = dependencies()
     if not integration:
-        ok = all(check["ok"] for check in base_checks)
-        return {"ok": ok, "scope": "standalone_installation", "dependencies": base_checks,
-                "klink_optional": optional_klink,
-                "next_action": "Run python -m vestigraph serve --open-browser. For KLayout integration, install vestigraph[klink] and run python -m vestigraph setup."}
+        ok = all(check["ok"] for check in checks)
+        return {"ok": ok, "scope": "package_installation", "dependencies": checks,
+                "next_action": "Restart the MCP server so Vestigraph can auto-register its KLink companion descriptor. With the KLink plugin installed in KLayout, restart or open KLayout and click HIST. If it is still unavailable, run python -m vestigraph doctor --integration." if ok else f"Install vestigraph with its required KLink dependency ({KLINK_SPEC}), then restart the MCP server."}
     from vestigraph_backends.vesti_backend_klayout import companion
-    checks = base_checks + [optional_klink]
     registration = companion.status()
     plugin = {"installed": False, "companion_support": False}
     if all(check["ok"] for check in checks):
@@ -74,7 +71,7 @@ def doctor(*, integration=False):
     return {"ok": bool(ok), "scope": "installation_only", "python": sys.executable,
             "dependencies": checks, "plugin": plugin, "companion": registration,
             "next_action": "Open KLayout, open a saved layout, and click HIST. Recording status is shown in the panel."
-            if ok else f"Install vestigraph[klink] ({KLINK_SPEC}) into this Python, then run python -m vestigraph setup."}
+            if ok else f"Install vestigraph with its required KLink dependency ({KLINK_SPEC}), restart the MCP server, ensure the KLink plugin is installed in KLayout, then restart KLayout and click HIST."}
 
 
 def setup(*, port=8787):
@@ -83,7 +80,7 @@ def setup(*, port=8787):
     checks = _required_for_setup()
     if not all(check["ok"] for check in checks):
         failed = ", ".join(check["package"] for check in checks if not check["ok"])
-        raise RuntimeError("Missing/incompatible packages: " + failed + f". Install vestigraph[klink] ({KLINK_SPEC}) into this Python.")
+        raise RuntimeError("Missing/incompatible packages: " + failed + f". Install vestigraph ({KLINK_SPEC} is required) into this Python.")
     from vestigraph_backends.vesti_backend_klayout import companion
     # Neutral cwd + isolated imports prove this interpreter can launch the installed service.
     if not companion.python_has_vestigraph(sys.executable):

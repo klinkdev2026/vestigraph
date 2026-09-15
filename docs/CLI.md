@@ -1,3 +1,7 @@
+<p align="right">
+  <a href="CLI.md">English</a> | <a href="CLI.zh-CN.md">中文</a>
+</p>
+
 # Command line
 
 Use `python -m vestigraph`. Put global options such as `--repo` before the subcommand.
@@ -5,10 +9,8 @@ Use `python -m vestigraph`. Put global options such as `--repo` before the subco
 | Command | Purpose |
 | --- | --- |
 | `--version` | Print the installed version |
-| `doctor` | Check standalone installation |
-| `doctor --integration` | Check optional klink, plugin, and companion registration |
-| `setup` | Install the KLayout plugin integration and register the companion service |
-| `serve --open-browser` | Start the local browser service |
+| `doctor --integration` | Check Klink, plugin, and companion registration |
+| `serve --open-browser` | Start the local browser service for diagnosis or custom service state |
 | `init` | Create a history repository |
 | `checkpoint FILE --title NAME` | Save a file version |
 | `history` / `show ID` | Inspect checkpoints |
@@ -19,8 +21,9 @@ Use `python -m vestigraph`. Put global options such as `--repo` before the subco
 | `rebuild-index DEST` | Rebuild an index into a new directory |
 | `companion status` | Show automatic-start registration |
 | `companion unregister` | Remove automatic-start registration |
+| `setup` | Legacy compatibility command for manual plugin/companion setup; normal installs use Klink plugin install plus MCP auto-registration |
 
-Examples:
+Examples for the underlying storage CLI:
 
 ```console
 python -m vestigraph --repo ./my-history history --limit 20
