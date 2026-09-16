@@ -1,7 +1,7 @@
 [
   {
     "path": ".github/workflows/ci.yml",
-    "sha256": "22fad40ef9359037756945338207aac61f7d1d6cb8590fd2b6a94769fe62c430"
+    "sha256": "35165b704efea2d462fc94214e3e19e048be9886932b0ecc1b18bc8054d0e2bb"
   },
   {
     "path": ".github/workflows/release.yml",
@@ -228,10 +228,6 @@
     "sha256": "65c532dfad1650bdbdf5af32e7b4252241bb19a6f5c7edab32b7a8a42da67c43"
   },
   {
-    "path": "tests/test_release_tools.py",
-    "sha256": "28405bc060e9fb650734026306bd900b8276d61fc3a5f19e4eeb13a020c5263a"
-  },
-  {
     "path": "tests/test_scan_backend.py",
     "sha256": "0f48b163c35920cce5524548c07c2a948080e443ccd2db3ed30d1e79dd58fc0d"
   },
@@ -293,7 +289,7 @@
   },
   {
     "path": "tools/audit_public_artifacts.py",
-    "sha256": "c62cef0abc9a779b3550f46b165dc423b13ee6e2085e1db6bea37a8a684b4ff0"
+    "sha256": "67e8c3949c55ed0aa4d431b8d9b5349d046050654ac78f702a44b30c394e596a"
   },
   {
     "path": "tools/check_agent_flow.py",

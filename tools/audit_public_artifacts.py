@@ -27,12 +27,11 @@ MONTH_DATE_RE = re.compile(r"(?<!\d)20\d\d-(?:0[1-9]|1[0-2])(?![-\d])")
 COMPACT_DATE_RE = re.compile(r"(?<!\d)20\d{6}(?!\d)")
 
 PRIVATE_PATHS = {
-    "release/manifest.json",
-    "release/ci.yml",
-    "release/release.yml",
+    "tests/test_release_tools.py",
     "tools/stage_public.py",
     "tools/release_sync.py",
 }
+PRIVATE_PREFIXES = ("release/",)
 EXCLUDED_PARTS = {".git", "__pycache__", ".pytest_cache"}
 
 
@@ -52,6 +51,11 @@ def is_text_path(path: str) -> bool:
     return posix.suffix.lower() in TEXT_SUFFIXES or posix.name in TEXT_NAMES
 
 
+def is_private_path(path: str) -> bool:
+    normalized = path.replace("\\", "/").lstrip("/")
+    return normalized in PRIVATE_PATHS or normalized.startswith(PRIVATE_PREFIXES)
+
+
 def scan_text(text: str, rel: str) -> list[Finding]:
     findings: list[Finding] = []
     for lineno, line in enumerate(text.splitlines(), 1):
@@ -69,7 +73,7 @@ def scan_tree(root: Path) -> list[Finding]:
         parts = set(PurePosixPath(rel).parts)
         if parts & EXCLUDED_PARTS:
             continue
-        if rel in PRIVATE_PATHS:
+        if is_private_path(rel):
             findings.append(Finding(rel, 0, "private release control file shipped"))
             continue
         if path.is_symlink():
@@ -114,8 +118,9 @@ def scan_dist(dist: Path) -> list[Finding]:
             continue
         for name, payload, is_link in archive_members(artifact):
             rel = f"{artifact.name}!/{name}"
-            posix = PurePosixPath(name)
-            if posix.is_absolute() or ".." in posix.parts:
+            archive_name = name.replace("\\", "/")
+            posix = PurePosixPath(archive_name)
+            if "\\" in name or WINDOWS_ABS_RE.search(name) or posix.is_absolute() or ".." in posix.parts:
                 findings.append(Finding(rel, 0, "unsafe archive member path"))
             if is_link:
                 findings.append(Finding(rel, 0, "archive link member shipped"))
@@ -123,8 +128,10 @@ def scan_dist(dist: Path) -> list[Finding]:
             parts = set(posix.parts)
             if parts & EXCLUDED_PARTS or name.endswith((".pyc", ".pyo")):
                 findings.append(Finding(rel, 0, "junk build artifact in archive"))
-            stripped = "/".join(posix.parts[1:]) if len(posix.parts) > 1 else name
-            if stripped in PRIVATE_PATHS:
+            candidate_paths = [archive_name]
+            if len(posix.parts) > 1:
+                candidate_paths.append("/".join(posix.parts[1:]))
+            if any(is_private_path(candidate) for candidate in candidate_paths):
                 findings.append(Finding(rel, 0, "private release control file in archive"))
             if is_text_path(name):
                 if len(payload) > MAX_TEXT_AUDIT_BYTES:
