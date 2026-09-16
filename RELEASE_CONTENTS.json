@@ -41,11 +41,11 @@
   },
   {
     "path": "docs/INSTALLATION.md",
-    "sha256": "f42da9646981f3b5ce53fed0a572336a6c6b8553278ea0a336bf8192ebfa7012"
+    "sha256": "8e11d596809bb5161dc7c903e63cae3c3abe4f55ea22d43e9a5798bab857db93"
   },
   {
     "path": "docs/INSTALLATION.zh-CN.md",
-    "sha256": "4fda4f34987d1509e93ab08249f5b63003707c718f5b00f09b6af0680d3b9376"
+    "sha256": "da9ace469d45da2d4f48c5687bfc933ddc99944e1e2b0d35f886d138948d7913"
   },
   {
     "path": "docs/PUBLIC_RELEASE.md",
@@ -133,11 +133,11 @@
   },
   {
     "path": "README.md",
-    "sha256": "84d59deb001f23f4de1ce37db628cbb215b9319a8ff39c3dfe627cca0ce3c724"
+    "sha256": "b9e552c8f30f0eeacc9e8ebf792dbe9c5cbbe7a2d475a0ba5b96f1f5f62ad2b5"
   },
   {
     "path": "README.zh-CN.md",
-    "sha256": "b6ea933fbf13b220ccc7d18009d44878e856f73f22e78df0a487f17f89f18fa1"
+    "sha256": "92190f494826ff133a33c3c77380682319137464442c0f930451cbabcac6b297"
   },
   {
     "path": "SECURITY.md",

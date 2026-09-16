@@ -21,7 +21,7 @@ Vestigraph does not provide cloud sync, remote collaboration, hosted storage, a 
 
 ## Install
 
-The commands below install published PyPI releases. For a version not yet on PyPI, download the build-only wheel and sdist artifacts from [GitHub Actions](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml).
+Vestigraph 0.2.0 is available on [PyPI](https://pypi.org/project/vestigraph/0.2.0/).
 
 ```console
 python -m pip install vestigraph
@@ -31,29 +31,11 @@ klink plugin install
 python -m vestigraph doctor --integration
 ```
 
-`pip install vestigraph` installs the compatible `klayout-klink` and `vestigraph-scan-core` dependencies. `klink plugin install` is still the Klink command that installs or upgrades the KLayout plugin. Restarting the MCP client lets the Klink extension registry discover Vestigraph and register the companion for that Python environment. No separate Vestigraph MCP server is needed. Installing Python packages does not configure arbitrary chat clients.
+`pip install vestigraph` installs the compatible `klayout-klink` and `vestigraph-scan-core` dependencies. Rust scanning is selected automatically when the native module is available; if it cannot be imported, Vestigraph falls back to the Python scanner with a diagnostic reason. Supported Linux, macOS, and Windows wheel platforms do not need a local Rust toolchain.
 
-The scanner prefers the Rust `vestigraph-scan-core` backend when it is importable and falls back to the Python scanner with a diagnostic reason if the native wheel is unavailable. Users on supported wheel platforms do not need a local Rust toolchain.
+`klink plugin install` installs or upgrades the KLayout plugin. Restarting the MCP client lets the existing Klink MCP server discover Vestigraph and register the local companion for that Python environment. No separate MCP server or `vestigraph setup` step is needed. Installing Python packages does not configure a chat client.
 
-After KLayout restarts, open a saved GDS/OASIS layout and click **HIST**. The panel opens the local web history UI and shows recording status. Confirm that recording is active before editing.
-
-## Release artifacts before PyPI
-
-Download the Vestigraph artifact archive from the [release workflow](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml), extract it, and install the wheel with its matching scanner wheel from that directory:
-
-```console
-python -m pip install --find-links ./wheels "vestigraph-scan-core" ./wheels/vestigraph-0.2.0-py3-none-any.whl
-klink plugin install
-```
-
-Before both projects are on PyPI, put the matching platform wheels in one local directory: the two Klink Rust wheels, the `klayout_klink` core wheel, the `vestigraph_scan_core` wheel, and the Vestigraph wheel. Then install from that directory:
-
-```console
-python -m pip install --find-links ./wheels "klayout-klink>=0.6.0,<0.7" "vestigraph-scan-core" "vestigraph>=0.2,<0.3"
-klink plugin install
-```
-
-Then restart the MCP client, restart KLayout, open a saved layout, and click **HIST**.
+After KLayout restarts, open a saved GDS/OASIS layout and click **HIST** to open the local history web UI. Confirm that recording is active before editing.
 
 ## Upgrade
 

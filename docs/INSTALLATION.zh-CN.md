@@ -12,42 +12,21 @@ Klink 负责 KLayout 插件安装。首次安装和升级都使用 `klink plugin
 
 ## 从 PyPI 安装
 
-下面的命令安装已经发布到 PyPI 的版本。对于尚未发布到 PyPI 的版本，请使用下面的 [GitHub Actions release artifacts](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml)。
+Vestigraph 0.2.0 已发布到 [PyPI](https://pypi.org/project/vestigraph/0.2.0/)。
 
 ```console
 python -m pip install vestigraph
 klink plugin install
-```
-
-重启运行 `klink-mcp` 的 MCP 客户端。Klink 扩展注册表会在该 Python 环境中发现 Vestigraph 并登记本地 companion。不需要单独的 Vestigraph MCP server。扫描器会优先使用 Rust `vestigraph-scan-core` 后端；如果本机 wheel 不可用，则带诊断原因回退到 Python。受支持 wheel 平台上的用户通常不需要本地 Rust 工具链。
-
-重启 KLayout，打开已保存的 GDS/OASIS，点击 **HIST**。面板会打开本地历史 UI 并显示实时记录状态。需要检查安装时运行：
-
-```console
+# 重启运行 klink-mcp 的 MCP 客户端
+# 重启 KLayout，打开已保存的 GDS/OASIS 版图，然后点击 HIST
 python -m vestigraph doctor --integration
 ```
 
-安装 Python 包不会自动配置任意聊天客户端。请配置或重启你实际使用的 MCP 客户端。
+`pip install vestigraph` 会安装兼容的 `klayout-klink` 和 `vestigraph-scan-core` 依赖。原生模块可用时自动使用 Rust 扫描；如果模块无法导入，则带诊断原因回退到 Python 扫描器。受支持的 Linux、macOS、Windows wheel 平台不需要本地 Rust 工具链。
 
-## PyPI 发布前的 artifacts
+`klink plugin install` 用于安装或升级 KLayout 插件。重启 MCP 客户端后，现有 Klink MCP server 会发现 Vestigraph，并为当前 Python 环境登记本地 companion。不需要额外 MCP server，也不需要运行 `vestigraph setup`。安装 Python 包不会自动配置聊天客户端。
 
-未发布版本请使用 [GitHub Actions release workflow](https://github.com/klinkdev2026/vestigraph/actions/workflows/release.yml) 生成的 wheel 和 sdist artifacts。不要假定未发布包已存在于 PyPI。
-
-Vestigraph artifact 安装：
-
-```console
-python -m pip install --find-links ./wheels "vestigraph-scan-core" ./wheels/vestigraph-0.2.0-py3-none-any.whl
-klink plugin install
-```
-
-在两个项目都发布到 PyPI 之前，下载由匹配的 Klink 与 Vestigraph 修订构建的 artifacts。把两个 Klink Rust wheel、`klayout_klink` core wheel、`vestigraph_scan_core` wheel 和 Vestigraph wheel 放入同一个本地目录，然后运行：
-
-```console
-python -m pip install --find-links ./wheels "klayout-klink>=0.6.0,<0.7" "vestigraph-scan-core" "vestigraph>=0.2,<0.3"
-klink plugin install
-```
-
-随后重启 MCP，重启 KLayout，打开已保存版图并点击 **HIST**。
+重启 KLayout 后，打开已保存的 GDS/OASIS 版图并点击 **HIST**，即可打开本地历史网页。开始编辑前请确认记录已启用。
 
 ## 升级
 
