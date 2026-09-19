@@ -4,6 +4,12 @@
 
 # Changelog
 
+## 0.2.2
+
+- Adds the explicit `vestigraph.restore` agent tool for restoring a user-selected checkpoint into the active saved KLayout document.
+- Saves pending editor changes before restore, atomically replaces the working file, reloads the original path, and appends a new checkpoint with `restore_of` and the user's reason.
+- Preserves every existing checkpoint across repeated restores and rolls the working file back if the restore checkpoint cannot be committed.
+
 ## 0.2.1
 
 - Groups each continuous AI layout operation into one history checkpoint and records its bounded reason and method.

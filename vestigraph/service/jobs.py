@@ -155,7 +155,7 @@ class JobRunner:
             return self.idle.wait_for(lambda: self.pending == 0 and not self.deferred, timeout=timeout)
 
 
-EXTERNAL_KINDS = {"open_in_klayout", "open_in_editor"}
+EXTERNAL_KINDS = {"open_in_klayout", "open_in_editor", "restore_in_editor"}
 
 
 class JobOutcomeUnknown(Exception):

@@ -21,7 +21,7 @@ Vestigraph does not provide cloud sync, remote collaboration, hosted storage, a 
 
 ## Install
 
-Vestigraph 0.2.1 is available on [PyPI](https://pypi.org/project/vestigraph/0.2.1/).
+Vestigraph 0.2.2 is available on [PyPI](https://pypi.org/project/vestigraph/0.2.2/).
 
 ```console
 python -m pip install vestigraph

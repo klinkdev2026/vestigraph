@@ -58,6 +58,7 @@ Vestigraph 安装在运行现有 Klink MCP server 的同一 Python 环境中。�
 | --- | --- |
 | `vestigraph.guide` | 定位项目、文档和待处理请求 |
 | `vestigraph.history` | 查询文档版本和修订 ID |
+| `vestigraph.restore` | 将用户指定的检查点恢复到当前已保存文档，并追加新的历史检查点 |
 | `vestigraph.refine` | 从用户选择的区间创建请求并冻结证据 |
 | `vestigraph.skill` | 读取请求、冻结证据和当前修订 |
 | `vestigraph.submit` | 保存草稿并运行文档结构检查 |

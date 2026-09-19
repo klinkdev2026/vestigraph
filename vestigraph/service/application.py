@@ -14,6 +14,7 @@ import shutil
 import time
 import threading
 import sqlite3
+import tempfile
 from pathlib import Path
 
 from ..preview import RENDERER_VERSION
@@ -21,7 +22,7 @@ from ..preview.budgets import DEFAULT as DEFAULT_BUDGETS
 from ..preview.worker import run_diff, run_preview
 from ..storage import summaries as storage_summaries
 from ..storage import adaptive as compression_adaptive
-from ..store import CursorError, RepositoryError
+from ..store import CursorError, Repository, RepositoryError
 from ..presentation import Presentation, PresentationError, LabelConflict
 from . import cursors, queries
 from .catalog import Catalog, fingerprint
@@ -62,6 +63,7 @@ class Application:
         runner.register("diff", "preview", self._job_diff)
         runner.register("open_in_klayout", "coordinate", self._job_open_in_klayout)
         runner.register("open_in_editor", "coordinate", self._job_open_in_klayout)
+        runner.register("restore_in_editor", "coordinate", self._job_restore_in_editor)
         runner.register("relocate", "coordinate", self._job_relocate)
 
     @classmethod
@@ -990,6 +992,120 @@ class Application:
                  "tab": "new", "document_ref": asdict(response.document),
                  "note": "This tab shows a saved version, not your working document; recording resumes "
                          "when you switch back to a document inside the workspace."}, None)
+
+    def request_restore_in_editor(self, document_id, checkpoint_id, payload=None, request_key=None):
+        document, store = self._store(document_id)
+        if document.get("origin") != "live" or document.get("read_only"):
+            raise bad_request("Only a live recorded document can be restored in place.",
+                              "Open the saved working layout in KLayout and select its live history.")
+        queries.get_checkpoint(store, checkpoint_id)
+        payload = payload or {}
+        session_id = payload.get("session_id")
+        reason = payload.get("reason")
+        if not isinstance(session_id, str) or not session_id:
+            raise bad_request("session_id is required.", "Choose the KLayout window that owns this document.")
+        if not isinstance(reason, str) or not reason.strip() or len(reason.strip()) > 240:
+            raise bad_request("A restore reason between 1 and 240 characters is required.")
+        candidate = self._session_candidate(session_id, payload.get("expected_session_instance"), "klayout")
+        owners = [c for c in self._coordinators_on(editor_session_id(candidate))
+                  if c.status().get("document_id") == document_id]
+        if len(owners) != 1:
+            raise ServiceError("DOCUMENT_NOT_ACTIVE", "This KLayout window is not recording the selected document.",
+                               status=409, next_action="Switch that window to the saved working layout and wait for recording.")
+        job, _ = self.runner.submit(document["project_id"], "restore_in_editor", "checkpoint", checkpoint_id,
+                                    {"document_id": document_id, "session_id": session_id,
+                                     "expected_session_instance": candidate.session_instance_id,
+                                     "reason": reason.strip()}, request_key=request_key)
+        return job
+
+    def _job_restore_in_editor(self, job):
+        payload = job["payload"]
+        document = self.catalog.get_document(payload["document_id"], job["project_id"])
+        identity = document.get("observed_identity") or {}
+        source_value = identity.get("path") if identity.get("kind") == "saved" else None
+        if not isinstance(source_value, str) or not source_value:
+            raise ServiceError("UNSAVED_DOCUMENT", "Save the working layout before restoring a checkpoint.", status=409)
+        source = Path(source_value).resolve()
+        project = self.catalog.get_project(job["project_id"])
+        workspace = project.get("workspace")
+        if workspace and not is_within(source, Path(workspace)):
+            raise ServiceError("DOCUMENT_OUTSIDE_WORKSPACE", "The working layout is outside this project.", status=409)
+        candidate = self._session_candidate(payload["session_id"], payload.get("expected_session_instance"), "klayout")
+        coordinators = [c for c in self._coordinators_on(editor_session_id(candidate))
+                        if c.status().get("document_id") == document["id"]]
+        if len(coordinators) != 1:
+            raise ServiceError("DOCUMENT_NOT_ACTIVE", "The selected KLayout window no longer owns this document.", status=409)
+        coordinator = coordinators[0]
+        held = False
+        backend = None
+        staging = backup = None
+        appended = None
+        try:
+            coordinator.wait_reply(coordinator.request("navigation_hold"), 240)
+            held = True
+            store = Repository.open_readonly(document["store_path"], services=self.services)
+            record = queries.get_checkpoint(store, job["target_id"])
+            suffix = source.suffix or filename_suffix(record.get("format") or "GDS2", self.services.formats)
+            fd, name = tempfile.mkstemp(prefix=".vestigraph-restore-", suffix=suffix, dir=source.parent)
+            os.close(fd)
+            staging = Path(name)
+            staging.unlink()
+            store.export(job["target_id"], staging)
+            fd, name = tempfile.mkstemp(prefix=".vestigraph-before-restore-", suffix=suffix, dir=source.parent)
+            os.close(fd)
+            backup = Path(name)
+            shutil.copyfile(source, backup)
+            os.replace(staging, source)
+            staging = None
+            try:
+                writer = Repository(document["store_path"], services=self.services)
+                writer.acquire_writer("vestigraph restore checkpoint")
+                try:
+                    appended = writer.checkpoint(source,
+                        title="Restore: " + (record.get("title") or job["target_id"][:12]),
+                        source="automation", metadata={
+                            "format": record.get("format") or "GDS2",
+                            "document": {"filename": str(source)},
+                            "coverage": "exact_file_restore",
+                            "restore_of": job["target_id"],
+                            "operation": {"method": "vestigraph.restore", "reason": payload["reason"]},
+                        })
+                finally:
+                    writer.release_writer()
+            except BaseException:
+                os.replace(backup, source)
+                backup = None
+                raise
+            backup.unlink(missing_ok=True)
+            backup = None
+            backend = self.supervisor.editors.create(candidate)
+            backend.connect(candidate)
+            spec = self.services.formats.get(record.get("format") or "GDS2")
+            response = backend.open_snapshot(OpenRequest(source, spec.format_id, time.monotonic()+60,
+                                                         mode="replace", artifact_role=spec.artifact_role))
+            if response.outcome != "completed":
+                raise JobOutcomeUnknown(ServiceError(
+                    "RESTORE_RELOAD_UNCONFIRMED",
+                    "The file and restore checkpoint were written, but KLayout did not confirm reload.",
+                    status=504, next_action="Inspect KLayout before taking another action."))
+            return ({"checkpoint_id": appended["id"], "restore_of": job["target_id"],
+                     "working_path": str(source), "reason": payload["reason"],
+                     "history_preserved": True, "session_id": editor_session_id(candidate)}, None)
+        finally:
+            if backend is not None:
+                try:
+                    backend.close()
+                except BackendError:
+                    pass
+            if staging is not None:
+                staging.unlink(missing_ok=True)
+            if backup is not None:
+                backup.unlink(missing_ok=True)
+            if held:
+                try:
+                    coordinator.wait_reply(coordinator.request("navigation_release"), 60)
+                except ServiceError:
+                    pass
 
     def _coordinators_on(self, session_id):
         # Navigation is a lifecycle barrier, not a UI-state filter. A saving

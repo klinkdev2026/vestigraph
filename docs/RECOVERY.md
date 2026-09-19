@@ -16,6 +16,12 @@ The destination file must not already exist, its parent directory must exist, an
 
 When klink is installed and connected to KLayout, the panel can open an old version in a new tab. That does not replace the original file on disk.
 
+## Restore the active KLayout document
+
+After the user explicitly selects a checkpoint, an agent can call `vestigraph.restore`. Vestigraph first saves pending editor changes as their own checkpoint, atomically replaces the saved working file with the selected content, reloads that original path in KLayout, and appends a new checkpoint containing `restore_of` and the user's reason.
+
+Restore is additive: no earlier or later checkpoint is deleted. Repeated restores can therefore target any checkpoint that remains in history. If the new restore checkpoint cannot be committed, Vestigraph restores the working file bytes that were present before the operation.
+
 ## Data locations
 
 | Platform | Default root |

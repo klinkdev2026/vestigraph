@@ -134,7 +134,9 @@ def invoke(app, name, arguments, allowed_projects):
                 },
             })
         result = {**result, "items": summaries, "detail_policy":
-                  "Set all=true only when the user explicitly asks for the complete checkpoint list; full event payloads and storage metadata remain in the Vestigraph web panel."}
+                  "Set all=true only when the user explicitly asks for the complete checkpoint list; full event payloads and storage metadata remain in the Vestigraph web panel.",
+                  "restore_policy":
+                  "Restore only after the user explicitly selects a checkpoint. Restore appends a new checkpoint and preserves every existing checkpoint."}
         history_revision = result["history_revision"]
         action = next_call("refine", document_id=args["document_id"],
             from_id="USER_SELECTED_START_ID", to_id="USER_SELECTED_END_ID",
@@ -147,7 +149,26 @@ def invoke(app, name, arguments, allowed_projects):
                     "Default agent history contains the 30 most recent checkpoints; all=true is only for an explicit user request. "
                     "For full event details and comparisons, "
                     "use the local Vestigraph web panel; do not page history automatically."),
-                "next_page": None}
+                "next_page": None,
+                "on_explicit_restore": next_call("restore", document_id=args["document_id"],
+                    checkpoint_id="USER_SELECTED_CHECKPOINT_ID", session_id="ACTIVE_KLAYOUT_SESSION_ID",
+                    reason="USER_REASON")}
+    if name == "restore":
+        document(args["document_id"])
+        job = app.request_restore_in_editor(args["document_id"], args["checkpoint_id"], {
+            "session_id": args["session_id"],
+            "expected_session_instance": args["expected_session_instance"],
+            "reason": args["reason"],
+        })
+        if not app.runner.wait_idle(300):
+            raise ServiceError("RESTORE_TIMEOUT", "The restore job did not finish in time.", status=503)
+        done = app.job(job["id"], allowed_projects)
+        if done["status"] != "succeeded":
+            error = done.get("error") or {}
+            raise ServiceError(error.get("code", "RESTORE_FAILED"), error.get("message", "Restore failed."),
+                               status=409, next_action=error.get("next_action"))
+        return {"restored": True, **done["result"],
+                "next_action": next_call("history", document_id=args["document_id"])}
     if not app.experimental_skills:
         raise ServiceError("EXPERIMENTAL_DISABLED", "Skill refinement is disabled.", status=409,
                            next_action="Set VESTIGRAPH_EXPERIMENTAL_SKILLS=1 and restart Vestigraph; call vestigraph.guide with {}.")

@@ -248,8 +248,8 @@ class OpenRequest:
 
     def __post_init__(self):
         _deadline(self.deadline)
-        if not isinstance(self.path, Path) or not self.path.is_absolute() or self.mode != "new":
-            raise ValueError("Open must target an absolute file in a new document.")
+        if not isinstance(self.path, Path) or not self.path.is_absolute() or self.mode not in ("new", "replace"):
+            raise ValueError("Open must target an absolute file in a new or current document.")
         if self.artifact_role not in ("exchange_snapshot", "file_snapshot"):
             raise BackendError("native_project_restore_unsupported", outcome="not_started")
 

@@ -5,23 +5,23 @@
   },
   {
     "path": ".github/workflows/release.yml",
-    "sha256": "4f2b8ab16600d5336387110e529c73d5eb20be45f7d712766b8d4de38bf170f6"
+    "sha256": "f42ad2545cad730444feb523ef9c9de9dda155a2b2f981cc846e748e6338e255"
   },
   {
     "path": "CHANGELOG.md",
-    "sha256": "8c05ab5373b4a8cddadc42798ff64053989f91e5271f264145e2725bd7c4e967"
+    "sha256": "5096de767fe371201cee6712b042319a8227e3c650dbc2c101577f637586992a"
   },
   {
     "path": "CHANGELOG.zh-CN.md",
-    "sha256": "349f6fad37f16af69f8d0ec7e1c4a72e0ca169f75e882a5748df9c36bcbcc0e3"
+    "sha256": "0ca9e4a710de3b4a933ac820db61394cb45446b5128813588f3b4449c4e94e6d"
   },
   {
     "path": "docs/AGENT_LOCAL.md",
-    "sha256": "89366eeaddb0890d354e0f4316f014ce7d47ca9d187e08f726e7540b981a93c7"
+    "sha256": "12dcf3ac9fc548854397d788b63f885fc9115b4667551b8b221a97aa148d78bb"
   },
   {
     "path": "docs/AGENT_LOCAL.zh-CN.md",
-    "sha256": "f08ced4a8bbbbf9f348eaabc2e060805eae44208704e8ffaecb68d8f0c29862a"
+    "sha256": "493d9eeb393bd6935487c389725688fd4f78805d7e49a6a8b5f1276332f09caf"
   },
   {
     "path": "docs/CLI.md",
@@ -41,11 +41,11 @@
   },
   {
     "path": "docs/INSTALLATION.md",
-    "sha256": "25d5fcecc630aef09247281db1152d3b546eb120a85588e50261d8c9ace8e52d"
+    "sha256": "f991ba5a7b390e0be7a3e9f62ad9c36ee6893c10706286e44c5dcc1422f4f409"
   },
   {
     "path": "docs/INSTALLATION.zh-CN.md",
-    "sha256": "ec67cd05bce11ab386538fdf0eec3c1559960cc113bdb1229b9497b349eb544a"
+    "sha256": "53b501e0f29263e6fcdd8f12717702fc3ac84dd21e44431ffdff9b304865ab01"
   },
   {
     "path": "docs/PUBLIC_RELEASE.md",
@@ -65,11 +65,11 @@
   },
   {
     "path": "docs/RECOVERY.md",
-    "sha256": "0a12678d98582ef9a2edad2d980b3d1c94f75f4dc578823b102434ed5ec7e8ea"
+    "sha256": "659709258920bb578004390de7e4f9a2e8a37dd9d31be80f3814779ce4022059"
   },
   {
     "path": "docs/RECOVERY.zh-CN.md",
-    "sha256": "b95f2b5e5ee708a87eb37e687f6458e00837f19737b01a5b3c37c2c86392dbcd"
+    "sha256": "326e088f83b2a2415297d3a023b07a6da802cf52d840b0e8bff75375304ea6a9"
   },
   {
     "path": "docs/TROUBLESHOOTING.md",
@@ -101,7 +101,7 @@
   },
   {
     "path": "native/scan_core/pyproject.toml",
-    "sha256": "67af410a92a8360e0229351729c3c5975c3bae67e58bab641804a08e41313934"
+    "sha256": "5af01e1ec237c03fe6bbfa433cd67db135f3e460da549e870c1be98d486f5c52"
   },
   {
     "path": "native/scan_core/README.md",
@@ -129,15 +129,15 @@
   },
   {
     "path": "pyproject.toml",
-    "sha256": "d12bd273f7466829229a498793bdfad1ecd9a7034703a0fff52abf5df49d021f"
+    "sha256": "fcd1073cfd2bded82556d079ea4a1e6627e0000921f4877a6de1d148f21db318"
   },
   {
     "path": "README.md",
-    "sha256": "51e343042397b2f3e029e03e6e05de48cdf7ad79630e4d3995ab9ad5a2a41f2f"
+    "sha256": "36e4f9f81027e5ce8b3f53d096dedbbdafba94799d0044afcc16e21c20b29cc9"
   },
   {
     "path": "README.zh-CN.md",
-    "sha256": "575d4f6d740108ccfbe7c85855016eb6a8d9b2c10604bbd86ef226bda52998d9"
+    "sha256": "d12bd99c34a6f99d3e557b8a5d1456cc75594650b0151496d3c48521eb43c7ee"
   },
   {
     "path": "SECURITY.md",
@@ -218,6 +218,10 @@
   {
     "path": "tests/test_companion_register.py",
     "sha256": "c848260850ce3f2664b5476c3fd31218743cd53ca8e1edb33f4933953e86a4e7"
+  },
+  {
+    "path": "tests/test_history_open_service.py",
+    "sha256": "e06455160ae62c9cccb34206738543a8ff6984dc5e8a209b45562044976467c2"
   },
   {
     "path": "tests/test_klayout_backend_package.py",
@@ -301,7 +305,7 @@
   },
   {
     "path": "vestigraph/__init__.py",
-    "sha256": "791dcb755c139af78151b13af2d081f22fc0dd4491a6d909e7ecb7d4f6fe81d1"
+    "sha256": "776a9bf36b43b1f22cf904f9f3a0c7ec2a7610f1cf0e61379cc98e1b79dfbc7b"
   },
   {
     "path": "vestigraph/__main__.py",
@@ -313,7 +317,7 @@
   },
   {
     "path": "vestigraph/agent_contract.py",
-    "sha256": "d7e2b429306e74077462e9fc29e6f1be4fe441b181abe68a95521d9e12c2238c"
+    "sha256": "05df9e9455090905ff1949d225e790305cf9db19262f333b34c4198491c7c398"
   },
   {
     "path": "vestigraph/baseline_duplicates.py",
@@ -389,11 +393,11 @@
   },
   {
     "path": "vestigraph/service/agent.py",
-    "sha256": "3e1ed055260a4a5b4faa663cd2d2f4f808a86f89dcc07a738bebec30cd9b0437"
+    "sha256": "e036db73e011fa8518a067428f9d494b1e4cfcbbb75401433dff2b55ba8b6e05"
   },
   {
     "path": "vestigraph/service/application.py",
-    "sha256": "11aef2c8390ad12c03e8eb85ac90afcac78ebc5115a13c9d84078963a83e7ff0"
+    "sha256": "403c22cb32f98c82c3dc83229afcb111998bd62fa7be503b5e9dc1cb7cbb8d20"
   },
   {
     "path": "vestigraph/service/capture_recovery.py",
@@ -429,7 +433,7 @@
   },
   {
     "path": "vestigraph/service/jobs.py",
-    "sha256": "7c551a7b4b78cdcc60e0be05c561ad70e6a34bd3f3a446c89175a27b5e36c88c"
+    "sha256": "9def608b7988ae6b03499be69b06d748a44cfe9c82d813a13f8b64b3cceb34fb"
   },
   {
     "path": "vestigraph/service/legacy_imports.py",
@@ -785,7 +789,7 @@
   },
   {
     "path": "vestigraph_backends/types.py",
-    "sha256": "cccfb12d80a6ab7854829151c3efe9969e61b9d5b7f81cb8e0ac7ad68265572e"
+    "sha256": "118aa44372f989b9e1a17f165ac1936d068b48dee9b8ff3c2e61173b8b7bba88"
   },
   {
     "path": "vestigraph_backends/vesti_backend_klayout/__init__.py",
@@ -793,7 +797,7 @@
   },
   {
     "path": "vestigraph_backends/vesti_backend_klayout/adapter.py",
-    "sha256": "d048cf43df8aaf205abf5a8d26a41eaec81522d0aa92f344307aef3a3ba282d6"
+    "sha256": "7085b6c893962a00138139308ab55acc996cfdbc59d885fb77afee7d144ff6ca"
   },
   {
     "path": "vestigraph_backends/vesti_backend_klayout/capabilities.py",

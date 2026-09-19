@@ -422,7 +422,7 @@ class KLayoutBackend(EditorBackend):
                 if self._client is None:
                     raise BackendError("disconnected", outcome="not_started")
                 dispatched = True
-                response = self._rpc("layout.show_file", {"path": str(request.path), "mode": "new",
+                response = self._rpc("layout.show_file", {"path": str(request.path), "mode": request.mode,
                     "keep_position": False}, timeout=timeout, outcome="unknown")
                 if isinstance(response, dict) and (response.get("success") is False or response.get("ok") is False):
                     return OpenReceipt("failed", reason_code="open_failed")

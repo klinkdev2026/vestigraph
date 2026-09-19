@@ -16,6 +16,12 @@ python -m vestigraph --repo ./my-history export CHECKPOINT_ID ./restored.gds
 
 安装并连接 Klink/KLayout 后，面板可以把旧版本打开到新的 KLayout 标签页。这不会替换磁盘上的原始文件。
 
+## 恢复当前 KLayout 工作版图
+
+用户明确选择检查点后，Agent 可以调用 `vestigraph.restore`。Vestigraph 会先把编辑器中待处理的修改保存为独立检查点，再以原子方式用所选内容替换已保存的工作文件，从原路径重新载入 KLayout，并追加一个包含 `restore_of` 和用户原因的新检查点。
+
+恢复采用追加方式：不会删除更早或更晚的任何检查点。因此，多次恢复仍可选择历史中保留的任一检查点。如果新的恢复检查点无法提交，Vestigraph 会把工作文件回滚到操作前的字节内容。
+
 ## 数据位置
 
 | 平台 | 默认根目录 |

@@ -58,6 +58,7 @@ The tools read the local service registration and authenticate locally. Do not p
 | --- | --- |
 | `vestigraph.guide` | Locate projects, documents, and pending requests |
 | `vestigraph.history` | Query document versions and revision ids |
+| `vestigraph.restore` | Restore a user-selected checkpoint into the active saved document while appending a new history checkpoint |
 | `vestigraph.refine` | Create a request from a user-selected range and freeze evidence |
 | `vestigraph.skill` | Read a request, frozen evidence, and current revision |
 | `vestigraph.submit` | Save a draft and run document-structure checks |

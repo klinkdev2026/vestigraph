@@ -1,6 +1,6 @@
 name: Release
 
-# Tag-triggered PyPI publish for Vestigraph. Push a tag like `v0.2.1`
+# Tag-triggered PyPI publish for Vestigraph. Push a tag like `v0.2.2`
 # after a green main, or run manually with target=none/testpypi.
 #
 # PyPI Trusted Publishing setup:

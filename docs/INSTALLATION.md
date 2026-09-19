@@ -12,7 +12,7 @@ Klink owns the KLayout plugin installation. Use `klink plugin install` for first
 
 ## Install from PyPI
 
-Vestigraph 0.2.1 is available on [PyPI](https://pypi.org/project/vestigraph/0.2.1/).
+Vestigraph 0.2.2 is available on [PyPI](https://pypi.org/project/vestigraph/0.2.2/).
 
 ```console
 python -m pip install vestigraph
