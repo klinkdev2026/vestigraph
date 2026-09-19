@@ -251,6 +251,20 @@ class Coordinator:
             self.backoff_index = 0
             self._set("waiting_document", "resumed", paused_local=False)
             return {"state": "waiting_document"}
+        if kind == "prepare_edit":
+            with self.lock:
+                commands = self.commands
+                recording = self.recorder is not None and self.recorder.is_alive()
+            if not recording or commands is None:
+                raise ServiceError("NOT_RECORDING_DOCUMENT", "The recorder is not ready for an AI edit.", status=409)
+            reply = {"event": threading.Event()}
+            commands.put(("prepare_edit", "Before AI operation", reply))
+            if not reply["event"].wait(180):
+                raise ServiceError("COORDINATOR_TIMEOUT", "The pre-edit checkpoint did not finish.", status=503)
+            if not reply.get("ok"):
+                raise ServiceError(reply.get("code", "EXPORT_FAILED"), reply.get("error", "Pre-edit checkpoint failed."), status=409)
+            record = reply.get("record") or {}
+            return {"ok": True, "prepared": True, "checkpoint_id": record.get("id")}
         if kind == "milestone":
             return self._milestone(payload["document_id"], payload["title"])
         if kind == "navigation_hold":
@@ -315,10 +329,21 @@ class Coordinator:
                  for d in documents]
         verdict, why = self._eligible(probe, policy)
         if not verdict:
-            self._set("waiting_document", why, tabs=views,
-                      diagnostic={"filename": probe.source_path})
+            diagnostic = {"filename": probe.source_path}
+            if why == "unsaved_document_not_allowed":
+                diagnostic["next_action"] = (
+                    "Save the layout into the klink init project folder, then keep it active; "
+                    "Vestigraph never writes an unsaved editor into a project implicitly.")
+            self._set("waiting_document", why, tabs=views, diagnostic=diagnostic)
             return self.document_poll_s
-        self._set(None, None, tabs=views, backend_capabilities=asdict(caps))
+        diagnostic = None
+        if not probe.source_path:
+            diagnostic = {
+                "warning": "This document is unsaved; history checkpoints are retained in Vestigraph, "
+                          "but no source GDS/OASIS file is written.",
+                "next_action": "Save it into the klink init project folder before continuing.",
+            }
+        self._set(None, None, tabs=views, backend_capabilities=asdict(caps), diagnostic=diagnostic)
         delay = self._start_recorder(candidate, probe)
         return 0.5 if delay is None else delay
 
@@ -471,7 +496,11 @@ class Coordinator:
             self.run_stop, self.commands = stop, commands
             self.cancel_save_event = cancel
         self._set("baselining", "saving_starting_version", document_id=document["id"], capture_run_id=run["id"],
-                  session_instance=public_session(self.session_descriptor), gap=None, diagnostic=None)
+                  session_instance=public_session(self.session_descriptor), gap=None,
+                  diagnostic=None if probe.source_path else {
+                      "warning": "The editor document is unsaved. History captures are not a saved source file.",
+                      "next_action": "Save the layout into the klink init project folder before continuing.",
+                  })
         outcome = {}
 
         def target():

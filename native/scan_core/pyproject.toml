@@ -4,7 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "vestigraph-scan-core"
-version = "0.2.0"
+version = "0.2.1"
 requires-python = ">=3.10"
 description = "Bounded Rust backend for Vestigraph GDS scanning, installed with Vestigraph by default."
 readme = "README.md"

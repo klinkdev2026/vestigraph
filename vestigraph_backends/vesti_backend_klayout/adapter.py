@@ -117,6 +117,7 @@ _EVENTS = {
     "cellview_changed": EventKind.DOCUMENT_CHANGED,
     "selection_sent": EventKind.SELECTION_CHANGED,
     "job_progress": EventKind.PROGRESS,
+    "job_started": EventKind.OPERATION_STARTED,
     "job_done": EventKind.OPERATION_FINISHED,
 }
 
@@ -318,7 +319,7 @@ class KLayoutBackend(EditorBackend):
             response = self._rpc("events.channels")
             available = response.get("channels", []) if isinstance(response, dict) else []
             selected = [channel for channel in CHANNELS if channel in available]
-            if not (set(CHANNELS) - {"job_progress"}).issubset(selected):
+            if not (set(CHANNELS) - {"job_progress", "job_started"}).issubset(selected):
                 raise BackendError("events_unavailable", outcome="not_started")
             if any(sub._callback is not None for sub in self._subscriptions):
                 raise BackendError("already_observing", outcome="not_started")
@@ -340,6 +341,15 @@ class KLayoutBackend(EditorBackend):
                 subscription.close()
                 raise _mapped(exc) from None
             return subscription
+
+    def flush_observed_changes(self, document):
+        with self._lock:
+            self._inspect(document)
+            try:
+                self._rpc("events.flush", {})
+            except BackendError as exc:
+                if exc.reason_code != "unsupported":
+                    raise
 
     def export_snapshot(self, document, request):
         if request.format.upper() != "GDS2" or request.destination.suffix.lower() not in (".gds", ".gds2"):

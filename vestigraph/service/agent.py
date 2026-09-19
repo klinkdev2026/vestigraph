@@ -43,6 +43,15 @@ def invoke(app, name, arguments, allowed_projects):
         item = app.skills.get(sid)
         project(item["project_id"])
         return item
+    if name == "prepare_edit":
+        coordinators = [c for c in app.supervisor.coordinators_on(args["session_id"])
+                        if c.project["id"] in allowed_projects and c.writable_handle() is not None]
+        if not coordinators:
+            return {"ok": True, "prepared": False, "reason": "no_active_recording"}
+        if len(coordinators) != 1:
+            raise ServiceError("SESSION_AMBIGUOUS", "Several recordings own this session.", status=409)
+        coordinator = coordinators[0]
+        return coordinator.wait_reply(coordinator.request("prepare_edit"), 240)
     if name == "guide":
         pid = args["project_id"]
         if pid is not None:
@@ -86,11 +95,46 @@ def invoke(app, name, arguments, allowed_projects):
             else:
                 result["next_action"] = "Open or import a local document in Vestigraph, then call vestigraph.guide with this project_id."
         else:
-            result["next_action"] = "To opt in, set VESTIGRAPH_EXPERIMENTAL_SKILLS=1 and restart Vestigraph, then call vestigraph.guide with {}."
+            if len(result["documents"]) == 1:
+                result["next_action"] = result["documents"][0]["next_action"]
+            elif result["documents"]:
+                result["next_action"] = "Choose the document named by the user, then call vestigraph.history."
+            else:
+                result["next_action"] = "Open or import a document in the local Vestigraph panel."
+            result["refinement_opt_in"] = "Skill refinement only: set VESTIGRAPH_EXPERIMENTAL_SKILLS=1 and restart Vestigraph. History does not require this switch."
         return result
     if name == "history":
         document(args["document_id"])
-        result = app.checkpoints(args["document_id"], cursor=args["cursor"], limit=30)
+        result = app.checkpoints(args["document_id"], cursor=args["cursor"], limit=200 if args["all"] else 30)
+        if args["all"]:
+            result = {**result, "items": list(result["items"])}
+            while result.get("next_cursor"):
+                page = app.checkpoints(args["document_id"], cursor=result["next_cursor"], limit=200)
+                result["items"].extend(page["items"])
+                result["next_cursor"] = page.get("next_cursor")
+        # Agent responses use a bounded, human-readable summary. Full manifests,
+        # event payloads and storage metadata remain available from the web UI
+        # or an explicitly requested checkpoint detail call.
+        summaries = []
+        for item in result.get("items", []):
+            metadata = item.get("metadata") or item
+            operation = metadata.get("operation") or {}
+            summaries.append({
+                "id": item.get("id"),
+                "modified_at": metadata.get("modified_at"),
+                "modified_at_basis": metadata.get("modified_at_basis") or "unknown",
+                "saved_at": item.get("created_at"),
+                "title": item.get("title") or "",
+                "source": item.get("source") or "unknown",
+                "record": {
+                    "operation": operation.get("reason") or operation.get("method"),
+                    "note": operation.get("reason") or item.get("title") or "",
+                    "coverage": metadata.get("coverage"),
+                    "restore_of": metadata.get("restore_of"),
+                },
+            })
+        result = {**result, "items": summaries, "detail_policy":
+                  "Set all=true only when the user explicitly asks for the complete checkpoint list; full event payloads and storage metadata remain in the Vestigraph web panel."}
         history_revision = result["history_revision"]
         action = next_call("refine", document_id=args["document_id"],
             from_id="USER_SELECTED_START_ID", to_id="USER_SELECTED_END_ID",
@@ -98,9 +142,12 @@ def invoke(app, name, arguments, allowed_projects):
         action["required_before_call"] = "Replace USER_SELECTED_START_ID, USER_SELECTED_END_ID, USER_TITLE and USER_GOAL from the user's selected interval and explanation. Preserve history_revision exactly as returned by this history result; do not invent it."
         action["history_revision_source"] = "history.history_revision"
         return {"history": result, "problems": [],
-                "next_action": action,
-                "instructions": "Replace placeholders with the user-selected interval and explanation. Do not guess.",
-                "next_page": next_call("history", document_id=args["document_id"], cursor=result["next_cursor"]) if result.get("next_cursor") else None}
+                "next_action": action if app.experimental_skills else "Review these checkpoint summaries; use the local web panel for detailed comparisons.",
+                "instructions": (
+                    "Default agent history contains the 30 most recent checkpoints; all=true is only for an explicit user request. "
+                    "For full event details and comparisons, "
+                    "use the local Vestigraph web panel; do not page history automatically."),
+                "next_page": None}
     if not app.experimental_skills:
         raise ServiceError("EXPERIMENTAL_DISABLED", "Skill refinement is disabled.", status=409,
                            next_action="Set VESTIGRAPH_EXPERIMENTAL_SKILLS=1 and restart Vestigraph; call vestigraph.guide with {}.")

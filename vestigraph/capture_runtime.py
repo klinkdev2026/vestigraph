@@ -182,9 +182,19 @@ class Observer:
         self.cutoff = None
         self.last_timing = None
         self.last_tops = None
+        # Compact attribution for the pending mutating KLink RPC.
+        self.pending_operation = None
+        self.manual_dirty = False
+        self.last_edit_at = None
+        self.boundary_kind = None
 
     def _meta(self, **fields):
         meta = {"capture": "editor", "backend_id": self.backend.backend_id, "consistency": "best_effort"}
+        if self.pending_operation:
+            meta["operation"] = dict(self.pending_operation)
+        if self.last_edit_at:
+            meta["modified_at"] = self.last_edit_at
+            meta["modified_at_basis"] = "observed_editor_event"
         meta.update(fields)
         if self.context:
             meta[CONTEXT_KEY] = self.context
@@ -235,13 +245,15 @@ class Observer:
         self._mark_dirty(boundary)
         self.status("coalesced", count=lost)
 
-    def _mark_dirty(self, boundary):
+    def _mark_dirty(self, boundary, kind=None):
         if not self.dirty:
             self.dirty_since = time.monotonic()
             self.pending_since_wall = time.time()
             self.status("pending", pending_since=self.pending_since_wall)
         self.dirty = True
         self.boundary = self.boundary or boundary
+        if boundary and kind is not None:
+            self.boundary_kind = kind
         self.last_event = time.monotonic()
 
     def begin(self, title="Observed editor edits"):
@@ -254,6 +266,8 @@ class Observer:
         if self.segment is not None:
             self.repo.close_segment(self.segment, status=status)
             self.segment = None
+        self.pending_operation = None
+        self.manual_dirty = False
 
     def document(self):
         ref = self.target.ref
@@ -365,6 +379,10 @@ class Observer:
         """cancellable=False for the baseline and the tail save: they are safety gates
         (a stop / navigation must not proceed with unsaved changes), so a pending cancel
         flag is ignored and cleared instead of honoured."""
+        if title == "Observed editor changes" and self.pending_operation:
+            title = self.pending_operation.get("title") or title
+            if source == "system":
+                source = "automation"
         if self.pipeline is not None:
             return self._snapshot_durable(title, source, cancellable)
         self.check_overflow()
@@ -551,7 +569,27 @@ class Observer:
             source=event.source if event.source in ("manual", "automation", "system", "mixed", "unknown") else "unknown",
             segment_id=self.segment,
         )
-        self._mark_dirty(event.kind in BOUNDARIES)
+        if event.kind == EventKind.OPERATION_STARTED:
+            return
+        cause = payload.get("caused_by") if isinstance(payload, dict) else None
+        if isinstance(cause, list) and cause:
+            first = cause[0] if isinstance(cause[0], dict) else {}
+            method = first.get("method")
+            if method:
+                method = str(method)[:120]
+                reason = first.get("reason")
+                label = str(reason).strip()[:240] if isinstance(reason, str) and reason.strip() else method
+                self.pending_operation = {
+                    "method": method,
+                    "trace_id": str(first.get("trace_id", ""))[:120],
+                    "reason": label,
+                    "title": f"AI operation: {label}",
+                }
+        if (not cause or payload.get("manual_changes")) and event.kind in (EventKind.CONTENT_CHANGED, EventKind.DOCUMENT_CHANGED):
+            self.manual_dirty = True
+        if event.kind in (EventKind.CONTENT_CHANGED, EventKind.OPERATION_FINISHED):
+            self.last_edit_at = event.observed_at
+        self._mark_dirty(event.kind in BOUNDARIES, event.kind)
 
     def _select_document(self):
         selected, _ = probe_document(self.backend)
@@ -700,13 +738,24 @@ def run_observer(observer, *, idle_seconds=5, min_interval=15, max_interval=60,
                     observer.check_document()
                     next_poll = now + max(.01, min(1., idle, minimum, maximum))
                 age = now - observer.last_export
-                if (observer.dirty and age >= minimum
-                        and (observer.boundary or now - observer.last_event >= idle
-                             or now - observer.dirty_since >= maximum)):
+                operation_boundary = (observer.boundary
+                                      and observer.boundary_kind == EventKind.OPERATION_FINISHED)
+                # A mutating AI RPC marks the end of one low-level operation,
+                # not the end of the conversation. Coalesce the burst and
+                # checkpoint once the interaction has been idle for the quiet window.
+                interaction_quiet = (operation_boundary
+                                     and now - observer.last_event >= idle)
+                if (observer.dirty
+                        and (interaction_quiet
+                             or (not operation_boundary and age >= minimum and (observer.boundary
+                                 or now - observer.last_event >= idle
+                                 or now - observer.dirty_since >= maximum)))):
                     observer.snapshot("Observed editor changes")
                     if not observer.cancelled_last:            # a cancelled save keeps the changes pending
                         observer.close_segment()
                         observer.dirty = observer.boundary = False
+                        observer.boundary_kind = None
+                        observer.pending_operation = None
         except KeyboardInterrupt:
             observer.finish("interrupted")
     except Exception as exc:
@@ -746,9 +795,25 @@ def _serve_commands(observer, commands):
             return
         kind, title, reply = command
         try:
-            if kind != "snapshot":
+            if kind not in ("snapshot", "prepare_edit"):
                 raise CaptureError(UNSUPPORTED, f"Unknown capture command {kind}.")
-            record = observer.snapshot(title, source="manual")
+            if kind == "prepare_edit":
+                # The MCP caller has not sent the mutation yet. Drain editor
+                # events first; if no AI burst is pending, compare actual
+                # content even when GUI events were delayed or missed.
+                observer.backend.flush_observed_changes(observer.target.ref)
+                while True:
+                    try:
+                        observer.consume(observer.queue.get_nowait())
+                    except queue.Empty:
+                        break
+                if observer.pending_operation and not observer.manual_dirty:
+                    reply.update(ok=True, record=None)
+                    continue
+                observer.pending_operation = None
+                record = observer.snapshot(title, source="system", cancellable=False)
+            else:
+                record = observer.snapshot(title, source="manual")
             observer.close_segment()
             if observer.cancelled_last:
                 reply.update(ok=False, error="Save cancelled by the user.", code="SAVE_CANCELLED")

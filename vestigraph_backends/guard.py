@@ -213,3 +213,7 @@ class GuardedBackend(EditorBackend):
             except ValueError:
                 continue
         return result
+
+    def flush_observed_changes(self, document):
+        self._ref(document)
+        self._invoke("flush_observed_changes", document)

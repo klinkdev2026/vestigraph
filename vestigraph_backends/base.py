@@ -64,3 +64,6 @@ class EditorBackend(ABC):
 
     @abstractmethod
     def open_snapshot(self, request: OpenRequest) -> OpenReceipt: ...
+
+    def flush_observed_changes(self, document: DocumentRef) -> None:
+        """Optional event barrier; providers without delayed notifications need no work."""

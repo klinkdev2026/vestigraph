@@ -55,14 +55,14 @@ class LocalClient:
             raise ValueError("No bootstrap token")
         self.csrf = self.request("/api/v1/auth/bootstrap", {}, {"Authorization": "Bearer " + token})["csrf_token"]
 
-    def request(self, path, body, headers=None):
+    def request(self, path, body, headers=None, *, timeout=30):
         payload = json.dumps(body, allow_nan=False).encode("utf-8")
         if len(payload) > 64 * 1024:
             raise LocalFailure("The request exceeds 64 KiB.", "Shorten the draft or supporting text files and retry.")
         headers = {"Content-Type": "application/json", "Origin": self.origin, **(headers or {})}
         req = request.Request(self.origin + path, payload, headers, method="POST")
         try:
-            with self.opener.open(req, timeout=30) as response:
+            with self.opener.open(req, timeout=timeout) as response:
                 raw = response.read(1024 * 1024 + 1)
         except error.HTTPError as exc:
             try:
@@ -76,7 +76,7 @@ class LocalClient:
         return json.loads(raw)["data"]
 
     def invoke(self, name, arguments):
-        return self.request("/api/v1/agent/invoke", {"name": name, "arguments": arguments}, {"X-CSRF-Token": self.csrf})
+        return self.request("/api/v1/agent/invoke", {"name": name, "arguments": arguments}, {"X-CSRF-Token": self.csrf}, timeout=240 if name == "prepare_edit" else 30)
 
     def close(self):
         try:

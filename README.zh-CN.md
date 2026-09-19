@@ -21,7 +21,7 @@ Vestigraph 不提供云同步、远程协作、托管存储、模型服务，也
 
 ## 安装
 
-Vestigraph 0.2.0 已发布到 [PyPI](https://pypi.org/project/vestigraph/0.2.0/)。
+Vestigraph 0.2.1 已发布到 [PyPI](https://pypi.org/project/vestigraph/0.2.1/)。
 
 ```console
 python -m pip install vestigraph

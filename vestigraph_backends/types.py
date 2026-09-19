@@ -33,6 +33,7 @@ class EventKind(str, Enum):
     DOCUMENT_CHANGED = "document_changed"
     CONTENT_CHANGED = "content_changed"
     SAVE_NOTICE = "save_notice"
+    OPERATION_STARTED = "operation_started"
     OPERATION_FINISHED = "operation_finished"
     SELECTION_CHANGED = "selection_changed"
     PROGRESS = "progress"

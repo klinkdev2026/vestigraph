@@ -6,7 +6,7 @@ from vestigraph.capture_errors import (CaptureError, NO_DOCUMENT, DISCONNECTED, 
 
 CHANNELS = (
     "shapes_changed", "cells_changed", "instances_changed", "layer_list_changed",
-    "cellview_changed", "selection_sent", "job_progress", "job_done",
+    "cellview_changed", "selection_sent", "job_progress", "job_started", "job_done",
 )
 BOUNDARIES = {"selection_sent", "job_done"}
 def _identity(response):

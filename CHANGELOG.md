@@ -4,6 +4,15 @@
 
 # Changelog
 
+## 0.2.1
+
+- Groups each continuous AI layout operation into one history checkpoint and records its bounded reason and method.
+- Saves pending manual KLayout changes before an AI mutation so manual work remains visible in history.
+- Lists 30 recent checkpoint summaries by default; agents only retrieve the complete history after an explicit user request.
+- Adds modification and save times, operation notes, coverage, and restore provenance to checkpoint summaries.
+- Improves unsaved-layout guidance and keeps ordinary history available without enabling experimental skill refinement.
+- Adds compatibility handling for older Klink plugins while using synchronous event flushing with updated plugins.
+
 ## 0.2.0
 
 - Complete KLayout history path uses compatible Klink as a required dependency for the KLayout plugin, HIST entry, companion service, and MCP tool discovery.
