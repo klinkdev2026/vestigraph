@@ -5,15 +5,15 @@
   },
   {
     "path": ".github/workflows/release.yml",
-    "sha256": "f42ad2545cad730444feb523ef9c9de9dda155a2b2f981cc846e748e6338e255"
+    "sha256": "dfb7352a74da0a37d3e60e1e7ce64c1759099d53c8ed35c73ba9fe1511d9a1d3"
   },
   {
     "path": "CHANGELOG.md",
-    "sha256": "5096de767fe371201cee6712b042319a8227e3c650dbc2c101577f637586992a"
+    "sha256": "fd93fbc2d1e090ebc72f98475dfe6405bfd397f0f03e078b81355fe848d5f490"
   },
   {
     "path": "CHANGELOG.zh-CN.md",
-    "sha256": "0ca9e4a710de3b4a933ac820db61394cb45446b5128813588f3b4449c4e94e6d"
+    "sha256": "15183c56c09463dd63c1355dac82487035652c765183c285ed2b8e314c383b5b"
   },
   {
     "path": "docs/AGENT_LOCAL.md",
@@ -41,11 +41,11 @@
   },
   {
     "path": "docs/INSTALLATION.md",
-    "sha256": "f991ba5a7b390e0be7a3e9f62ad9c36ee6893c10706286e44c5dcc1422f4f409"
+    "sha256": "09a431e68fcccadefa1cdf42eafa59ae108b7fc90bef42d8e2ea14868db0ff97"
   },
   {
     "path": "docs/INSTALLATION.zh-CN.md",
-    "sha256": "53b501e0f29263e6fcdd8f12717702fc3ac84dd21e44431ffdff9b304865ab01"
+    "sha256": "d7eb711144a0137b49796e65b644aa360882fd7a7d0a76c97103ac3ba338cf41"
   },
   {
     "path": "docs/PUBLIC_RELEASE.md",
@@ -101,7 +101,7 @@
   },
   {
     "path": "native/scan_core/pyproject.toml",
-    "sha256": "5af01e1ec237c03fe6bbfa433cd67db135f3e460da549e870c1be98d486f5c52"
+    "sha256": "694defdb3c5a4bd83012999d60d6456afc083f33f4918743cbb9fdb7785fc26c"
   },
   {
     "path": "native/scan_core/README.md",
@@ -129,15 +129,15 @@
   },
   {
     "path": "pyproject.toml",
-    "sha256": "fcd1073cfd2bded82556d079ea4a1e6627e0000921f4877a6de1d148f21db318"
+    "sha256": "492c0d6fd7f08131372c40b2744b35aafa28eea32d9499245b90aee0a7e78b95"
   },
   {
     "path": "README.md",
-    "sha256": "36e4f9f81027e5ce8b3f53d096dedbbdafba94799d0044afcc16e21c20b29cc9"
+    "sha256": "ea44c8b5bed86f6e0612adbc5e54df11c04130b1b7ce31c594c0954d1558953e"
   },
   {
     "path": "README.zh-CN.md",
-    "sha256": "d12bd99c34a6f99d3e557b8a5d1456cc75594650b0151496d3c48521eb43c7ee"
+    "sha256": "16f46fa1dcd288905866e51aad1b06f0ed020d5e483a1d8a3847f5a5db436c09"
   },
   {
     "path": "SECURITY.md",
@@ -305,7 +305,7 @@
   },
   {
     "path": "vestigraph/__init__.py",
-    "sha256": "776a9bf36b43b1f22cf904f9f3a0c7ec2a7610f1cf0e61379cc98e1b79dfbc7b"
+    "sha256": "c02a40003c96e23d6d3234e4fc738d9e61c21ae5826ab444ea6ccb1ce1de6c9e"
   },
   {
     "path": "vestigraph/__main__.py",

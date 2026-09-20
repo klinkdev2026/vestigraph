@@ -12,7 +12,7 @@ Klink 负责 KLayout 插件安装。首次安装和升级都使用 `klink plugin
 
 ## 从 PyPI 安装
 
-Vestigraph 0.2.2 已发布到 [PyPI](https://pypi.org/project/vestigraph/0.2.2/)。
+Vestigraph 0.2.3 已发布到 [PyPI](https://pypi.org/project/vestigraph/0.2.3/)。
 
 ```console
 python -m pip install vestigraph

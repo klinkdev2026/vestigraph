@@ -21,7 +21,7 @@ Vestigraph does not provide cloud sync, remote collaboration, hosted storage, a 
 
 ## Install
 
-Vestigraph 0.2.2 is available on [PyPI](https://pypi.org/project/vestigraph/0.2.2/).
+Vestigraph 0.2.3 is available on [PyPI](https://pypi.org/project/vestigraph/0.2.3/).
 
 ```console
 python -m pip install vestigraph
@@ -36,6 +36,14 @@ python -m vestigraph doctor --integration
 `klink plugin install` installs or upgrades the KLayout plugin. Restarting the MCP client lets the existing Klink MCP server discover Vestigraph and register the local companion for that Python environment. No separate MCP server or `vestigraph setup` step is needed. Installing Python packages does not configure a chat client.
 
 After KLayout restarts, open a saved GDS/OASIS layout and click **HIST** to open the local history web UI. Confirm that recording is active before editing.
+
+## Checkpoints and restore
+
+Vestigraph groups one continuous AI drawing operation into one checkpoint instead of recording every shape separately. Before an AI mutation, pending manual KLayout changes are saved as their own checkpoint. Checkpoint summaries include save and observed modification times, the recorded reason, coverage, and restore provenance.
+
+The agent history tool returns the 30 most recent summaries by default. It retrieves the complete checkpoint list only when the user explicitly asks for all of it; use HIST for detailed events and comparisons.
+
+After the user explicitly selects a checkpoint, `vestigraph.restore` restores it into the active saved KLayout document. Restore is additive: it appends a new checkpoint with `restore_of` and the user's reason, and does not delete any earlier or later history. Pending editor changes are checkpointed first. See [Recovery and data locations](docs/RECOVERY.md).
 
 ## Upgrade
 

@@ -21,7 +21,7 @@ Vestigraph 不提供云同步、远程协作、托管存储、模型服务，也
 
 ## 安装
 
-Vestigraph 0.2.2 已发布到 [PyPI](https://pypi.org/project/vestigraph/0.2.2/)。
+Vestigraph 0.2.3 已发布到 [PyPI](https://pypi.org/project/vestigraph/0.2.3/)。
 
 ```console
 python -m pip install vestigraph
@@ -36,6 +36,14 @@ python -m vestigraph doctor --integration
 `klink plugin install` 用于安装或升级 KLayout 插件。重启 MCP 客户端后，现有 Klink MCP server 会发现 Vestigraph，并为当前 Python 环境登记本地 companion。不需要额外 MCP server，也不需要运行 `vestigraph setup`。安装 Python 包不会自动配置聊天客户端。
 
 重启 KLayout 后，打开已保存的 GDS/OASIS 版图并点击 **HIST**，即可打开本地历史网页。开始编辑前请确认记录已启用。
+
+## 检查点与恢复
+
+Vestigraph 把一次连续的 AI 绘图操作合并为一个检查点，而不是每个图形分别记录。AI 修改前，待处理的 KLayout 手动修改会先保存为独立检查点。检查点摘要包含保存时间、观测到的修改时间、记录原因、覆盖范围和恢复来源。
+
+Agent 历史工具默认返回最近 30 条摘要。只有用户明确要求全部检查点时才读取完整列表；详细事件和对比请使用 HIST。
+
+用户明确选择检查点后，`vestigraph.restore` 可将其恢复到当前已保存的 KLayout 工作版图。恢复采用追加方式：新增一个带 `restore_of` 和用户原因的检查点，不删除任何更早或更晚的历史。待处理的编辑器修改会先进入检查点。详见[恢复与数据位置](docs/RECOVERY.zh-CN.md)。
 
 ## 升级
 

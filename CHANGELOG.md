@@ -4,6 +4,11 @@
 
 # Changelog
 
+## 0.2.3
+
+- Explain checkpoint grouping, pending manual-edit capture, the 30-summary default, and explicit additive restore directly in the public README.
+- Link the README restore workflow to the detailed recovery guide without exposing local history or service data.
+
 ## 0.2.2
 
 - Adds the explicit `vestigraph.restore` agent tool for restoring a user-selected checkpoint into the active saved KLayout document.
